@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0E1116">
+<title>NightCare · Caregiver AI Assistant</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+      -webkit-tap-highlight-color:transparent; }
+  html,body { height:100%; background:#0E1116; }
+  body { color:#E8EAF0; overflow:hidden; }
+  #app { position:relative; height:100%; overflow:hidden; }
+  @media (min-width:480px) {
+    body { background:#2A2E35; display:flex; align-items:center; justify-content:center; }
+    #app { width:390px; height:844px; border-radius:40px; flex:none;
+           box-shadow:0 24px 64px rgba(0,0,0,.5); }
+  }
+
+  .screen { display:none; height:100%; flex-direction:column;
+            padding-top:calc(env(safe-area-inset-top, 0px) + 14px); }
+  .screen.active { display:flex; }
+
+  /* ===== shared ===== */
+  .t1 { font-size:20px; font-weight:600; }
+  .t2 { font-size:15px; font-weight:500; }
+  .t3 { font-size:13px; }
+  .t4 { font-size:11px; color:#9AA1AD; }
+  .card { background:#1A1F27; border-radius:12px; }
+  .btn {
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    width:100%;
+    border-radius:14px; font-size:16px; font-weight:500; border:none; color:#E8EAF0;
+  }
+  .btn:active { transform:scale(.97); opacity:.9; }
+  .ai-dot { width:8px; height:8px; border-radius:50%; background:#7C8CFF; display:inline-block;
+            animation:breathe 2.6s ease-in-out infinite; }
+  @keyframes breathe { 0%,100%{opacity:.45} 50%{opacity:1} }
+  .topbar { padding:8px 20px 10px; display:flex; justify-content:space-between; align-items:baseline; }
+  .clock { font-size:13px; color:#9AA1AD; font-variant-numeric:tabular-nums; }
+  .tabbar { margin-top:auto; height:calc(64px + env(safe-area-inset-bottom,0px));
+            padding-bottom:env(safe-area-inset-bottom,0px);
+            background:#14181F; display:flex; border-top:1px solid #22262F; }
+  .tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+         font-size:11px; color:#7A818D; text-decoration:none; }
+  .tab.active { color:#B9C2FF; }
+  .tab .ic { font-size:19px; line-height:1; }
+  .demo-hint {
+    position:absolute; bottom:calc(84px + env(safe-area-inset-bottom,0px)); left:50%; transform:translateX(-50%);
+    background:#2A3040; color:#B9C2FF; font-size:12px; padding:8px 16px; border-radius:20px;
+    border:1px solid #3A4258; white-space:nowrap; z-index:50;
+  }
+
+  /* ===== S1 overview ===== */
+  .shift-card { margin:6px 16px 14px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; }
+  .ai-status { text-align:right; }
+  .ai-status .l1 { font-size:13px; color:#B9C2FF; display:flex; align-items:center; gap:6px; justify-content:flex-end; }
+  .ai-status .l2 { font-size:11px; color:#9AA1AD; margin-top:3px; font-variant-numeric:tabular-nums; }
+  .grid-area { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
+  .grid-area::-webkit-scrollbar{ display:none; }
+  .section-head { display:flex; justify-content:space-between; align-items:center; margin:10px 2px 8px; }
+  .section-head .name { font-size:15px; font-weight:500; color:#C9CED8; }
+  .bed-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .bed { background:#1A1F27; border-radius:10px; padding:8px 6px 7px;
+         display:flex; flex-direction:column; align-items:center; gap:4px;
+         border-left:3px solid transparent; }
+  .bed .room { font-size:15px; font-weight:500; font-variant-numeric:tabular-nums; }
+  .bed .st { font-size:11px; display:flex; align-items:center; gap:4px; }
+  .ok    { border-left-color:#2A7D5F; } .ok .st    { color:#5FA98C; }
+  .watch { border-left-color:#F5C15C; } .watch .st { color:#F5C15C; }
+  .off   { opacity:.55; border-left-color:#4A5160; } .off .st { color:#9AA1AD; } .off .room { color:#9AA1AD; }
+  .foot-note { font-size:11px; color:#5C6370; text-align:center; padding:16px 24px 10px; line-height:1.6; }
+
+  /* ===== S2 alert ===== */
+  .alert-wrap { flex:1; display:flex; flex-direction:column; padding:0 16px; }
+  .alert-level {
+    margin:18px 0 12px; align-self:center; font-size:12px; color:#F5C15C;
+    background:rgba(245,193,92,.1); border:1px solid rgba(245,193,92,.35);
+    padding:5px 14px; border-radius:14px; letter-spacing:.5px;
+  }
+  .alert-card { padding:20px 18px; border-left:4px solid #F5C15C; }
+  .alert-card .who { font-size:22px; font-weight:600; }
+  .alert-card .what { font-size:15px; color:#C9CED8; margin-top:6px; line-height:1.5; }
+  .conf-row { display:flex; align-items:center; gap:10px; margin-top:16px; }
+  .conf-bar { flex:1; height:6px; border-radius:3px; background:#2A2F3A; overflow:hidden; }
+  .conf-fill { height:100%; width:78%; border-radius:3px; background:linear-gradient(90deg,#F5C15C,#FFD98A); }
+  .conf-num { font-size:15px; font-weight:600; color:#F5C15C; font-variant-numeric:tabular-nums; }
+  .conf-label { font-size:11px; color:#9AA1AD; }
+  .history-note {
+    margin-top:14px; padding:10px 12px; background:#14181F; border-radius:10px;
+    font-size:12px; color:#9AA1AD; line-height:1.6; overflow-wrap:anywhere;
+  }
+  .history-note b { color:#C9CED8; font-weight:500; }
+  .alert-actions { margin-top:auto; padding-bottom:calc(24px + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column; gap:10px; }
+  .btn-primary { background:#7C8CFF; color:#0E1116; font-weight:600; height:52px; }
+  .btn-quiet { background:#1A1F27; height:44px; font-size:14px; color:#9AA1AD; }
+
+  /* ===== S3 suggestion & explanation ===== */
+  .s3-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
+  .s3-scroll::-webkit-scrollbar{ display:none; }
+  .comfort-card { padding:16px; border-left:4px solid #7C8CFF; margin-top:14px; }
+  .comfort-card .big { font-size:17px; font-weight:500; line-height:1.6; }
+  .comfort-card .sub { font-size:13px; color:#9AA1AD; margin-top:8px; line-height:1.6; }
+  .fact-card { margin-top:12px; overflow:hidden; }
+  .fact-head { padding:14px 16px; display:flex; justify-content:space-between; align-items:center; }
+  .fact-head .arrow { color:#7C8CFF; font-size:13px; transition:transform .2s; }
+  .fact-body { display:none; padding:0 16px 16px; }
+  .fact-card.open .fact-body { display:block; }
+  .fact-card.open .arrow { transform:rotate(90deg); }
+  .fact-item { display:flex; gap:10px; padding:9px 0; border-top:1px solid #22262F; font-size:13px; line-height:1.6; }
+  .fact-item .k { color:#9AA1AD; flex-shrink:0; width:88px; }
+  .judge-first {
+    margin-top:12px; padding:12px 16px; border:1px dashed #3A4258; border-radius:12px;
+    font-size:12px; color:#9AA1AD; line-height:1.7;
+  }
+
+  /* ===== S4 human control ===== */
+  .s4-wrap { flex:1; display:flex; flex-direction:column; padding:0 16px; }
+  .s4-summary { padding:14px 16px; margin-top:14px; font-size:13px; color:#C9CED8; line-height:1.7; overflow-wrap:anywhere; }
+  .s4-summary b { color:#F5C15C; font-weight:500; }
+  .s4-actions { margin-top:18px; display:flex; flex-direction:column; gap:12px; }
+  .btn-confirm { background:#2A7D5F; height:56px; }
+  .btn-override { background:#1A1F27; border:1px solid #4A5160; height:56px; }
+  .btn-escalate { background:#1A1F27; border:1px solid #3A4258; height:56px; color:#B9C2FF; }
+  .s4-note { margin-top:16px; font-size:12px; color:#9AA1AD; text-align:center; line-height:1.7; padding:0 10px; }
+  .sheet-mask { position:absolute; inset:0; background:rgba(0,0,0,.6); display:none; z-index:60; }
+  .sheet {
+    position:absolute; left:0; right:0; bottom:0; background:#1A1F27; border-radius:20px 20px 0 0;
+    padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px)); display:none; z-index:61;
+  }
+  .sheet .big { font-size:17px; font-weight:600; }
+  .sheet .msg { font-size:13px; color:#9AA1AD; margin-top:10px; line-height:1.7; }
+  .sheet textarea {
+    width:100%; margin-top:14px; background:#0E1116; border:1px solid #2A2F3A; border-radius:10px;
+    color:#E8EAF0; font-size:14px; padding:10px 12px; min-height:64px; resize:none; font-family:inherit;
+  }
+  .sheet .row { display:flex; gap:10px; margin-top:14px; }
+  .sheet .row .btn { flex:1; height:46px; font-size:15px; }
+
+  /* ===== S5 record ===== */
+  .s5-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
+  .s5-scroll::-webkit-scrollbar{ display:none; }
+  .record-head { padding:16px; margin-top:14px; }
+  .record-head .title { font-size:17px; font-weight:600; }
+  .record-head .co { display:inline-block; margin-top:8px; font-size:11px; color:#7C8CFF;
+    background:rgba(124,140,255,.12); padding:4px 10px; border-radius:10px; }
+  .timeline { margin-top:12px; padding:4px 16px 16px; }
+  .tl-item { display:flex; gap:12px; padding:12px 0; border-top:1px solid #22262F; }
+  .tl-item:first-child { border-top:none; }
+  .tl-time { font-size:12px; color:#9AA1AD; width:44px; flex-shrink:0; font-variant-numeric:tabular-nums; padding-top:1px; }
+  .tl-body { font-size:13px; line-height:1.6; }
+  .tl-body .tag { font-size:10px; color:#7C8CFF; border:1px solid #3A4258; border-radius:6px; padding:1px 6px; margin-right:6px; }
+  .tl-body .tag-human { color:#3DDC97; border-color:#2A4A3F; }
+  .s5-note { margin:12px 0; padding:12px 16px; background:#14181F; border-radius:12px;
+             font-size:12px; color:#9AA1AD; line-height:1.7; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ================= S1 Overview ================= -->
+<section class="screen" id="s1">
+  <div class="topbar"><span class="t1">Night Overview</span><span class="clock"><a href="zh.html" style="color:#7C8CFF;text-decoration:none;margin-right:12px;font-weight:500">中文</a>02:41</span></div>
+  <div class="shift-card card">
+    <div><div class="t3" style="font-weight:500">Night shift · 23:00–07:00</div>
+         <div class="t4" style="margin-top:3px">On duty: Wen · 28 residents</div></div>
+    <div class="ai-status">
+      <div class="l1"><span class="ai-dot"></span>AI monitoring</div>
+      <div class="l2">Updated 02:40</div>
+    </div>
+  </div>
+  <div class="grid-area">
+    <div class="section-head"><div class="name">East Wing · 12 beds</div><div class="t4">Sort by risk: Off</div></div>
+    <div class="bed-grid" id="grid-east"></div>
+    <div class="section-head"><div class="name">West Wing · 16 beds</div><div></div></div>
+    <div class="bed-grid" id="grid-west"></div>
+    <div class="foot-note">Status based on bed-exit and nighttime activity sensors. Reference only — your rounds decide.</div>
+  </div>
+  <nav class="tabbar">
+    <a class="tab active" href="#/s1"><span class="ic">▦</span>Overview</a>
+    <a class="tab" href="#/s5"><span class="ic">☰</span>Events</a>
+    <a class="tab" href="#/s1"><span class="ic">◡</span>Me</a>
+  </nav>
+  <div class="demo-hint" onclick="location.hash='#/s2'">▶ Demo: alert fires at 02:47</div>
+</section>
+
+<!-- ================= S2 Alert ================= -->
+<section class="screen" id="s2">
+  <div class="topbar"><span class="t1">New Alert</span><span class="clock">02:47</span></div>
+  <div class="alert-wrap">
+    <div class="alert-level">MEDIUM PRIORITY · check within 5 min</div>
+    <div class="alert-card card">
+      <div class="who">Room 307 · Mrs. Zhou</div>
+      <div class="what">No movement for 90 s after bed exit — possible fall</div>
+      <div class="conf-row">
+        <span class="conf-label">Confidence</span>
+        <div class="conf-bar"><div class="conf-fill"></div></div>
+        <span class="conf-num">78%</span>
+      </div>
+      <div class="history-note"><b>2</b> similar alerts this shift, <b>1</b> confirmed on site. Mrs. Zhou had 1 fall in the past 7 days.</div>
+    </div>
+    <div class="alert-actions">
+      <button class="btn btn-primary" onclick="location.hash='#/s3'">View AI suggestion &amp; rationale</button>
+      <button class="btn btn-quiet" onclick="location.hash='#/s1'">Later (acknowledged)</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= S3 Suggestion & layered explanation ================= -->
+<section class="screen" id="s3">
+  <div class="topbar"><span class="t1">Room 307 · Mrs. Zhou</span><span class="clock">02:48</span></div>
+  <div class="s3-scroll">
+    <div class="comfort-card card">
+      <div class="big">Suggested: go check on her. No need to decide anything now — just take a look.</div>
+      <div class="sub">About half of these alerts turn out to be the resident simply sitting up. No need to run — mind your own safety on the way.</div>
+    </div>
+    <div class="fact-card card" id="factCard">
+      <div class="fact-head" onclick="document.getElementById('factCard').classList.toggle('open')">
+        <span class="t2">Why this alert (the facts)</span><span class="arrow">▸</span>
+      </div>
+      <div class="fact-body">
+        <div class="fact-item"><span class="k">Trigger</span><span>Bed-exit sensor at 02:45:38, then 90 s without movement</span></div>
+        <div class="fact-item"><span class="k">Risk context</span><span>1 fall in past 7 days; mid-stage dementia, poor nighttime orientation</span></div>
+        <div class="fact-item"><span class="k">Confidence 78%</span><span>Motion pattern matches a fall, but no visual confirmation</span></div>
+        <div class="fact-item"><span class="k">Missing data</span><span>In-room IR sensor signal is weak tonight — possible blind spot</span></div>
+      </div>
+    </div>
+    <div class="judge-first">Once you're there, trust your own eyes first. You can confirm or override the AI — your judgment on site is recorded and respected either way.</div>
+    <div style="height:12px"></div>
+    <button class="btn btn-primary" onclick="location.hash='#/s4'">I'm on site — my call</button>
+    <div style="height:24px"></div>
+  </div>
+</section>
+
+<!-- ================= S4 Human control ================= -->
+<section class="screen" id="s4">
+  <div class="topbar"><span class="t1">Your Call</span><span class="clock">02:51</span></div>
+  <div class="s4-wrap">
+    <div class="s4-summary card">AI suggests: <b>possible fall (confidence 78%)</b>. The decision is yours — all three options are legitimate, and whichever you choose is recorded as-is.</div>
+    <div class="s4-actions">
+      <button class="btn btn-confirm" onclick="decide('Confirmed · fall verified on site, handled')">✓ Confirm<small style="font-size:12px;opacity:.8">&nbsp;it was a fall</small></button>
+      <button class="btn btn-override" onclick="openSheet()">✋ Override<small style="font-size:12px;opacity:.7">&nbsp;not a fall</small></button>
+      <button class="btn btn-escalate" onclick="decide('Escalated · charge nurse notified')">↑ Escalate to charge nurse<small style="font-size:12px;opacity:.7">&nbsp;need support</small></button>
+    </div>
+    <div class="s4-note">Overriding takes one tap, with an optional voice note.<br>Escalating is never a failure — someone always has your back.</div>
+  </div>
+</section>
+
+<!-- S4 override sheet -->
+<div class="sheet-mask" id="sheetMask" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="big">Your call is on record</div>
+  <div class="msg">Your override will help improve the alert model. Add a note if you like — it's fine to skip:</div>
+  <textarea id="overrideNote" placeholder="e.g., She was just sitting up for water; helped her back to bed"></textarea>
+  <div class="row">
+    <button class="btn btn-quiet" onclick="closeSheet()">Back</button>
+    <button class="btn btn-primary" onclick="submitOverride()">Done</button>
+  </div>
+</div>
+
+<!-- ================= S5 Record ================= -->
+<section class="screen" id="s5">
+  <div class="topbar"><span class="t1">Event Log</span><span class="clock">03:05</span></div>
+  <div class="s5-scroll">
+    <div class="record-head card">
+      <div class="title">Room 307 night alert · Closed</div>
+      <span class="co">Joint AI + caregiver response record</span>
+    </div>
+    <div class="timeline card">
+      <div class="tl-item"><div class="tl-time">02:45</div><div class="tl-body"><span class="tag">System</span>Bed-exit triggered, followed by no movement</div></div>
+      <div class="tl-item"><div class="tl-time">02:47</div><div class="tl-body"><span class="tag">AI</span>Medium-priority alert issued: possible fall (confidence 78%)</div></div>
+      <div class="tl-item"><div class="tl-time">02:49</div><div class="tl-body"><span class="tag tag-human">Wen</span>Arrived on site</div></div>
+      <div class="tl-item"><div class="tl-time">02:51</div><div class="tl-body"><span class="tag tag-human">Wen</span><span id="decisionText">Override · resident was sitting up for water; assisted back to bed</span></div></div>
+      <div class="tl-item"><div class="tl-time">02:52</div><div class="tl-body"><span class="tag">System</span>Event closed; response record generated</div></div>
+    </div>
+    <div class="s5-note">This record was produced jointly by the system and the caregiver. The charge nurse sees the full timeline — and so do you. Transparency runs both ways.</div>
+    <div style="height:8px"></div>
+    <button class="btn btn-quiet" onclick="location.hash='#/s1'">Back to overview</button>
+    <div style="height:24px"></div>
+  </div>
+  <nav class="tabbar">
+    <a class="tab" href="#/s1"><span class="ic">▦</span>Overview</a>
+    <a class="tab active" href="#/s5"><span class="ic">☰</span>Events</a>
+    <a class="tab" href="#/s1"><span class="ic">◡</span>Me</a>
+  </nav>
+</section>
+
+</div>
+
+<script>
+  // ---- S1 bed data ----
+  const east = [["301","ok","● Stable"],["302","ok","● Stable"],["303","watch","▲ Watch"],["305","ok","● Stable"],
+                ["306","ok","● Stable"],["307","watch","▲ Watch"],["308","ok","● Stable"],["309","ok","● Stable"],
+                ["310","off","○ Offline"],["311","ok","● Stable"],["312","ok","● Stable"],["313","ok","● Stable"]];
+  const west = [["401","ok","● Stable"],["402","ok","● Stable"],["403","ok","● Stable"],["405","ok","● Stable"],
+                ["406","ok","● Stable"],["407","ok","● Stable"],["408","ok","● Stable"],["409","ok","● Stable"],
+                ["410","ok","● Stable"],["411","watch","▲ Watch"],["412","ok","● Stable"],["413","ok","● Stable"],
+                ["414","ok","● Stable"],["415","ok","● Stable"],["416","ok","● Stable"],["417","ok","● Stable"]];
+  function renderBeds(id, beds){
+    document.getElementById(id).innerHTML = beds.map(([r,c,s]) =>
+      `<div class="bed ${c}" ${r==="307"?"onclick=\"location.hash='#/s2'\" style=\"cursor:pointer\"":""}>
+        <div class="room">${r}</div><div class="st">${s}</div></div>`).join("");
+  }
+  renderBeds("grid-east", east); renderBeds("grid-west", west);
+
+  // ---- routing ----
+  const screens = ["s1","s2","s3","s4","s5"];
+  function route(){
+    const h = (location.hash || "#/s1").replace("#/","");
+    screens.forEach(s => document.getElementById(s).classList.toggle("active", s===h));
+  }
+  window.addEventListener("hashchange", route); route();
+
+  // ---- S4 decisions ----
+  function decide(text){
+    document.getElementById("decisionText").textContent = text;
+    location.hash = "#/s5";
+  }
+  function openSheet(){ document.getElementById("sheetMask").style.display="block";
+                        document.getElementById("sheet").style.display="block"; }
+  function closeSheet(){ document.getElementById("sheetMask").style.display="none";
+                         document.getElementById("sheet").style.display="none"; }
+  function submitOverride(){
+    const note = document.getElementById("overrideNote").value.trim();
+    decide("Override" + (note ? " · " + note : " · fall ruled out on site"));
+    closeSheet();
+  }
+</script>
+</body>
+</html>
