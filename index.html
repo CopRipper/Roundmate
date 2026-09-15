@@ -12,7 +12,36 @@
       -webkit-tap-highlight-color:transparent; }
   html,body { height:100%; background:#0E1116; }
   body { color:#E8EAF0; overflow:hidden; }
-  #app { position:relative; height:100%; overflow:hidden; }
+
+  /* ===== 双主题变量 ===== */
+  #app {
+    --bg:#0E1116; --card:#1A1F27; --inset:#14181F; --tabbar:#14181F;
+    --text:#E8EAF0; --text-strong:#C9CED8; --text2:#9AA1AD; --text3:#5C6370;
+    --line:#22262F; --line-strong:#3A4258; --track:#2A2F3A;
+    --ok-border:#2A7D5F; --ok-text:#5FA98C;
+    --watch:#F5C15C; --watch-bg:rgba(245,193,92,.1); --watch-border:rgba(245,193,92,.35);
+    --alert:#FF6B5E; --alert-bg:#241A1D;
+    --off:#4A5160;
+    --ai:#7C8CFF; --ai-text:#B9C2FF; --ai-soft:rgba(124,140,255,.12);
+    --hint-bg:#2A3040;
+    --btn-quiet-bg:#1A1F27; --btn-quiet-text:#9AA1AD;
+    --confirm:#2A7D5F;
+    position:relative; height:100%; overflow:hidden;
+    background:var(--bg); color:var(--text);
+  }
+  #app.light {
+    --bg:#F2F4F7; --card:#FFFFFF; --inset:#EEF0F4; --tabbar:#FFFFFF;
+    --text:#1B1F27; --text-strong:#333947; --text2:#6B7280; --text3:#9AA1AD;
+    --line:#E3E6EB; --line-strong:#C9CED8; --track:#E3E6EB;
+    --ok-border:#1E9E6A; --ok-text:#1E9E6A;
+    --watch:#C77E0F; --watch-bg:rgba(224,160,40,.1); --watch-border:rgba(224,160,40,.4);
+    --alert:#D94F42; --alert-bg:#FBEDEC;
+    --off:#C9CED8;
+    --ai:#5B6CF0; --ai-text:#4A5BE0; --ai-soft:rgba(91,108,240,.1);
+    --hint-bg:#E8EBFA;
+    --btn-quiet-bg:#EEF0F4; --btn-quiet-text:#6B7280;
+    --confirm:#1E9E6A;
+  }
   @media (min-width:480px) {
     body { background:#2A2E35; display:flex; align-items:center; justify-content:center; }
     #app { width:390px; height:844px; border-radius:40px; flex:none;
@@ -27,114 +56,116 @@
   .t1 { font-size:20px; font-weight:600; }
   .t2 { font-size:15px; font-weight:500; }
   .t3 { font-size:13px; }
-  .t4 { font-size:11px; color:#9AA1AD; }
-  .card { background:#1A1F27; border-radius:12px; }
+  .t4 { font-size:11px; color:var(--text2); }
+  .card { background:var(--card); border-radius:12px; }
+  #app.light .card { box-shadow:0 1px 3px rgba(20,25,40,.06); }
   .btn {
     display:flex; align-items:center; justify-content:center; gap:8px;
     width:100%;
-    border-radius:14px; font-size:16px; font-weight:500; border:none; color:#E8EAF0;
+    border-radius:14px; font-size:16px; font-weight:500; border:none; color:var(--text);
   }
   .btn:active { transform:scale(.97); opacity:.9; }
-  .ai-dot { width:8px; height:8px; border-radius:50%; background:#7C8CFF; display:inline-block;
+  .ai-dot { width:8px; height:8px; border-radius:50%; background:var(--ai); display:inline-block;
             animation:breathe 2.6s ease-in-out infinite; }
   @keyframes breathe { 0%,100%{opacity:.45} 50%{opacity:1} }
   .topbar { padding:8px 20px 10px; display:flex; justify-content:space-between; align-items:baseline; }
-  .clock { font-size:13px; color:#9AA1AD; font-variant-numeric:tabular-nums; }
+  .clock { font-size:13px; color:var(--text2); font-variant-numeric:tabular-nums; }
+  .theme-toggle { cursor:pointer; font-size:14px; margin-right:10px; opacity:.85; }
   .tabbar { margin-top:auto; height:calc(64px + env(safe-area-inset-bottom,0px));
             padding-bottom:env(safe-area-inset-bottom,0px);
-            background:#14181F; display:flex; border-top:1px solid #22262F; }
+            background:var(--tabbar); display:flex; border-top:1px solid var(--line); }
   .tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
-         font-size:11px; color:#7A818D; text-decoration:none; }
-  .tab.active { color:#B9C2FF; }
+         font-size:11px; color:var(--text2); text-decoration:none; }
+  .tab.active { color:var(--ai-text); }
   .tab .ic { font-size:19px; line-height:1; }
   .demo-hint {
     position:absolute; bottom:calc(84px + env(safe-area-inset-bottom,0px)); left:50%; transform:translateX(-50%);
-    background:#2A3040; color:#B9C2FF; font-size:12px; padding:8px 16px; border-radius:20px;
-    border:1px solid #3A4258; white-space:nowrap; z-index:50;
+    background:var(--hint-bg); color:var(--ai-text); font-size:12px; padding:8px 16px; border-radius:20px;
+    border:1px solid var(--line-strong); white-space:nowrap; z-index:50; cursor:pointer;
   }
 
   /* ===== S1 overview ===== */
   .shift-card { margin:6px 16px 14px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; }
   .ai-status { text-align:right; }
-  .ai-status .l1 { font-size:13px; color:#B9C2FF; display:flex; align-items:center; gap:6px; justify-content:flex-end; }
-  .ai-status .l2 { font-size:11px; color:#9AA1AD; margin-top:3px; font-variant-numeric:tabular-nums; }
+  .ai-status .l1 { font-size:13px; color:var(--ai-text); display:flex; align-items:center; gap:6px; justify-content:flex-end; }
+  .ai-status .l2 { font-size:11px; color:var(--text2); margin-top:3px; font-variant-numeric:tabular-nums; }
   .grid-area { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
   .grid-area::-webkit-scrollbar{ display:none; }
   .section-head { display:flex; justify-content:space-between; align-items:center; margin:10px 2px 8px; }
-  .section-head .name { font-size:15px; font-weight:500; color:#C9CED8; }
+  .section-head .name { font-size:15px; font-weight:500; color:var(--text-strong); }
   .bed-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
-  .bed { background:#1A1F27; border-radius:10px; padding:8px 6px 7px;
+  .bed { background:var(--card); border-radius:10px; padding:8px 6px 7px;
          display:flex; flex-direction:column; align-items:center; gap:4px;
          border-left:3px solid transparent; }
   .bed .room { font-size:15px; font-weight:500; font-variant-numeric:tabular-nums; }
   .bed .st { font-size:11px; display:flex; align-items:center; gap:4px; }
-  .ok    { border-left-color:#2A7D5F; } .ok .st    { color:#5FA98C; }
-  .watch { border-left-color:#F5C15C; } .watch .st { color:#F5C15C; }
-  .off   { opacity:.55; border-left-color:#4A5160; } .off .st { color:#9AA1AD; } .off .room { color:#9AA1AD; }
-  .foot-note { font-size:11px; color:#5C6370; text-align:center; padding:16px 24px 10px; line-height:1.6; }
+  .ok    { border-left-color:var(--ok-border); } .ok .st    { color:var(--ok-text); }
+  .watch { border-left-color:var(--watch); } .watch .st { color:var(--watch); }
+  .off   { opacity:.55; border-left-color:var(--off); } .off .st { color:var(--text2); } .off .room { color:var(--text2); }
+  .foot-note { font-size:11px; color:var(--text3); text-align:center; padding:16px 24px 10px; line-height:1.6; }
 
   /* ===== S2 alert ===== */
   .alert-wrap { flex:1; display:flex; flex-direction:column; padding:0 16px; }
   .alert-level {
-    margin:18px 0 12px; align-self:center; font-size:12px; color:#F5C15C;
-    background:rgba(245,193,92,.1); border:1px solid rgba(245,193,92,.35);
+    margin:18px 0 12px; align-self:center; font-size:12px; color:var(--watch);
+    background:var(--watch-bg); border:1px solid var(--watch-border);
     padding:5px 14px; border-radius:14px; letter-spacing:.5px;
   }
-  .alert-card { padding:20px 18px; border-left:4px solid #F5C15C; }
+  .alert-card { padding:20px 18px; border-left:4px solid var(--watch); }
   .alert-card .who { font-size:22px; font-weight:600; }
-  .alert-card .what { font-size:15px; color:#C9CED8; margin-top:6px; line-height:1.5; }
+  .alert-card .what { font-size:15px; color:var(--text-strong); margin-top:6px; line-height:1.5; }
   .conf-row { display:flex; align-items:center; gap:10px; margin-top:16px; }
-  .conf-bar { flex:1; height:6px; border-radius:3px; background:#2A2F3A; overflow:hidden; }
+  .conf-bar { flex:1; height:6px; border-radius:3px; background:var(--track); overflow:hidden; }
   .conf-fill { height:100%; width:78%; border-radius:3px; background:linear-gradient(90deg,#F5C15C,#FFD98A); }
-  .conf-num { font-size:15px; font-weight:600; color:#F5C15C; font-variant-numeric:tabular-nums; }
-  .conf-label { font-size:11px; color:#9AA1AD; }
+  .conf-num { font-size:15px; font-weight:600; color:var(--watch); font-variant-numeric:tabular-nums; }
+  .conf-label { font-size:11px; color:var(--text2); }
   .history-note {
-    margin-top:14px; padding:10px 12px; background:#14181F; border-radius:10px;
-    font-size:12px; color:#9AA1AD; line-height:1.6; overflow-wrap:anywhere;
+    margin-top:14px; padding:10px 12px; background:var(--inset); border-radius:10px;
+    font-size:12px; color:var(--text2); line-height:1.6; overflow-wrap:anywhere;
   }
-  .history-note b { color:#C9CED8; font-weight:500; }
+  .history-note b { color:var(--text-strong); font-weight:500; }
   .alert-actions { margin-top:auto; padding-bottom:calc(24px + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column; gap:10px; }
-  .btn-primary { background:#7C8CFF; color:#0E1116; font-weight:600; height:52px; }
-  .btn-quiet { background:#1A1F27; height:44px; font-size:14px; color:#9AA1AD; }
+  .btn-primary { background:var(--ai); color:#fff; font-weight:600; height:52px; }
+  .btn-quiet { background:var(--btn-quiet-bg); height:44px; font-size:14px; color:var(--btn-quiet-text); }
 
   /* ===== S3 suggestion & explanation ===== */
   .s3-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
   .s3-scroll::-webkit-scrollbar{ display:none; }
-  .comfort-card { padding:16px; border-left:4px solid #7C8CFF; margin-top:14px; }
+  .comfort-card { padding:16px; border-left:4px solid var(--ai); margin-top:14px; }
   .comfort-card .big { font-size:17px; font-weight:500; line-height:1.6; }
-  .comfort-card .sub { font-size:13px; color:#9AA1AD; margin-top:8px; line-height:1.6; }
+  .comfort-card .sub { font-size:13px; color:var(--text2); margin-top:8px; line-height:1.6; }
   .fact-card { margin-top:12px; overflow:hidden; }
-  .fact-head { padding:14px 16px; display:flex; justify-content:space-between; align-items:center; }
-  .fact-head .arrow { color:#7C8CFF; font-size:13px; transition:transform .2s; }
+  .fact-head { padding:14px 16px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+  .fact-head .arrow { color:var(--ai); font-size:13px; transition:transform .2s; }
   .fact-body { display:none; padding:0 16px 16px; }
   .fact-card.open .fact-body { display:block; }
   .fact-card.open .arrow { transform:rotate(90deg); }
-  .fact-item { display:flex; gap:10px; padding:9px 0; border-top:1px solid #22262F; font-size:13px; line-height:1.6; }
-  .fact-item .k { color:#9AA1AD; flex-shrink:0; width:88px; }
+  .fact-item { display:flex; gap:10px; padding:9px 0; border-top:1px solid var(--line); font-size:13px; line-height:1.6; }
+  .fact-item .k { color:var(--text2); flex-shrink:0; width:88px; }
   .judge-first {
-    margin-top:12px; padding:12px 16px; border:1px dashed #3A4258; border-radius:12px;
-    font-size:12px; color:#9AA1AD; line-height:1.7;
+    margin-top:12px; padding:12px 16px; border:1px dashed var(--line-strong); border-radius:12px;
+    font-size:12px; color:var(--text2); line-height:1.7;
   }
 
   /* ===== S4 human control ===== */
   .s4-wrap { flex:1; display:flex; flex-direction:column; padding:0 16px; }
-  .s4-summary { padding:14px 16px; margin-top:14px; font-size:13px; color:#C9CED8; line-height:1.7; overflow-wrap:anywhere; }
-  .s4-summary b { color:#F5C15C; font-weight:500; }
+  .s4-summary { padding:14px 16px; margin-top:14px; font-size:13px; color:var(--text-strong); line-height:1.7; overflow-wrap:anywhere; }
+  .s4-summary b { color:var(--watch); font-weight:500; }
   .s4-actions { margin-top:18px; display:flex; flex-direction:column; gap:12px; }
-  .btn-confirm { background:#2A7D5F; height:56px; }
-  .btn-override { background:#1A1F27; border:1px solid #4A5160; height:56px; }
-  .btn-escalate { background:#1A1F27; border:1px solid #3A4258; height:56px; color:#B9C2FF; }
-  .s4-note { margin-top:16px; font-size:12px; color:#9AA1AD; text-align:center; line-height:1.7; padding:0 10px; }
+  .btn-confirm { background:var(--confirm); color:#fff; height:56px; }
+  .btn-override { background:var(--card); border:1px solid var(--line-strong); height:56px; }
+  .btn-escalate { background:var(--card); border:1px solid var(--line-strong); height:56px; color:var(--ai-text); }
+  .s4-note { margin-top:16px; font-size:12px; color:var(--text2); text-align:center; line-height:1.7; padding:0 10px; }
   .sheet-mask { position:absolute; inset:0; background:rgba(0,0,0,.6); display:none; z-index:60; }
   .sheet {
-    position:absolute; left:0; right:0; bottom:0; background:#1A1F27; border-radius:20px 20px 0 0;
+    position:absolute; left:0; right:0; bottom:0; background:var(--card); border-radius:20px 20px 0 0;
     padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px)); display:none; z-index:61;
   }
   .sheet .big { font-size:17px; font-weight:600; }
-  .sheet .msg { font-size:13px; color:#9AA1AD; margin-top:10px; line-height:1.7; }
+  .sheet .msg { font-size:13px; color:var(--text2); margin-top:10px; line-height:1.7; }
   .sheet textarea {
-    width:100%; margin-top:14px; background:#0E1116; border:1px solid #2A2F3A; border-radius:10px;
-    color:#E8EAF0; font-size:14px; padding:10px 12px; min-height:64px; resize:none; font-family:inherit;
+    width:100%; margin-top:14px; background:var(--bg); border:1px solid var(--line); border-radius:10px;
+    color:var(--text); font-size:14px; padding:10px 12px; min-height:64px; resize:none; font-family:inherit;
   }
   .sheet .row { display:flex; gap:10px; margin-top:14px; }
   .sheet .row .btn { flex:1; height:46px; font-size:15px; }
@@ -144,17 +175,17 @@
   .s5-scroll::-webkit-scrollbar{ display:none; }
   .record-head { padding:16px; margin-top:14px; }
   .record-head .title { font-size:17px; font-weight:600; }
-  .record-head .co { display:inline-block; margin-top:8px; font-size:11px; color:#7C8CFF;
-    background:rgba(124,140,255,.12); padding:4px 10px; border-radius:10px; }
+  .record-head .co { display:inline-block; margin-top:8px; font-size:11px; color:var(--ai);
+    background:var(--ai-soft); padding:4px 10px; border-radius:10px; }
   .timeline { margin-top:12px; padding:4px 16px 16px; }
-  .tl-item { display:flex; gap:12px; padding:12px 0; border-top:1px solid #22262F; }
+  .tl-item { display:flex; gap:12px; padding:12px 0; border-top:1px solid var(--line); }
   .tl-item:first-child { border-top:none; }
-  .tl-time { font-size:12px; color:#9AA1AD; width:44px; flex-shrink:0; font-variant-numeric:tabular-nums; padding-top:1px; }
+  .tl-time { font-size:12px; color:var(--text2); width:44px; flex-shrink:0; font-variant-numeric:tabular-nums; padding-top:1px; }
   .tl-body { font-size:13px; line-height:1.6; }
-  .tl-body .tag { font-size:10px; color:#7C8CFF; border:1px solid #3A4258; border-radius:6px; padding:1px 6px; margin-right:6px; }
-  .tl-body .tag-human { color:#3DDC97; border-color:#2A4A3F; }
-  .s5-note { margin:12px 0; padding:12px 16px; background:#14181F; border-radius:12px;
-             font-size:12px; color:#9AA1AD; line-height:1.7; }
+  .tl-body .tag { font-size:10px; color:var(--ai); border:1px solid var(--line-strong); border-radius:6px; padding:1px 6px; margin-right:6px; }
+  .tl-body .tag-human { color:var(--ok-border); border-color:var(--ok-border); }
+  .s5-note { margin:12px 0; padding:12px 16px; background:var(--inset); border-radius:12px;
+             font-size:12px; color:var(--text2); line-height:1.7; }
 </style>
 </head>
 <body>
@@ -162,13 +193,16 @@
 
 <!-- ================= S1 Overview ================= -->
 <section class="screen" id="s1">
-  <div class="topbar"><span class="t1">Night Overview</span><span class="clock"><a href="zh.html" style="color:#7C8CFF;text-decoration:none;margin-right:12px;font-weight:500">中文</a>02:41</span></div>
+  <div class="topbar">
+    <span class="t1" data-night="Night Overview" data-day="Day Overview">Night Overview</span>
+    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()">☀️</span><a href="zh.html" style="color:var(--ai);text-decoration:none;margin-right:12px;font-weight:500">中文</a><span data-night="02:41" data-day="10:23">02:41</span></span>
+  </div>
   <div class="shift-card card">
-    <div><div class="t3" style="font-weight:500">Night shift · 23:00–07:00</div>
-         <div class="t4" style="margin-top:3px">On duty: Wen · 28 residents</div></div>
+    <div><div class="t3" style="font-weight:500" data-night="Night shift · 23:00–07:00" data-day="Day shift · 07:00–15:00">Night shift · 23:00–07:00</div>
+         <div class="t4" style="margin-top:3px" data-night="On duty: Wen · 28 residents" data-day="On duty: Wen + 2 colleagues · 28 residents">On duty: Wen · 28 residents</div></div>
     <div class="ai-status">
       <div class="l1"><span class="ai-dot"></span>AI monitoring</div>
-      <div class="l2">Updated 02:40</div>
+      <div class="l2" data-night="Updated 02:40" data-day="Updated 10:22">Updated 02:40</div>
     </div>
   </div>
   <div class="grid-area">
@@ -176,24 +210,24 @@
     <div class="bed-grid" id="grid-east"></div>
     <div class="section-head"><div class="name">West Wing · 16 beds</div><div></div></div>
     <div class="bed-grid" id="grid-west"></div>
-    <div class="foot-note">Status based on bed-exit and nighttime activity sensors. Reference only — your rounds decide.</div>
+    <div class="foot-note">Status based on bed-exit and activity sensors. Reference only — your rounds decide.</div>
   </div>
   <nav class="tabbar">
     <a class="tab active" href="#/s1"><span class="ic">▦</span>Overview</a>
     <a class="tab" href="#/s5"><span class="ic">☰</span>Events</a>
     <a class="tab" href="#/s1"><span class="ic">◡</span>Me</a>
   </nav>
-  <div class="demo-hint" onclick="location.hash='#/s2'">▶ Demo: alert fires at 02:47</div>
+  <div class="demo-hint" data-night="▶ Demo: alert fires at 02:47" data-day="▶ Demo: alert fires at 10:31" onclick="location.hash='#/s2'">▶ Demo: alert fires at 02:47</div>
 </section>
 
 <!-- ================= S2 Alert ================= -->
 <section class="screen" id="s2">
-  <div class="topbar"><span class="t1">New Alert</span><span class="clock">02:47</span></div>
+  <div class="topbar"><span class="t1">New Alert</span><span class="clock"><span data-night="02:47" data-day="10:31">02:47</span></span></div>
   <div class="alert-wrap">
     <div class="alert-level">MEDIUM PRIORITY · check within 5 min</div>
     <div class="alert-card card">
       <div class="who">Room 307 · Mrs. Zhou</div>
-      <div class="what">No movement for 90 s after bed exit — possible fall</div>
+      <div class="what" data-night="No movement for 90 s after bed exit — possible fall" data-day="Unusual stillness during morning activity — possible fall">No movement for 90 s after bed exit — possible fall</div>
       <div class="conf-row">
         <span class="conf-label">Confidence</span>
         <div class="conf-bar"><div class="conf-fill"></div></div>
@@ -210,7 +244,7 @@
 
 <!-- ================= S3 Suggestion & layered explanation ================= -->
 <section class="screen" id="s3">
-  <div class="topbar"><span class="t1">Room 307 · Mrs. Zhou</span><span class="clock">02:48</span></div>
+  <div class="topbar"><span class="t1">Room 307 · Mrs. Zhou</span><span class="clock"><span data-night="02:48" data-day="10:32">02:48</span></span></div>
   <div class="s3-scroll">
     <div class="comfort-card card">
       <div class="big">Suggested: go check on her. No need to decide anything now — just take a look.</div>
@@ -221,10 +255,10 @@
         <span class="t2">Why this alert (the facts)</span><span class="arrow">▸</span>
       </div>
       <div class="fact-body">
-        <div class="fact-item"><span class="k">Trigger</span><span>Bed-exit sensor at 02:45:38, then 90 s without movement</span></div>
+        <div class="fact-item"><span class="k">Trigger</span><span data-night="Bed-exit sensor at 02:45:38, then 90 s without movement" data-day="Activity sensor at 10:29:12, then unusual stillness">Bed-exit sensor at 02:45:38, then 90 s without movement</span></div>
         <div class="fact-item"><span class="k">Risk context</span><span>1 fall in past 7 days; mid-stage dementia, poor nighttime orientation</span></div>
         <div class="fact-item"><span class="k">Confidence 78%</span><span>Motion pattern matches a fall, but no visual confirmation</span></div>
-        <div class="fact-item"><span class="k">Missing data</span><span>In-room IR sensor signal is weak tonight — possible blind spot</span></div>
+        <div class="fact-item"><span class="k">Missing data</span><span data-night="In-room IR sensor signal is weak tonight — possible blind spot" data-day="In-room sensor briefly obstructed — possible blind spot">In-room IR sensor signal is weak tonight — possible blind spot</span></div>
       </div>
     </div>
     <div class="judge-first">Once you're there, trust your own eyes first. You can confirm or override the AI — your judgment on site is recorded and respected either way.</div>
@@ -236,7 +270,7 @@
 
 <!-- ================= S4 Human control ================= -->
 <section class="screen" id="s4">
-  <div class="topbar"><span class="t1">Your Call</span><span class="clock">02:51</span></div>
+  <div class="topbar"><span class="t1">Your Call</span><span class="clock"><span data-night="02:51" data-day="10:35">02:51</span></span></div>
   <div class="s4-wrap">
     <div class="s4-summary card">AI suggests: <b>possible fall (confidence 78%)</b>. The decision is yours — all three options are legitimate, and whichever you choose is recorded as-is.</div>
     <div class="s4-actions">
@@ -262,18 +296,18 @@
 
 <!-- ================= S5 Record ================= -->
 <section class="screen" id="s5">
-  <div class="topbar"><span class="t1">Event Log</span><span class="clock">03:05</span></div>
+  <div class="topbar"><span class="t1">Event Log</span><span class="clock"><span data-night="03:05" data-day="10:48">03:05</span></span></div>
   <div class="s5-scroll">
     <div class="record-head card">
-      <div class="title">Room 307 night alert · Closed</div>
+      <div class="title">Room 307 alert · Closed</div>
       <span class="co">Joint AI + caregiver response record</span>
     </div>
     <div class="timeline card">
-      <div class="tl-item"><div class="tl-time">02:45</div><div class="tl-body"><span class="tag">System</span>Bed-exit triggered, followed by no movement</div></div>
-      <div class="tl-item"><div class="tl-time">02:47</div><div class="tl-body"><span class="tag">AI</span>Medium-priority alert issued: possible fall (confidence 78%)</div></div>
-      <div class="tl-item"><div class="tl-time">02:49</div><div class="tl-body"><span class="tag tag-human">Wen</span>Arrived on site</div></div>
-      <div class="tl-item"><div class="tl-time">02:51</div><div class="tl-body"><span class="tag tag-human">Wen</span><span id="decisionText">Override · resident was sitting up for water; assisted back to bed</span></div></div>
-      <div class="tl-item"><div class="tl-time">02:52</div><div class="tl-body"><span class="tag">System</span>Event closed; response record generated</div></div>
+      <div class="tl-item"><div class="tl-time" data-night="02:45" data-day="10:29">02:45</div><div class="tl-body"><span class="tag">System</span><span data-night="Bed-exit triggered, followed by no movement" data-day="Unusual stillness detected during morning activity">Bed-exit triggered, followed by no movement</span></div></div>
+      <div class="tl-item"><div class="tl-time" data-night="02:47" data-day="10:31">02:47</div><div class="tl-body"><span class="tag">AI</span>Medium-priority alert issued: possible fall (confidence 78%)</div></div>
+      <div class="tl-item"><div class="tl-time" data-night="02:49" data-day="10:33">10:33</div><div class="tl-body"><span class="tag tag-human">Wen</span>Arrived on site</div></div>
+      <div class="tl-item"><div class="tl-time" data-night="02:51" data-day="10:35">02:51</div><div class="tl-body"><span class="tag tag-human">Wen</span><span id="decisionText">Override · resident was sitting up for water; assisted back to bed</span></div></div>
+      <div class="tl-item"><div class="tl-time" data-night="02:52" data-day="10:36">02:52</div><div class="tl-body"><span class="tag">System</span>Event closed; response record generated</div></div>
     </div>
     <div class="s5-note">This record was produced jointly by the system and the caregiver. The charge nurse sees the full timeline — and so do you. Transparency runs both ways.</div>
     <div style="height:8px"></div>
@@ -312,6 +346,22 @@
     screens.forEach(s => document.getElementById(s).classList.toggle("active", s===h));
   }
   window.addEventListener("hashchange", route); route();
+
+  // ---- day/night mode ----
+  let mode = localStorage.getItem("roundmate-mode") || "night";
+  function applyMode(){
+    document.getElementById("app").classList.toggle("light", mode === "day");
+    document.querySelectorAll("[data-night]").forEach(el => {
+      el.textContent = mode === "day" ? el.dataset.day : el.dataset.night;
+    });
+    document.getElementById("themeBtn").textContent = mode === "day" ? "🌙" : "☀️";
+  }
+  function toggleMode(){
+    mode = mode === "day" ? "night" : "day";
+    localStorage.setItem("roundmate-mode", mode);
+    applyMode();
+  }
+  applyMode();
 
   // ---- S4 decisions ----
   function decide(text){
