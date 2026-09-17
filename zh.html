@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-title" content="RoundMate">
 <meta name="theme-color" content="#0E1116">
 <title>RoundMate · 巡房搭子</title>
-<link rel="icon" type="image/png" href="site/assets/roundmate-logo-a.png">
-<link rel="apple-touch-icon" href="site/assets/roundmate-logo-a.png">
+<link rel="icon" type="image/png" href="assets/roundmate-logo-a.png">
+<link rel="apple-touch-icon" href="assets/roundmate-logo-a.png">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
       -webkit-tap-highlight-color:transparent; }
@@ -95,7 +95,8 @@
   }
 
   /* ===== S1 总览 ===== */
-  .shift-card { margin:6px 16px 14px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; }
+  .shift-card { margin:6px 16px 14px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; height:64px; gap:12px; }
+  .shift-card .t3, .shift-card .t4, .ai-status .l1, .ai-status .l2 { white-space:nowrap; }
   .ai-status { text-align:right; }
   .ai-status .l1 { font-size:13px; color:var(--ai-text); display:flex; align-items:center; gap:6px; justify-content:flex-end; }
   .ai-status .l2 { font-size:11px; color:var(--text2); margin-top:3px; font-variant-numeric:tabular-nums; }
@@ -224,8 +225,8 @@
 <!-- ================= S1 总览 ================= -->
 <section class="screen" id="s1">
   <div class="topbar">
-    <div class="brand-heading"><img class="brand-logo" src="site/assets/roundmate-logo-a.png" width="36" height="36" alt=""><div class="brand-copy"><span class="brand-name">RoundMate</span><span class="brand-context" data-night="夜间总览" data-day="白班总览">夜间总览</span></div></div>
-    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()">☀️</span><a href="index.html" style="color:var(--ai);text-decoration:none;margin-right:12px;font-weight:500">EN</a><span data-night="02:41" data-day="10:23">02:41</span></span>
+    <div class="brand-heading"><img class="brand-logo" src="assets/roundmate-logo-a.png" width="36" height="36" alt=""><div class="brand-copy"><span class="brand-name">RoundMate</span><span class="brand-context" data-night="夜间总览" data-day="白班总览">夜间总览</span></div></div>
+    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()">☀️</span><span data-night="02:41" data-day="10:23">02:41</span></span>
   </div>
   <div class="shift-card card">
     <div><div class="t3" style="font-weight:500" data-night="夜班 · 23:00–07:00" data-day="白班 · 07:00–15:00">夜班 · 23:00–07:00</div>
