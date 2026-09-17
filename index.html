@@ -73,7 +73,10 @@
   @keyframes breathe { 0%,100%{opacity:.45} 50%{opacity:1} }
   .topbar { padding:8px 20px 10px; display:flex; justify-content:space-between; align-items:baseline; }
   .s-head { display:flex; flex-direction:column; gap:2px; }
-  .back-link { font-size:12px; color:var(--ai-text); text-decoration:none; }
+  .back-link { font-size:12px; color:var(--ai-text); text-decoration:none;
+               display:inline-flex; align-items:center; gap:5px;
+               padding:8px 14px 8px 0; margin:-4px 0 0 -4px; }
+  .back-link svg { flex-shrink:0; }
   .clock { font-size:13px; color:var(--text2); font-variant-numeric:tabular-nums; }
   .theme-toggle { cursor:pointer; font-size:14px; margin-right:10px; opacity:.85; }
   .tabbar { margin-top:auto; height:calc(64px + env(safe-area-inset-bottom,0px));
@@ -209,6 +212,21 @@
   .stat .v { font-size:18px; font-weight:600; font-variant-numeric:tabular-nums; }
   .stat .k { font-size:11px; color:var(--text2); margin-top:2px; }
   .export-note { font-size:11px; color:var(--text2); text-align:center; margin-top:10px; }
+  /* ===== S7 room detail ===== */
+  .s7-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
+  .s7-scroll::-webkit-scrollbar{ display:none; }
+  .room-card { padding:16px; margin-top:8px; }
+  .resident-name { font-size:18px; font-weight:600; }
+  .chip-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip { font-size:11px; color:var(--text2); background:var(--inset);
+          border:1px solid var(--line); border-radius:10px; padding:3px 9px; }
+  .room-status { margin-top:12px; padding:14px 16px; }
+  .room-status .head { font-size:14px; font-weight:600; display:flex; align-items:center; gap:7px; }
+  .room-status .detail { font-size:12px; color:var(--text2); margin-top:8px; line-height:1.7; }
+  .sensor-row { display:flex; gap:14px; margin-top:12px; padding-top:10px; border-top:1px solid var(--line);
+                font-size:11px; color:var(--text2); }
+  .sensor-row .on { color:var(--ok-text); } .sensor-row .lost { color:var(--alert); }
+  .room-alert-btn { margin-top:12px; }
   /* Approved RoundMate A identity */
   #s1 > .topbar { align-items:center; gap:8px; }
   .brand-heading { display:flex; align-items:center; gap:9px; min-width:0; }
@@ -226,7 +244,7 @@
 <section class="screen" id="s1">
   <div class="topbar">
     <div class="brand-heading"><img class="brand-logo" src="assets/roundmate-logo-a.png" width="36" height="36" alt=""><div class="brand-copy"><span class="brand-name">RoundMate</span><span class="brand-context" data-night="Night Overview" data-day="Day Overview">Night Overview</span></div></div>
-    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()">☀️</span><span data-night="02:41" data-day="10:23">02:41</span></span>
+    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()">🌙</span><span data-night="02:41" data-day="10:23">02:41</span></span>
   </div>
   <div class="shift-card card">
     <div><div class="t3" style="font-weight:500" data-night="Night shift · 23:00–07:00" data-day="Day shift · 07:00–15:00">Night shift · 23:00–07:00</div>
@@ -254,14 +272,14 @@
 <!-- ================= S2 Alert ================= -->
 <section class="screen" id="s2">
   <div class="topbar">
-    <span class="s-head"><a class="back-link" href="#/s1">← Overview</a><span class="t1">New Alert</span></span>
+    <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Overview</a><span class="t1">New Alert</span></span>
     <span class="clock"><span data-night="02:47" data-day="10:31">02:47</span></span>
   </div>
   <div class="alert-wrap">
     <div class="deliver-note">🔔 Lock-screen alert + continuous vibration triggered</div>
     <div class="alert-level">MEDIUM PRIORITY</div>
     <div class="alert-card card">
-      <div class="who">Room 307 · Mrs. Zhou</div>
+      <div class="who">Room 307 · Mrs. Anderson</div>
       <div class="what" data-night="No movement for 90 s after bed exit — possible fall" data-day="Unusual stillness during morning activity — possible fall">No movement for 90 s after bed exit — possible fall</div>
       <div class="conf-row">
         <span class="conf-label">Confidence</span>
@@ -281,7 +299,7 @@
 <!-- ================= S3 Suggestion & layered explanation ================= -->
 <section class="screen" id="s3">
   <div class="topbar">
-    <span class="s-head"><a class="back-link" href="#/s1">← Overview</a><span class="t1">Room 307 · Mrs. Zhou</span></span>
+    <span class="s-head"><a class="back-link" href="#/s2"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alert</a><span class="t1">Room 307 · Mrs. Anderson</span></span>
     <span class="clock"><span data-night="02:48" data-day="10:32">02:48</span></span>
   </div>
   <div class="s3-scroll">
@@ -310,7 +328,7 @@
 <!-- ================= S4 Human control ================= -->
 <section class="screen" id="s4">
   <div class="topbar">
-    <span class="s-head"><a class="back-link" href="#/s1">← Overview</a><span class="t1">Your Call</span></span>
+    <span class="s-head"><a class="back-link" href="#/s3"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Details</a><span class="t1">Your Call</span></span>
     <span class="clock"><span data-night="02:51" data-day="10:35">02:51</span></span>
   </div>
   <div class="s4-wrap">
@@ -338,7 +356,7 @@
 
 <!-- ================= S5 Record ================= -->
 <section class="screen" id="s5">
-  <div class="topbar"><span class="t1">Event Log</span><span class="clock"><span data-night="03:05" data-day="10:48">03:05</span></span></div>
+  <div class="topbar"><span class="s-head"><a class="back-link" href="#/s4"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Your Call</a><span class="t1">Event Log</span></span><span class="clock"><span data-night="03:05" data-day="10:48">03:05</span></span></div>
   <div class="s5-scroll">
     <div class="record-head card">
       <div class="title">Room 307 alert · Closed</div>
@@ -396,6 +414,24 @@
   </nav>
 </section>
 
+<!-- ================= S7 Room detail ================= -->
+<section class="screen" id="s7">
+  <div class="topbar">
+    <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Overview</a><span class="t1" id="roomTitle">Room 301</span></span>
+    <span class="clock"><span data-night="02:41" data-day="10:23">02:41</span></span>
+  </div>
+  <div class="s7-scroll">
+    <div class="card room-card">
+      <div class="resident-name" id="roomName"></div>
+      <div class="t4" id="roomMeta" style="margin-top:4px"></div>
+      <div class="chip-row" id="roomChips"></div>
+    </div>
+    <div class="card room-status" id="roomStatus"></div>
+    <button class="btn btn-primary room-alert-btn" id="roomAlertBtn" style="display:none" onclick="location.hash='#/s2'">View active alert</button>
+    <div style="height:24px"></div>
+  </div>
+</section>
+
 <div class="toast" id="toast"></div>
 
 </div>
@@ -411,7 +447,7 @@
                 ["414","ok","● Stable"],["415","ok","● Stable"],["416","ok","● Stable"],["417","ok","● Stable"]];
   function renderBeds(id, beds){
     document.getElementById(id).innerHTML = beds.map(([r,c,s]) =>
-      `<div class="bed ${c}" ${r==="307"?"onclick=\"location.hash='#/s2'\" style=\"cursor:pointer\"":""}>
+      `<div class="bed ${c}" onclick="openRoom('${r}')" style="cursor:pointer">
         <div class="room">${r}</div><div class="st">${s}</div>${r==="310"?'<div class="mini">check in person</div>':''}</div>`).join("");
   }
   renderBeds("grid-east", east); renderBeds("grid-west", west);
@@ -426,13 +462,81 @@
     renderBeds("grid-east", order(east)); renderBeds("grid-west", order(west));
   }
 
+  // ---- S7 room detail (simulated US memory-care data) ----
+  const residents = {
+    "301":["Margaret Thompson",84,["Mid-stage Alzheimer's","Fall risk"]],
+    "302":["Robert Williams",79,["Type 2 diabetes","Stable gait"]],
+    "303":["Dorothy Miller",88,["Late-stage dementia","Bed-exit watch"]],
+    "305":["James Johnson",82,["Post-hip surgery","Uses walker"]],
+    "306":["Helen Davis",86,["Hypertension","Stable"]],
+    "307":["Ruth Anderson",85,["Mid-stage dementia","Fall ×1 in 7 days","On anticoagulant"]],
+    "308":["Frank Brown",81,["Parkinson's","Tremor"]],
+    "309":["Evelyn Wilson",90,["Late-stage dementia","Full assist"]],
+    "310":["Walter Harris",83,["CHF","Nighttime O₂"]],
+    "311":["Doris Clark",87,["Mild cognitive impairment"]],
+    "312":["Harold Lewis",78,["Post-stroke","Left-side weakness"]],
+    "313":["Betty Walker",84,["Arthritis","Stable"]],
+    "401":["George Hall",85,["Memory care","Wander risk"]],
+    "402":["Mildred Young",89,["Osteoporosis","Fall risk"]],
+    "403":["Arthur King",80,["COPD","Nighttime O₂"]],
+    "405":["Florence Wright",86,["Early dementia","Stable"]],
+    "406":["Clarence Scott",82,["Diabetes","Neuropathy"]],
+    "407":["Ida Green",91,["Late-stage dementia","Full assist"]],
+    "408":["Norman Baker",79,["Stable","Independent"]],
+    "409":["Gladys Adams",84,["Heart failure","Daily weight check"]],
+    "410":["Roy Nelson",83,["Restless sleep","Low-priority watch"]],
+    "411":["Hazel Carter",87,["Mid-stage dementia","Sundowning"]],
+    "412":["Stanley Murphy",81,["Post-knee replacement"]],
+    "413":["Mae Rivera",85,["Anxiety","Night reassurance checks"]],
+    "414":["Chester Foster",88,["Memory care","Wander risk"]],
+    "415":["Edith Brooks",82,["Stable","Bathroom routine ~23:30"]],
+    "416":["Vera Powell",86,["Osteoarthritis","Stable"]],
+    "417":["Earl Simmons",84,["Early dementia","Stable"]]
+  };
+  const roomNotes = {
+    "303":{n:"3 bed-exits tonight (her usual: 1) · last return 01:48 — AI is watching closely",
+           d:"Wandered toward the exit door twice this morning · redirected, settled now"},
+    "307":{n:"Active alert 02:47 — bed exit at 02:45:38, then no movement for 90 s",
+           d:"Active alert 10:31 — unusual stillness during morning activity"},
+    "310":{n:"Offline since 23:14 · Last known: in bed, breathing regular",
+           d:"Offline since 09:47 · Last known: in chair by the window"},
+    "411":{n:"Sundowning restlessness · 2 bed-exits · currently in bed",
+           d:"Agitated during lunch · settled after one-on-one time"}
+  };
+  let currentRoom = null;
+  function openRoom(r){
+    currentRoom = r;
+    const res = residents[r];
+    const st = ([...east, ...west].find(b => b[0] === r) || [])[1] || "ok";
+    document.getElementById("roomTitle").textContent = "Room " + r;
+    document.getElementById("roomName").textContent = res[0];
+    document.getElementById("roomMeta").textContent = "Age " + res[1] + " · Memory Care Unit";
+    document.getElementById("roomChips").innerHTML = res[2].map(x => `<span class="chip">${x}</span>`).join("");
+    const note = (roomNotes[r] || {n:"In bed · no unusual events this shift · last round check 02:15, all normal",
+                                   d:"Up and about · no unusual events this shift · last check 10:05, all normal"})[mode === "day" ? "d" : "n"];
+    const sensors = st === "off"
+      ? `<div class="sensor-row"><span class="lost">Bed-exit ✕</span><span class="lost">Activity ✕</span><span class="lost">In-room IR ✕</span></div>`
+      : `<div class="sensor-row"><span class="on">Bed-exit ●</span><span class="on">Activity ●</span><span class="on">In-room IR ●</span></div>`;
+    const box = document.getElementById("roomStatus");
+    if (st === "off"){
+      box.innerHTML = `<div class="head" style="color:var(--alert)">○ Sensors offline</div><div class="detail">${note}</div><div class="detail" style="color:var(--alert)">AI can't watch this room — add it to your walking rounds.</div>${sensors}`;
+    } else if (st === "watch"){
+      box.innerHTML = `<div class="head" style="color:var(--watch)">▲ Watch — AI keeping an eye</div><div class="detail">${note}</div>${sensors}`;
+    } else {
+      box.innerHTML = `<div class="head" style="color:var(--ok-text)">● Stable</div><div class="detail">${note}</div>${sensors}`;
+    }
+    document.getElementById("roomAlertBtn").style.display = r === "307" ? "flex" : "none";
+    location.hash = "#/s7";
+  }
+
   // ---- routing ----
-  const screens = ["s1","s2","s3","s4","s5","s6"];
+  const screens = ["s1","s2","s3","s4","s5","s6","s7"];
   function route(){
     const h = (location.hash || "#/s1").replace("#/","");
+    if (h === "s7" && !currentRoom) openRoom("307");
     screens.forEach(s => document.getElementById(s).classList.toggle("active", s===h));
   }
-  window.addEventListener("hashchange", route); route();
+  window.addEventListener("hashchange", route);
 
   // ---- day/night mode ----
   let mode = localStorage.getItem("roundmate-mode") || "night";
@@ -441,7 +545,8 @@
     document.querySelectorAll("[data-night]").forEach(el => {
       el.textContent = mode === "day" ? el.dataset.day : el.dataset.night;
     });
-    document.getElementById("themeBtn").textContent = mode === "day" ? "🌙" : "☀️";
+    document.getElementById("themeBtn").textContent = mode === "day" ? "☀️" : "🌙";
+    if ((location.hash || "") === "#/s7" && currentRoom) openRoom(currentRoom);
   }
   function toggleMode(){
     mode = mode === "day" ? "night" : "day";
@@ -449,6 +554,7 @@
     applyMode();
   }
   applyMode();
+  route();
 
   // ---- toast ----
   let toastTimer;
