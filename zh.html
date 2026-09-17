@@ -7,6 +7,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0E1116">
 <title>RoundMate · 巡房搭子</title>
+<link rel="icon" type="image/png" href="assets/roundmate-logo-a.png">
+<link rel="apple-touch-icon" href="assets/roundmate-logo-a.png">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
       -webkit-tap-highlight-color:transparent; }
@@ -205,6 +207,14 @@
   .stat .v { font-size:18px; font-weight:600; font-variant-numeric:tabular-nums; }
   .stat .k { font-size:11px; color:var(--text2); margin-top:2px; }
   .export-note { font-size:11px; color:var(--text2); text-align:center; margin-top:10px; }
+  /* Approved RoundMate A identity */
+  #s1 > .topbar { align-items:center; gap:8px; }
+  .brand-heading { display:flex; align-items:center; gap:9px; min-width:0; }
+  .brand-logo { width:36px; height:36px; border-radius:10px; flex-shrink:0; display:block; }
+  .brand-copy { display:flex; flex-direction:column; gap:2px; }
+  .brand-name { font-size:16px; font-weight:600; letter-spacing:-.3px; line-height:1.2; }
+  .brand-context { font-size:11px; color:var(--text2); line-height:1.25; }
+  #s1 > .topbar > .clock { white-space:nowrap; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -213,7 +223,7 @@
 <!-- ================= S1 总览 ================= -->
 <section class="screen" id="s1">
   <div class="topbar">
-    <span class="t1" data-night="夜间总览" data-day="白班总览">夜间总览</span>
+    <div class="brand-heading"><img class="brand-logo" src="assets/roundmate-logo-a.png" width="36" height="36" alt=""><div class="brand-copy"><span class="brand-name">RoundMate</span><span class="brand-context" data-night="夜间总览" data-day="白班总览">夜间总览</span></div></div>
     <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()">☀️</span><a href="index.html" style="color:var(--ai);text-decoration:none;margin-right:12px;font-weight:500">EN</a><span data-night="02:41" data-day="10:23">02:41</span></span>
   </div>
   <div class="shift-card card">
