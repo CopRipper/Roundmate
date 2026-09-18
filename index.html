@@ -107,17 +107,22 @@
   .grid-area::-webkit-scrollbar{ display:none; }
   .section-head { display:flex; justify-content:space-between; align-items:center; margin:10px 2px 8px; }
   .section-head .name { font-size:15px; font-weight:500; color:var(--text-strong); }
-  .sort-toggle { cursor:pointer; color:var(--ai-text); }
+  .sort-toggle { cursor:pointer; font-size:11px; color:var(--ai-text); user-select:none;
+                 border:1px solid var(--line-strong); border-radius:14px; padding:4px 10px;
+                 background:var(--card); display:inline-flex; align-items:center; gap:6px; }
+  .sort-toggle .dot { width:6px; height:6px; border-radius:50%; background:var(--track); flex:none; }
+  .sort-toggle.on { border-color:var(--ai); background:var(--ai-soft); }
+  .sort-toggle.on .dot { background:var(--ai); }
+  .sort-toggle:focus-visible { outline:2px solid var(--ai); outline-offset:2px; }
   .bed-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
   .bed { background:var(--card); border-radius:10px; padding:9px 6px 8px;
          display:flex; flex-direction:column; align-items:center; gap:4px;
-         border-left:3px solid transparent; }
+         border:1px solid var(--line); }
   .bed .room { font-size:17px; font-weight:500; font-variant-numeric:tabular-nums; }
   .bed .st { font-size:12px; display:flex; align-items:center; gap:4px; }
-  .bed .mini { font-size:9px; color:var(--alert); }
-  .ok    { border-left-color:var(--ok-border); } .ok .st    { color:var(--ok-text); }
-  .watch { border-left-color:var(--watch); } .watch .st { color:var(--watch); }
-  .off   { border:1px solid var(--alert); border-left-width:3px; background:var(--alert-bg); }
+  .ok    { border-color:var(--ok-border); } .ok .st    { color:var(--ok-text); }
+  .watch { border-color:var(--watch-border); } .watch .st { color:var(--watch); }
+  .off   { border-color:var(--alert); background:var(--alert-bg); }
   .off .st { color:var(--alert); }
   a.bed { text-decoration:none; color:inherit; }
   a.bed:focus-visible, .theme-toggle:focus-visible { outline:2px solid var(--ai); outline-offset:2px; border-radius:10px; }
@@ -256,7 +261,7 @@
   </div>
   <div class="foot-note" style="padding:0 24px 8px; text-align:left">Research prototype · All residents, sensor readings and events are simulated.</div>
   <div class="grid-area">
-    <div class="section-head"><div class="name">East Wing · 12 beds</div><div class="t4 sort-toggle" id="sortToggle" onclick="toggleSort()">Group by attention: Off</div></div>
+    <div class="section-head"><div class="name">East Wing · 12 beds</div><div class="sort-toggle" id="sortToggle" role="button" tabindex="0" aria-pressed="false" onclick="toggleSort()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleSort();}"><span class="dot"></span>Group by attention</div></div>
     <div class="bed-grid" id="grid-east"></div>
     <div class="section-head"><div class="name">West Wing · 16 beds</div><div></div></div>
     <div class="bed-grid" id="grid-west"></div>
@@ -558,7 +563,7 @@
       if (e.roomId === r && e.status !== 'resolved') openEv = e;
     });
     if (openEv) return [r, 'watch', L('▲ Active', '▲ 活动')];
-    if (room.sensors.every(function(s){ return s.connection === 'offline'; })) return [r, 'off', L('○ Offline', '○ 离线')];
+    if (room.sensors.every(function(s){ return s.connection === 'offline'; })) return [r, 'off', L('● Offline', '● 离线')];
     if (room.watch) return [r, 'watch', L('▲ Watch', '▲ 留意')];
     return [r, 'ok', L('● No alerts', '● 无告警')];
   }
@@ -568,8 +573,7 @@
     var mk = function(info){
       var label = (LANG === 'cn' ? info[0] + ' 房' : 'Room ' + info[0]) + ', ' + info[2].replace(/[▲○●]\s*/, '');
       return '<a class="bed ' + info[1] + '" href="#/s7?room=' + info[0] + '" aria-label="' + label + '">'
-        + '<div class="room">' + info[0] + '</div><div class="st">' + info[2] + '</div>'
-        + (info[1] === 'off' ? '<div class="mini">' + L('check in person', '需人工核查') + '</div>' : '') + '</a>';
+        + '<div class="room">' + info[0] + '</div><div class="st">' + info[2] + '</div></a>';
     };
     var ids = Object.keys(state.rooms);
     var eb = ids.filter(function(r){ return state.rooms[r].wing === 'east'; }).map(bedInfo);
@@ -583,7 +587,9 @@
   }
   function toggleSort(){
     sortOn = !sortOn;
-    document.getElementById('sortToggle').textContent = L('Group by attention: ', '按关注分组：') + (sortOn ? L('On', '开') : L('Off', '关'));
+    var t = document.getElementById('sortToggle');
+    t.classList.toggle('on', sortOn);
+    t.setAttribute('aria-pressed', String(sortOn));
     renderBeds();
   }
 
