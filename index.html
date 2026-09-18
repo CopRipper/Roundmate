@@ -119,6 +119,10 @@
   .watch { border-left-color:var(--watch); } .watch .st { color:var(--watch); }
   .off   { border:1px solid var(--alert); border-left-width:3px; background:var(--alert-bg); }
   .off .st { color:var(--alert); }
+  a.bed { text-decoration:none; color:inherit; }
+  a.bed:focus-visible, .theme-toggle:focus-visible { outline:2px solid var(--ai); outline-offset:2px; border-radius:10px; }
+  a.tl-item { text-decoration:none; color:inherit; }
+  a.tl-item:focus-visible { outline:2px solid var(--ai); outline-offset:-2px; }
   .foot-note { font-size:11px; color:var(--text2); text-align:center; padding:16px 24px 10px; line-height:1.6; }
 
   /* ===== S2 alert ===== */
@@ -132,11 +136,6 @@
   .alert-card { padding:20px 18px; border-left:4px solid var(--watch); }
   .alert-card .who { font-size:22px; font-weight:600; }
   .alert-card .what { font-size:15px; color:var(--text-strong); margin-top:6px; line-height:1.5; }
-  .conf-row { display:flex; align-items:center; gap:10px; margin-top:16px; }
-  .conf-bar { flex:1; height:6px; border-radius:3px; background:var(--track); overflow:hidden; }
-  .conf-fill { height:100%; width:78%; border-radius:3px; background:linear-gradient(90deg,#F5C15C,#FFD98A); }
-  .conf-num { font-size:15px; font-weight:600; color:var(--watch); font-variant-numeric:tabular-nums; }
-  .conf-label { font-size:11px; color:var(--text2); }
   .conf-note { margin-top:8px; font-size:11px; color:var(--text2); }
   .blind-note { margin-top:10px; font-size:12px; color:var(--watch); line-height:1.5; }
   .alert-actions { margin-top:auto; padding-bottom:calc(24px + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column; gap:10px; }
@@ -226,6 +225,7 @@
   .sensor-row { display:flex; gap:14px; margin-top:12px; padding-top:10px; border-top:1px solid var(--line);
                 font-size:11px; color:var(--text2); }
   .sensor-row .on { color:var(--ok-text); } .sensor-row .lost { color:var(--alert); }
+  .sensor-row .lim { color:var(--watch); }
   .room-alert-btn { margin-top:12px; }
   /* Approved RoundMate A identity */
   #s1 > .topbar { align-items:center; gap:8px; }
@@ -244,7 +244,7 @@
 <section class="screen" id="s1">
   <div class="topbar">
     <div class="brand-heading"><img class="brand-logo" src="assets/roundmate-logo-a.png" width="36" height="36" alt=""><div class="brand-copy"><span class="brand-name">RoundMate</span><span class="brand-context" data-night="Night Overview" data-day="Day Overview">Night Overview</span></div></div>
-    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()">🌙</span><span data-night="02:41" data-day="10:23">02:41</span></span>
+    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()" role="button" tabindex="0" aria-label="Switch to day shift demo" onkeydown="if(event.key==='Enter')toggleMode()">🌙</span><span data-night="02:41" data-day="10:23">02:41</span></span>
   </div>
   <div class="shift-card card">
     <div><div class="t3" style="font-weight:500" data-night="Night shift · 23:00–07:00" data-day="Day shift · 07:00–15:00">Night shift · 23:00–07:00</div>
@@ -254,19 +254,20 @@
       <div class="l2" data-night="Updated 02:40 · refreshes every 30 s" data-day="Updated 10:22 · refreshes every 30 s">Updated 02:40 · refreshes every 30 s</div>
     </div>
   </div>
+  <div class="foot-note" style="padding:0 24px 8px; text-align:left">Research prototype · All residents, sensor readings and events are simulated.</div>
   <div class="grid-area">
-    <div class="section-head"><div class="name">East Wing · 12 beds</div><div class="t4 sort-toggle" id="sortToggle" onclick="toggleSort()">Sort by risk: Off</div></div>
+    <div class="section-head"><div class="name">East Wing · 12 beds</div><div class="t4 sort-toggle" id="sortToggle" onclick="toggleSort()">Group by attention: Off</div></div>
     <div class="bed-grid" id="grid-east"></div>
     <div class="section-head"><div class="name">West Wing · 16 beds</div><div></div></div>
     <div class="bed-grid" id="grid-west"></div>
-    <div class="foot-note">Status based on bed-exit and activity sensors. Reference only — your rounds decide.</div>
+    <div class="foot-note">Status from bed-exit and activity sensors — reference only, not a safety confirmation. Your rounds decide.</div>
   </div>
   <nav class="tabbar">
     <a class="tab active" href="#/s1"><span class="ic">▦</span>Overview</a>
     <a class="tab" href="#/s6"><span class="ic">☰</span>Events</a>
     <a class="tab" href="javascript:void(0)" onclick="showToast('Profile &amp; notification settings — coming soon')"><span class="ic">◡</span>Me</a>
   </nav>
-  <div class="demo-hint" data-night="▶ Demo: alert fires at 02:47" data-day="▶ Demo: alert fires at 10:31" onclick="location.hash='#/s2'">▶ Demo: alert fires at 02:47</div>
+  <div class="demo-hint" data-night="▶ Demo: alert fires at 02:47" data-day="▶ Demo: alert fires at 10:31" onclick="goAlert('overview')">▶ Demo: alert fires at 02:47</div>
 </section>
 
 <!-- ================= S2 Alert ================= -->
@@ -276,22 +277,17 @@
     <span class="clock"><span data-night="02:47" data-day="10:31">02:47</span></span>
   </div>
   <div class="alert-wrap">
-    <div class="deliver-note">🔔 Lock-screen alert + continuous vibration triggered</div>
+    <div class="deliver-note">🔔 Demo: in real use this would push a lock-screen alert with continuous vibration</div>
     <div class="alert-level">MEDIUM PRIORITY</div>
     <div class="alert-card card">
       <div class="who">Room 307 · Mrs. Anderson</div>
       <div class="what" data-night="No movement for 90 s after bed exit — possible fall" data-day="Unusual stillness during morning activity — possible fall">No movement for 90 s after bed exit — possible fall</div>
-      <div class="conf-row">
-        <span class="conf-label">Confidence</span>
-        <div class="conf-bar"><div class="conf-fill"></div></div>
-        <span class="conf-num">78%</span>
-      </div>
-      <div class="conf-note">Confidence lowered — incomplete sensor data</div>
       <div class="blind-note" data-night="⚠ In-room sensor blind spot tonight" data-day="⚠ In-room sensor blind spot right now">⚠ In-room sensor blind spot tonight</div>
+      <div class="conf-note">Simulated alert — not from a real sensor or model.</div>
     </div>
     <div class="alert-actions">
-      <button class="btn btn-primary" onclick="location.hash='#/s3'">View AI suggestion &amp; rationale</button>
-      <button class="btn btn-quiet" onclick="location.hash='#/s1'">Later (acknowledged)</button>
+      <button class="btn btn-primary" data-action="ack" onclick="doAck('#/s3')">View AI suggestion &amp; rationale</button>
+      <button class="btn btn-quiet" onclick="doAck('#/s1')">Later (acknowledged)</button>
     </div>
   </div>
 </section>
@@ -305,7 +301,7 @@
   <div class="s3-scroll">
     <div class="comfort-card card">
       <div class="big">Suggested: go check on her. No need to decide anything now — just take a look.</div>
-      <div class="sub">About half of these alerts turn out to be the resident simply sitting up. No need to run — mind your own safety on the way.</div>
+      <div class="sub" data-night="No activity was detected after a bed exit. The in-room IR signal is limited, so this does not confirm a fall. Check on the resident according to your facility's procedure and request support when needed." data-day="Unusual stillness was detected during morning activity. The in-room sensor signal is limited, so this does not confirm a fall. Check on the resident according to your facility's procedure and request support when needed.">No activity was detected after a bed exit. The in-room IR signal is limited, so this does not confirm a fall. Check on the resident according to your facility's procedure and request support when needed.</div>
     </div>
     <div class="fact-card card open" id="factCard">
       <div class="fact-head" onclick="document.getElementById('factCard').classList.toggle('open')">
@@ -314,13 +310,13 @@
       <div class="fact-body">
         <div class="fact-item"><span class="k">Trigger</span><span data-night="Bed-exit sensor at 02:45:38, then 90 s without movement" data-day="Activity sensor at 10:29:12, then unusual stillness">Bed-exit sensor at 02:45:38, then 90 s without movement</span></div>
         <div class="fact-item"><span class="k">Risk context</span><span>1 fall in past 7 days; on anticoagulant — higher injury risk; mid-stage dementia, poor nighttime orientation</span></div>
-        <div class="fact-item"><span class="k">Confidence 78%</span><span>Motion pattern matches a fall, but no visual confirmation — confidence lowered due to incomplete sensor data</span></div>
+        <div class="fact-item"><span class="k">What this is</span><span>An AI inference from sensor patterns — consistent with a fall, but not a confirmation</span></div>
         <div class="fact-item"><span class="k">Missing data</span><span data-night="In-room IR sensor signal is weak tonight — possible blind spot" data-day="In-room sensor briefly obstructed — possible blind spot">In-room IR sensor signal is weak tonight — possible blind spot</span></div>
       </div>
     </div>
     <div class="judge-first">Once you're there, trust your own eyes first. You can confirm or override the AI — your judgment on site is recorded and respected either way.</div>
     <div style="height:12px"></div>
-    <button class="btn btn-primary" onclick="location.hash='#/s4'">I'm on site — my call</button>
+    <button class="btn btn-primary" data-action="arrive" onclick="doArrive()">I'm on site — my call</button>
     <div style="height:24px"></div>
   </div>
 </section>
@@ -332,13 +328,13 @@
     <span class="clock"><span data-night="02:51" data-day="10:35">02:51</span></span>
   </div>
   <div class="s4-wrap">
-    <div class="s4-summary card">AI suggests: <b>possible fall (confidence 78%)</b>. The decision is yours — all three options are legitimate, and whichever you choose is recorded as-is.</div>
+    <div class="s4-summary card">AI flags a <b>possible fall</b> from sensor patterns — this is not confirmed. Choose your next step based on what you observe on site; if you are unsure, request support.</div>
     <div class="s4-actions">
-      <button class="btn btn-confirm" onclick="decide('Confirmed · resident found on floor, handled')">✓ Confirm — resident found on floor</button>
+      <button class="btn btn-confirm" data-action="observe" onclick="doConfirm()">✓ Confirm — resident found on floor</button>
       <button class="btn btn-override" onclick="openSheet()">✋ I'm with her — not a fall</button>
-      <button class="btn btn-escalate" onclick="decide('Escalated · charge nurse notified')">↑ Escalate to charge nurse</button>
+      <button class="btn btn-escalate" data-action="request-support" onclick="doEscalate()">↑ Escalate to charge nurse</button>
     </div>
-    <div class="s4-note">Overriding takes one tap, with an optional voice note.<br>Escalating is never a failure — someone always has your back.</div>
+    <div class="s4-note">Overriding takes one tap, with an optional written note.<br>Escalating is never a failure — someone always has your back.</div>
   </div>
 </section>
 
@@ -346,7 +342,7 @@
 <div class="sheet-mask" id="sheetMask" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet">
   <div class="big">Your call is on record</div>
-  <div class="msg">Your override will help improve the alert model. Add a note if you like — it's fine to skip:</div>
+  <div class="msg">Your override is recorded as feedback for alert review. Add a written note if you like — it's fine to skip:</div>
   <textarea id="overrideNote" placeholder="e.g., She was just sitting up for water; helped her back to bed"></textarea>
   <div class="row">
     <button class="btn btn-quiet" onclick="closeSheet()">Back</button>
@@ -356,22 +352,16 @@
 
 <!-- ================= S5 Record ================= -->
 <section class="screen" id="s5">
-  <div class="topbar"><span class="s-head"><a class="back-link" href="#/s4"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Your Call</a><span class="t1">Event Log</span></span><span class="clock"><span data-night="03:05" data-day="10:48">03:05</span></span></div>
+  <div class="topbar"><span class="s-head"><a class="back-link" href="#/s4"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Your Call</a><span class="t1">Event Log</span></span><span class="clock" id="s5Clock">02:47</span></div>
   <div class="s5-scroll">
-    <div class="record-head card">
-      <div class="title">Room 307 alert · Closed</div>
-      <span class="co">Joint AI + caregiver response record</span>
+    <div class="record-head card" id="s5Head">
+      <div class="title" id="s5Title">Room 307 alert · New</div>
+      <span class="co">Joint AI + caregiver response record · simulated</span>
     </div>
-    <div class="timeline card">
-      <div class="tl-item"><div class="tl-time" data-night="02:45" data-day="10:29">02:45</div><div class="tl-body"><span class="tag">System</span><span data-night="Bed-exit triggered, followed by no movement" data-day="Unusual stillness detected during morning activity">Bed-exit triggered, followed by no movement</span></div></div>
-      <div class="tl-item"><div class="tl-time" data-night="02:47" data-day="10:31">02:47</div><div class="tl-body"><span class="tag">AI</span>Medium-priority alert issued: possible fall (confidence 78%)</div></div>
-      <div class="tl-item"><div class="tl-time" data-night="02:47" data-day="10:31">02:47</div><div class="tl-body"><span class="tag tag-human">Wen</span>Acknowledged alert</div></div>
-      <div class="tl-item"><div class="tl-time" data-night="02:49" data-day="10:33">02:49</div><div class="tl-body"><span class="tag tag-human">Wen</span>Arrived on site</div></div>
-      <div class="tl-item"><div class="tl-time" data-night="02:51" data-day="10:35">02:51</div><div class="tl-body"><span class="tag tag-human">Wen</span><span id="decisionText">Override · resident was sitting up for water; assisted back to bed</span></div></div>
-      <div class="tl-item"><div class="tl-time" data-night="02:52" data-day="10:36">02:52</div><div class="tl-body"><span class="tag">System</span>Event closed; response record generated</div></div>
-    </div>
-    <div class="s5-note">This record was produced jointly by the system and the caregiver. The charge nurse sees the full timeline — and so do you. Transparency runs both ways.</div>
-    <div class="policy-note">Records serve care quality and incident review only — never individual performance evaluation.</div>
+    <div class="timeline card" id="s5Timeline"></div>
+    <div id="s5Actions"></div>
+    <div class="s5-note">This record is produced jointly by the system and the caregiver. The charge nurse sees the full timeline — and so do you. Transparency runs both ways.</div>
+    <div class="policy-note">Proposed governance rule, pending facility confirmation: records would serve care quality and incident review only — not individual performance evaluation.</div>
     <div style="height:8px"></div>
     <button class="btn btn-quiet" onclick="location.hash='#/s1'">Back to overview</button>
     <div style="height:24px"></div>
@@ -383,28 +373,36 @@
   </nav>
 </section>
 
+<!-- S5 amend sheet -->
+<div class="sheet-mask" id="amendMask" onclick="closeAmend()"></div>
+<div class="sheet" id="amendSheet">
+  <div class="big">Add a correction</div>
+  <div class="msg">Corrections are appended to the record — original entries are kept, nothing is overwritten.</div>
+  <textarea id="amendNote" placeholder="e.g., Correction: she was sitting up for water, not on the floor"></textarea>
+  <div class="row">
+    <button class="btn btn-quiet" onclick="closeAmend()">Back</button>
+    <button class="btn btn-primary" onclick="submitAmend()">Done</button>
+  </div>
+</div>
+
 <!-- ================= S6 Shift Summary ================= -->
 <section class="screen" id="s6">
-  <div class="topbar"><span class="t1">Shift Summary</span><span class="clock"><span data-night="07:00" data-day="15:00">07:00</span></span></div>
+  <div class="topbar"><span class="t1">Shift Summary</span><span class="clock" id="s6Clock">02:47</span></div>
   <div class="s6-scroll">
     <div class="summary-card card">
       <div class="t2" style="font-weight:600" data-night="Night shift · 23:00–07:00" data-day="Day shift · 07:00–15:00">Night shift · 23:00–07:00</div>
       <div class="stat-grid">
-        <div class="stat"><div class="v">6</div><div class="k">Alerts this shift</div></div>
-        <div class="stat"><div class="v">3</div><div class="k">Confirmed on site</div></div>
-        <div class="stat"><div class="v">2.4 min</div><div class="k">Avg response time</div></div>
-        <div class="stat"><div class="v">0</div><div class="k">Open events</div></div>
+        <div class="stat"><div class="v" id="statTotal">–</div><div class="k">Alerts this shift</div></div>
+        <div class="stat"><div class="v" id="statResolved">–</div><div class="k">Resolved</div></div>
+        <div class="stat"><div class="v" id="statMean">–</div><div class="k">Avg response time</div></div>
+        <div class="stat"><div class="v" id="statOpen" data-metric="open">–</div><div class="k">Open events</div></div>
       </div>
       <button class="btn btn-primary" style="height:44px;font-size:14px;margin-top:14px" onclick="showToast('Prototype demo — export not enabled')">Export shift report (PDF)</button>
-      <div class="export-note">Records serve care quality and incident review only.</div>
+      <button class="btn btn-quiet" style="height:40px;font-size:13px;margin-top:8px" onclick="resetDemo()">Reset demo</button>
+      <div class="export-note">Proposed rule, pending facility confirmation: records serve care quality and incident review only. Demo data.</div>
     </div>
     <div class="section-head"><div class="name">Events this shift</div><div></div></div>
-    <div class="timeline card">
-      <div class="tl-item"><div class="tl-time" data-night="23:40" data-day="08:15">23:40</div><div class="tl-body" data-night="Room 415 · Low · Confirmed — resident up for the bathroom" data-day="Room 415 · Low · Confirmed — false alarm during morning wash">Room 415 · Low · Confirmed — resident up for the bathroom</div></div>
-      <div class="tl-item"><div class="tl-time" data-night="01:12" data-day="09:22">01:12</div><div class="tl-body" data-night="Room 303 · Medium · Confirmed on site — assisted back to bed" data-day="Room 303 · Medium · Confirmed on site — assisted to chair">Room 303 · Medium · Confirmed on site — assisted back to bed</div></div>
-      <div class="tl-item"><div class="tl-time" data-night="02:47" data-day="10:31">02:47</div><div class="tl-body" data-night="Room 307 · Medium · Override — resident sitting up, not a fall" data-day="Room 307 · Medium · Override — resident sitting up, not a fall">Room 307 · Medium · Override — resident sitting up, not a fall</div></div>
-      <div class="tl-item"><div class="tl-time" data-night="05:20" data-day="11:05">05:20</div><div class="tl-body" data-night="Room 410 · Low · Auto-resolved — movement resumed" data-day="Room 410 · Low · Auto-resolved — movement resumed">Room 410 · Low · Auto-resolved — movement resumed</div></div>
-    </div>
+    <div class="timeline card" id="s6Events"></div>
     <div style="height:24px"></div>
   </div>
   <nav class="tabbar">
@@ -427,7 +425,7 @@
       <div class="chip-row" id="roomChips"></div>
     </div>
     <div class="card room-status" id="roomStatus"></div>
-    <button class="btn btn-primary room-alert-btn" id="roomAlertBtn" style="display:none" onclick="location.hash='#/s2'">View active alert</button>
+    <button class="btn btn-primary room-alert-btn" id="roomAlertBtn" style="display:none" onclick="goAlert('room:' + currentRoom)">View active alert</button>
     <div style="height:24px"></div>
   </div>
 </section>
@@ -436,150 +434,398 @@
 
 </div>
 
+<script src="assets/roundmate-state.js"></script>
+<script src="assets/roundmate-route.js"></script>
 <script>
-  // ---- S1 bed data ----
-  const east = [["301","ok","● Stable"],["302","ok","● Stable"],["303","watch","▲ Watch"],["305","ok","● Stable"],
-                ["306","ok","● Stable"],["307","watch","▲ Watch"],["308","ok","● Stable"],["309","ok","● Stable"],
-                ["310","off","○ Offline"],["311","ok","● Stable"],["312","ok","● Stable"],["313","ok","● Stable"]];
-  const west = [["401","ok","● Stable"],["402","ok","● Stable"],["403","ok","● Stable"],["405","ok","● Stable"],
-                ["406","ok","● Stable"],["407","ok","● Stable"],["408","ok","● Stable"],["409","ok","● Stable"],
-                ["410","ok","● Stable"],["411","watch","▲ Watch"],["412","ok","● Stable"],["413","ok","● Stable"],
-                ["414","ok","● Stable"],["415","ok","● Stable"],["416","ok","● Stable"],["417","ok","● Stable"]];
-  function renderBeds(id, beds){
-    document.getElementById(id).innerHTML = beds.map(([r,c,s]) =>
-      `<div class="bed ${c}" onclick="openRoom('${r}')" style="cursor:pointer">
-        <div class="room">${r}</div><div class="st">${s}</div>${r==="310"?'<div class="mini">check in person</div>':''}</div>`).join("");
-  }
-  renderBeds("grid-east", east); renderBeds("grid-west", west);
+  // ---- i18n helpers (this file: English) ----
+  var LANG = 'en';
+  function L(en, cn){ return LANG === 'cn' ? cn : en; }
+  function pick(v){ return (v && typeof v === 'object') ? (v[LANG] || v.en) : v; }
 
-  // ---- S1 sort by risk ----
-  let sortOn = false;
+  // ---- mode & demo state (simulated; session-persisted per shift) ----
+  var mode = localStorage.getItem('roundmate-mode') || 'night';
+  function loadState(shift){
+    try {
+      var raw = sessionStorage.getItem('roundmate-demo-v1-' + shift);
+      if (raw){
+        var st = JSON.parse(raw);
+        if (st && st.schemaVersion === 1 && st.events && st.rooms && st.clock) return st;
+      }
+    } catch(e){}
+    return RoundMateState.createDemoState(shift);
+  }
+  var state = loadState(mode);
+  function saveState(){
+    try { sessionStorage.setItem('roundmate-demo-v1-' + state.shift, JSON.stringify(state)); } catch(e){}
+  }
+  function resetDemo(){
+    try { sessionStorage.removeItem('roundmate-demo-v1-night'); sessionStorage.removeItem('roundmate-demo-v1-day'); } catch(e){}
+    state = RoundMateState.createDemoState(mode);
+    renderAll();
+    showToast(L('Demo reset', '演示已重置'));
+  }
+  var currentEventId = null;
+  var currentFrom = null;
+  function viewEvent(){ return state.events[currentEventId] || state.events[state.shift + '-307']; }
+  function evQuery(){
+    return '?event=' + viewEvent().id + (currentFrom ? '&from=' + currentFrom : '');
+  }
+  function goAlert(from){
+    currentFrom = from;
+    location.hash = '#/s2?event=' + state.shift + '-307&from=' + from;
+  }
+
+  // ---- actions on the current demo event ----
+  var actionSeq = 0;
+  function doAction(type, note, actor, refId){
+    var ev = viewEvent();
+    actionSeq += 1;
+    var a = { id:'u' + Date.now() + '-' + actionSeq, type:type, actor:actor || 'caregiver-demo',
+              at:RoundMateState.nextAt(state), note:note || '' };
+    if (refId) a.refId = refId;
+    try {
+      state = RoundMateState.applyAction(state, ev.id, a);
+      saveState(); renderAll();
+      return true;
+    } catch(e){
+      showToast(L('Action not available in the current state', '当前状态下无法执行该操作'));
+      return false;
+    }
+  }
+  function ensureOnSite(){
+    if (viewEvent().status === 'new') doAction('ACK');
+    if (viewEvent().status === 'acknowledged') doAction('ARRIVE');
+  }
+  function doAck(dest){
+    if (viewEvent().status === 'new') doAction('ACK');
+    location.hash = dest === '#/s1' ? '#/s1' : dest + evQuery();
+  }
+  function doArrive(){
+    ensureOnSite();
+    location.hash = '#/s4' + evQuery();
+  }
+  function doConfirm(){
+    ensureOnSite();
+    if (doAction('OBSERVE', L('Found on the floor', '发现坐在地上'))) location.hash = '#/s5' + evQuery();
+  }
+  function submitOverride(){
+    var note = document.getElementById('overrideNote').value.trim();
+    closeSheet();
+    ensureOnSite();
+    if (doAction('OBSERVE', note || L('Fall ruled out on site', '现场排除跌倒'))) location.hash = '#/s5' + evQuery();
+  }
+  function doEscalate(){
+    ensureOnSite();
+    if (doAction('REQUEST_SUPPORT', L('Requesting charge nurse support', '请求护士长支持'))) location.hash = '#/s5' + evQuery();
+  }
+  function doRequestSupport(){
+    doAction('REQUEST_SUPPORT', L('Requesting charge nurse support', '请求护士长支持'));
+  }
+  function doAcceptSupport(){
+    doAction('ACCEPT_SUPPORT', L('Charge nurse accepted (simulated)', '护士长已接手（模拟）'), 'nurse-demo');
+  }
+  function doComplete(){
+    var ta = document.getElementById('completeNote');
+    var note = ta ? ta.value.trim() : '';
+    if (!note){ showToast(L('Add a completion note first', '请先填写完成说明')); return; }
+    doAction('COMPLETE', note);
+  }
+  function doObserveNote(){
+    var ta = document.getElementById('observeNote');
+    var note = ta ? ta.value.trim() : '';
+    if (!note){ showToast(L('Add an observation note first', '请先填写现场观察')); return; }
+    doAction('OBSERVE', note);
+  }
+  function openAmend(){ document.getElementById('amendMask').style.display='block'; document.getElementById('amendSheet').style.display='block'; }
+  function closeAmend(){ document.getElementById('amendMask').style.display='none'; document.getElementById('amendSheet').style.display='none'; }
+  function submitAmend(){
+    var note = document.getElementById('amendNote').value.trim();
+    if (!note){ showToast(L('Correction needs a note', '更正需要填写说明')); return; }
+    var ev = viewEvent(), ref = null;
+    for (var i = ev.history.length - 1; i >= 0; i--){
+      if (ev.history[i].actor === 'caregiver-demo'){ ref = ev.history[i]; break; }
+    }
+    closeAmend();
+    if (ref) doAction('AMEND', note, 'caregiver-demo', ref.id);
+  }
+
+  // ---- S1 beds, derived from state ----
+  function bedInfo(r){
+    var room = state.rooms[r];
+    var openEv = null;
+    Object.keys(state.events).forEach(function(k){
+      var e = state.events[k];
+      if (e.roomId === r && e.status !== 'resolved') openEv = e;
+    });
+    if (openEv) return [r, 'watch', L('▲ Active', '▲ 活动')];
+    if (room.sensors.every(function(s){ return s.connection === 'offline'; })) return [r, 'off', L('○ Offline', '○ 离线')];
+    if (room.watch) return [r, 'watch', L('▲ Watch', '▲ 留意')];
+    return [r, 'ok', L('● No alerts', '● 无告警')];
+  }
+  var sortOn = false;
+  function renderBeds(){
+    var rank = { watch:0, ok:1, off:2 };
+    var mk = function(info){
+      var label = (LANG === 'cn' ? info[0] + ' 房' : 'Room ' + info[0]) + ', ' + info[2].replace(/[▲○●]\s*/, '');
+      return '<a class="bed ' + info[1] + '" href="#/s7?room=' + info[0] + '" aria-label="' + label + '">'
+        + '<div class="room">' + info[0] + '</div><div class="st">' + info[2] + '</div>'
+        + (info[1] === 'off' ? '<div class="mini">' + L('check in person', '需人工核查') + '</div>' : '') + '</a>';
+    };
+    var ids = Object.keys(state.rooms);
+    var eb = ids.filter(function(r){ return state.rooms[r].wing === 'east'; }).map(bedInfo);
+    var wb = ids.filter(function(r){ return state.rooms[r].wing === 'west'; }).map(bedInfo);
+    if (sortOn){
+      eb = eb.slice().sort(function(a,b){ return rank[a[1]] - rank[b[1]]; });
+      wb = wb.slice().sort(function(a,b){ return rank[a[1]] - rank[b[1]]; });
+    }
+    document.getElementById('grid-east').innerHTML = eb.map(mk).join('');
+    document.getElementById('grid-west').innerHTML = wb.map(mk).join('');
+  }
   function toggleSort(){
     sortOn = !sortOn;
-    document.getElementById("sortToggle").textContent = "Sort by risk: " + (sortOn ? "On" : "Off");
-    const rank = b => b[1]==="watch" ? 0 : b[1]==="ok" ? 1 : 2;
-    const order = beds => sortOn ? [...beds].sort((a,b) => rank(a)-rank(b)) : beds;
-    renderBeds("grid-east", order(east)); renderBeds("grid-west", order(west));
+    document.getElementById('sortToggle').textContent = L('Group by attention: ', '按关注分组：') + (sortOn ? L('On', '开') : L('Off', '关'));
+    renderBeds();
   }
 
-  // ---- S7 room detail (simulated US memory-care data) ----
-  const residents = {
-    "301":["Margaret Thompson",84,["Mid-stage Alzheimer's","Fall risk"]],
-    "302":["Robert Williams",79,["Type 2 diabetes","Stable gait"]],
-    "303":["Dorothy Miller",88,["Late-stage dementia","Bed-exit watch"]],
-    "305":["James Johnson",82,["Post-hip surgery","Uses walker"]],
-    "306":["Helen Davis",86,["Hypertension","Stable"]],
-    "307":["Ruth Anderson",85,["Mid-stage dementia","Fall ×1 in 7 days","On anticoagulant"]],
-    "308":["Frank Brown",81,["Parkinson's","Tremor"]],
-    "309":["Evelyn Wilson",90,["Late-stage dementia","Full assist"]],
-    "310":["Walter Harris",83,["CHF","Nighttime O₂"]],
-    "311":["Doris Clark",87,["Mild cognitive impairment"]],
-    "312":["Harold Lewis",78,["Post-stroke","Left-side weakness"]],
-    "313":["Betty Walker",84,["Arthritis","Stable"]],
-    "401":["George Hall",85,["Memory care","Wander risk"]],
-    "402":["Mildred Young",89,["Osteoporosis","Fall risk"]],
-    "403":["Arthur King",80,["COPD","Nighttime O₂"]],
-    "405":["Florence Wright",86,["Early dementia","Stable"]],
-    "406":["Clarence Scott",82,["Diabetes","Neuropathy"]],
-    "407":["Ida Green",91,["Late-stage dementia","Full assist"]],
-    "408":["Norman Baker",79,["Stable","Independent"]],
-    "409":["Gladys Adams",84,["Heart failure","Daily weight check"]],
-    "410":["Roy Nelson",83,["Restless sleep","Low-priority watch"]],
-    "411":["Hazel Carter",87,["Mid-stage dementia","Sundowning"]],
-    "412":["Stanley Murphy",81,["Post-knee replacement"]],
-    "413":["Mae Rivera",85,["Anxiety","Night reassurance checks"]],
-    "414":["Chester Foster",88,["Memory care","Wander risk"]],
-    "415":["Edith Brooks",82,["Stable","Bathroom routine ~23:30"]],
-    "416":["Vera Powell",86,["Osteoarthritis","Stable"]],
-    "417":["Earl Simmons",84,["Early dementia","Stable"]]
-  };
-  const roomNotes = {
-    "303":{n:"3 bed-exits tonight (her usual: 1) · last return 01:48 — AI is watching closely",
-           d:"Wandered toward the exit door twice this morning · redirected, settled now"},
-    "307":{n:"Active alert 02:47 — bed exit at 02:45:38, then no movement for 90 s",
-           d:"Active alert 10:31 — unusual stillness during morning activity"},
-    "310":{n:"Offline since 23:14 · Last known: in bed, breathing regular",
-           d:"Offline since 09:47 · Last known: in chair by the window"},
-    "411":{n:"Sundowning restlessness · 2 bed-exits · currently in bed",
-           d:"Agitated during lunch · settled after one-on-one time"}
-  };
-  let currentRoom = null;
-  function openRoom(r){
-    currentRoom = r;
-    const res = residents[r];
-    const st = ([...east, ...west].find(b => b[0] === r) || [])[1] || "ok";
-    document.getElementById("roomTitle").textContent = "Room " + r;
-    document.getElementById("roomName").textContent = res[0];
-    document.getElementById("roomMeta").textContent = "Age " + res[1] + " · Memory Care Unit";
-    document.getElementById("roomChips").innerHTML = res[2].map(x => `<span class="chip">${x}</span>`).join("");
-    const note = (roomNotes[r] || {n:"In bed · no unusual events this shift · last round check 02:15, all normal",
-                                   d:"Up and about · no unusual events this shift · last check 10:05, all normal"})[mode === "day" ? "d" : "n"];
-    const sensors = st === "off"
-      ? `<div class="sensor-row"><span class="lost">Bed-exit ✕</span><span class="lost">Activity ✕</span><span class="lost">In-room IR ✕</span></div>`
-      : `<div class="sensor-row"><span class="on">Bed-exit ●</span><span class="on">Activity ●</span><span class="on">In-room IR ●</span></div>`;
-    const box = document.getElementById("roomStatus");
-    if (st === "off"){
-      box.innerHTML = `<div class="head" style="color:var(--alert)">○ Sensors offline</div><div class="detail">${note}</div><div class="detail" style="color:var(--alert)">AI can't watch this room — add it to your walking rounds.</div>${sensors}`;
-    } else if (st === "watch"){
-      box.innerHTML = `<div class="head" style="color:var(--watch)">▲ Watch — AI keeping an eye</div><div class="detail">${note}</div>${sensors}`;
-    } else {
-      box.innerHTML = `<div class="head" style="color:var(--ok-text)">● Stable</div><div class="detail">${note}</div>${sensors}`;
+  // ---- shared timeline rendering ----
+  function actorName(a){
+    return { system:L('System', '系统'), ai:'AI', 'caregiver-demo':L('Wen', '阿雯'), 'nurse-demo':L('Nurse (demo)', '护士长（演示）') }[a] || a;
+  }
+  function tagCls(a){ return (a === 'caregiver-demo' || a === 'nurse-demo') ? 'tag tag-human' : 'tag'; }
+  function histText(h){
+    var note = pick(h.note);
+    switch (h.type){
+      case 'TRIGGER': return note;
+      case 'ALERT': return note;
+      case 'ACK': return L('Acknowledged alert', '已确认收到告警');
+      case 'ARRIVE': return L('Arrived on site', '到达现场查看');
+      case 'OBSERVE': return L('On-site observation: ', '现场观察：') + note;
+      case 'REQUEST_SUPPORT': return L('Requested support', '已请求支持') + (note ? ' — ' + note : '');
+      case 'ACCEPT_SUPPORT': return L('Charge nurse accepted (simulated)', '护士长已接手（模拟）');
+      case 'COMPLETE': return L('Care completed: ', '处理完成：') + note;
+      case 'AMEND': return L('Correction: ', '更正：') + note;
     }
-    document.getElementById("roomAlertBtn").style.display = r === "307" ? "flex" : "none";
-    location.hash = "#/s7";
+    return note || h.type;
   }
 
-  // ---- routing ----
-  const screens = ["s1","s2","s3","s4","s5","s6","s7"];
-  function route(){
-    const h = (location.hash || "#/s1").replace("#/","");
-    if (h === "s7" && !currentRoom) openRoom("307");
-    screens.forEach(s => document.getElementById(s).classList.toggle("active", s===h));
+  // ---- S5 event log, rendered from state ----
+  function statusTitle(ev){
+    return { 'new':L('New', '新告警'), acknowledged:L('Acknowledged', '已确认'),
+      on_site:L('Open · on site', '未结 · 已到场'), awaiting_support:L('Open · waiting for support', '未结 · 等待接手'),
+      in_care:L('Open · in care', '未结 · 处理中'), resolved:L('Resolved', '已闭环') }[ev.status];
   }
-  window.addEventListener("hashchange", route);
+  function renderS5(){
+    var ev = viewEvent();
+    var head = document.getElementById('s5Head');
+    head.setAttribute('data-event-id', ev.id);
+    head.setAttribute('data-status', ev.status);
+    document.getElementById('s5Title').textContent = (LANG === 'cn' ? ev.roomId + ' 房告警 · ' : 'Room ' + ev.roomId + ' alert · ') + statusTitle(ev);
+    document.getElementById('s5Clock').textContent = state.clock.slice(11, 16);
+    document.getElementById('s5Timeline').innerHTML = ev.history.map(function(h){
+      return '<div class="tl-item"><div class="tl-time">' + h.at.slice(11, 16) + '</div><div class="tl-body"><span class="' + tagCls(h.actor) + '">' + actorName(h.actor) + '</span>' + histText(h) + '</div></div>';
+    }).join('');
+    var html = '';
+    if (ev.status === 'on_site' || ev.status === 'in_care'){
+      if (!ev.observation){
+        html += '<div class="card" style="padding:14px 16px;margin:12px 0">'
+          + '<div class="t2">' + L('Record your on-site observation first', '请先记录现场观察') + '</div>'
+          + '<div class="t4" style="margin-top:6px;line-height:1.6">' + L('The event can only be completed after an on-site observation is recorded.', '记录现场观察之后，事件才能闭环。') + '</div>'
+          + '<textarea id="observeNote" placeholder="' + L('e.g., She is sitting on the floor, conscious, no visible injury', '例：老人坐在地上，意识清醒，未见外伤') + '" style="width:100%;margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:10px 12px;min-height:56px;resize:none;font-family:inherit"></textarea>'
+          + '<button class="btn btn-primary" style="height:48px;margin-top:10px" data-action="observe" onclick="doObserveNote()">' + L('Save observation', '保存现场观察') + '</button>'
+          + '</div>';
+      } else {
+        html += '<div class="card" style="padding:14px 16px;margin:12px 0">'
+        + '<div class="t2">' + L('Next step', '下一步') + '</div>'
+        + '<div class="t4" style="margin-top:6px;line-height:1.6">' + L('Observation recorded. When care is done, add a completion note to close the event — or request support if needed.', '现场观察已记录。处理完成后填写完成说明以闭环事件；需要时可请求支持。') + '</div>'
+        + '<textarea id="completeNote" placeholder="' + L('e.g., Assisted her back to bed; settled', '例：已协助回床，平稳') + '" style="width:100%;margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:10px 12px;min-height:56px;resize:none;font-family:inherit"></textarea>'
+        + '<button class="btn btn-confirm" style="height:48px;margin-top:10px" data-action="complete" onclick="doComplete()">' + L('✓ Mark care complete', '✓ 处理完成并闭环') + '</button>'
+        + (ev.status === 'on_site' ? '<button class="btn btn-escalate" style="height:44px;margin-top:8px;font-size:14px" data-action="request-support" onclick="doRequestSupport()">' + L('↑ Request support', '↑ 请求支持') + '</button>' : '')
+        + '</div>';
+      }
+    } else if (ev.status === 'awaiting_support'){
+      html += '<div class="card" style="padding:14px 16px;margin:12px 0">'
+        + '<div class="t2" style="color:var(--watch)">' + L('⏳ Support requested — waiting to be accepted', '⏳ 已请求支持——等待接手') + '</div>'
+        + '<div class="t4" style="margin-top:6px;line-height:1.6">' + L('This event stays open until the charge nurse accepts and care is explicitly completed.', '事件保持未结，直到负责人接手并明确完成处理。') + '</div>'
+        + '<button class="btn btn-quiet" style="height:44px;margin-top:10px" data-action="accept-support" onclick="doAcceptSupport()">' + L('Demo: simulate charge nurse accepting (no real message sent)', '演示：模拟负责人接手（不会通知真人）') + '</button>'
+        + '</div>';
+    } else if (ev.status === 'resolved'){
+      html += '<div class="s5-note">' + L('Event closed. The original record is kept; corrections are appended, never overwritten.', '事件已闭环。原记录保留；更正只追加，不覆盖。') + '</div>';
+    } else {
+      html += '<div class="s5-note">' + L('Next step: go on site and record your observation.', '下一步：到场核查并记录现场观察。') + '</div>';
+    }
+    if (ev.history.some(function(h){ return h.actor === 'caregiver-demo'; })){
+      html += '<button class="btn btn-quiet" style="height:40px;font-size:13px;margin:4px 0 8px" data-action="amend" onclick="openAmend()">' + L('Add a correction', '追加更正') + '</button>';
+    }
+    document.getElementById('s5Actions').innerHTML = html;
+  }
+
+  // ---- S6 shift summary, computed from records ----
+  function fmtMin(sec){
+    var m = Math.round(sec / 6) / 10;
+    return m.toString().replace(/\.0$/, '') + L(' min', ' 分钟');
+  }
+  function s6StatusText(ev){
+    var t = { 'new':L('New — not yet acknowledged', '新告警——尚未确认'),
+      acknowledged:L('Acknowledged', '已确认收到'),
+      on_site:L('On site, observation recorded', '已到场，已记录观察'),
+      awaiting_support:L('Waiting for support', '等待支持接手'),
+      in_care:L('In care', '处理中'),
+      resolved:L('Resolved', '已闭环') }[ev.status];
+    if (ev.status === 'resolved' && ev.observation) t += ' — ' + pick(ev.observation);
+    return t;
+  }
+  function renderS6(){
+    var sum = RoundMateState.summarize(state);
+    document.getElementById('statTotal').textContent = sum.total;
+    document.getElementById('statResolved').textContent = sum.resolved;
+    document.getElementById('statMean').textContent = sum.meanResponseSeconds === null ? '–' : fmtMin(sum.meanResponseSeconds);
+    document.getElementById('statOpen').textContent = sum.open;
+    var evs = Object.keys(state.events).map(function(k){ return state.events[k]; })
+      .sort(function(a,b){ return a.occurredAt < b.occurredAt ? -1 : 1; });
+    document.getElementById('s6Events').innerHTML = evs.map(function(ev){
+      return '<a class="tl-item" data-event-id="' + ev.id + '" data-status="' + ev.status + '" href="#/s5?event=' + ev.id + '"><div class="tl-time">' + ev.occurredAt.slice(11, 16) + '</div><div class="tl-body">' + (LANG === 'cn' ? ev.roomId + ' 房 · ' : 'Room ' + ev.roomId + ' · ') + s6StatusText(ev) + '</div></a>';
+    }).join('');
+    document.getElementById('s6Clock').textContent = state.clock.slice(11, 16);
+  }
+
+  // ---- S7 room detail, rendered from state ----
+  var currentRoom = null;
+  function renderRoom(r){
+    var room = state.rooms[r];
+    if (!room) return;
+    currentRoom = r;
+    document.getElementById('roomTitle').textContent = LANG === 'cn' ? r + ' 房' : 'Room ' + r;
+    document.getElementById('roomName').textContent = pick(room.name);
+    document.getElementById('roomMeta').textContent = (LANG === 'cn' ? room.age + ' 岁 · ' : 'Age ' + room.age + ' · ') + pick(room.unit);
+    document.getElementById('roomChips').innerHTML = room.chips[LANG].map(function(x){ return '<span class="chip">' + x + '</span>'; }).join('');
+    var openEv = null;
+    Object.keys(state.events).forEach(function(k){
+      var e = state.events[k];
+      if (e.roomId === r && e.status !== 'resolved') openEv = e;
+    });
+    var allOff = room.sensors.every(function(s){ return s.connection === 'offline'; });
+    var hasLimited = room.sensors.some(function(s){ return s.quality === 'limited'; });
+    var sensorNames = { bed:L('Bed-exit', '离床感应'), pir:L('Activity', '活动感应'), ir:L('In-room IR', '房内红外') };
+    var sensors = '<div class="sensor-row">' + room.sensors.map(function(s){
+      var nm = sensorNames[s.id];
+      if (s.connection === 'offline') return '<span class="lost">' + nm + ' ✕</span>';
+      if (s.quality === 'limited') return '<span class="lim">' + nm + ' ● ' + L('limited', '受限') + '</span>';
+      return '<span class="on">' + nm + ' ●</span>';
+    }).join('') + '</div>'
+      + '<div class="t4" style="margin-top:6px">' + L('Sensor data as of ', '传感器数据时间 ') + room.sensors[0].lastSeenAt.slice(11, 16) + L(' · simulated', ' · 模拟') + '</div>';
+    var notesHtml = room.notes.map(function(n){
+      return '<div class="detail" style="margin-top:6px">📝 ' + pick(n.text) + '<br><span style="color:var(--text3)">' + actorName(n.author) + ' · ' + n.at.slice(11, 16) + ' · ' + L('simulated note', '模拟备注') + '</span></div>';
+    }).join('');
+    var box = document.getElementById('roomStatus');
+    if (allOff){
+      var lastSeen = room.sensors[0].lastSeenAt;
+      box.innerHTML = '<div class="head" style="color:var(--alert)">' + L('○ Sensors offline', '○ 传感器离线') + '</div>'
+        + '<div class="detail">' + L('Last data received ', '最后收到数据 ') + lastSeen.slice(11, 16) + L(' · current status unknown', ' · 当前状态未知') + '</div>'
+        + '<div class="detail" style="color:var(--alert)">' + L("AI can't watch this room — add it to your walking rounds.", 'AI 无法监测该房间——请加入人工巡视。') + '</div>'
+        + notesHtml + sensors;
+    } else if (openEv){
+      var trig = null;
+      for (var i = 0; i < openEv.history.length; i++){
+        if (openEv.history[i].type === 'TRIGGER'){ trig = openEv.history[i]; break; }
+      }
+      box.innerHTML = '<div class="head" style="color:var(--watch)">' + L('▲ Active alert', '▲ 进行中的告警') + '</div>'
+        + '<div class="detail">' + L('Alert ', '告警 ') + openEv.occurredAt.slice(11, 16) + ' — ' + (trig ? pick(trig.note) : '') + '</div>'
+        + (hasLimited ? '<div class="detail" style="color:var(--watch)">⚠ ' + L('In-room IR signal limited — possible blind spot, same as shown on the alert', '房内红外信号受限——可能存在盲区（与告警页一致）') + '</div>' : '')
+        + notesHtml + sensors;
+    } else if (room.watch){
+      box.innerHTML = '<div class="head" style="color:var(--watch)">' + L('▲ Watch — AI keeping an eye', '▲ 留意——AI 重点关注中') + '</div>'
+        + '<div class="detail">' + pick(room.watch) + '</div>' + notesHtml + sensors;
+    } else {
+      box.innerHTML = '<div class="head" style="color:var(--ok-text)">' + L('● No new anomalies detected', '● 未检测到新异常') + '</div>'
+        + '<div class="detail">' + L('Sensor reference only — this does not confirm safety.', '仅传感器参考——不代表确认安全。') + '</div>' + notesHtml + sensors;
+    }
+    document.getElementById('roomAlertBtn').style.display = openEv ? 'flex' : 'none';
+  }
+  function openRoom(r){
+    if (!state.rooms[r]) return;
+    location.hash = '#/s7?room=' + encodeURIComponent(r);
+  }
+
+  // ---- routing: screens follow the validated URL, back links follow the entry path ----
+  var screens = ['s1','s2','s3','s4','s5','s6','s7'];
+  function setBack(screenId, hash, label){
+    var el = document.querySelector('#' + screenId + ' .back-link');
+    if (!el) return;
+    el.setAttribute('href', hash);
+    el.childNodes[el.childNodes.length - 1].nodeValue = label;
+  }
+  function route(){
+    var r = RoundMateRoute.resolveRoute(location.hash, Object.keys(state.rooms), Object.keys(state.events));
+    if (r.invalid){
+      showToast(L('Link not valid — back to overview', '链接无效——已返回总览'));
+      if ((location.hash || '#/s1') !== '#/s1'){ location.replace('#/s1'); return; }
+    }
+    if (r.eventId){ currentEventId = r.eventId; currentFrom = r.from; }
+    if (r.screen === 's1'){ currentEventId = null; currentFrom = null; }
+    if (r.screen === 's7') renderRoom(r.roomId);
+    if (r.screen === 's5') renderS5();
+    if (r.screen === 's6') renderS6();
+    if (r.screen === 's1') renderBeds();
+    if (currentFrom && currentFrom.indexOf('room:') === 0){
+      var rid = currentFrom.slice(5);
+      setBack('s2', '#/s7?room=' + rid, LANG === 'cn' ? rid + ' 房' : 'Room ' + rid);
+    } else {
+      setBack('s2', '#/s1', L('Overview', '总览'));
+    }
+    var q = currentEventId ? evQuery() : '';
+    setBack('s3', '#/s2' + q, L('Alert', '告警'));
+    setBack('s4', '#/s3' + q, L('Details', '详情'));
+    var ev = currentEventId ? state.events[currentEventId] : null;
+    if (ev && ev.status === 'resolved') setBack('s5', '#/s6', L('Events', '事件'));
+    else setBack('s5', '#/s4' + q, L('Your Call', '现场判断'));
+    screens.forEach(function(s){ document.getElementById(s).classList.toggle('active', s === r.screen); });
+  }
+  window.addEventListener('hashchange', route);
 
   // ---- day/night mode ----
-  let mode = localStorage.getItem("roundmate-mode") || "night";
   function applyMode(){
-    document.getElementById("app").classList.toggle("light", mode === "day");
-    document.querySelectorAll("[data-night]").forEach(el => {
-      el.textContent = mode === "day" ? el.dataset.day : el.dataset.night;
+    document.getElementById('app').classList.toggle('light', mode === 'day');
+    document.querySelectorAll('[data-night]').forEach(function(el){
+      el.textContent = mode === 'day' ? el.dataset.day : el.dataset.night;
     });
-    document.getElementById("themeBtn").textContent = mode === "day" ? "☀️" : "🌙";
-    if ((location.hash || "") === "#/s7" && currentRoom) openRoom(currentRoom);
+    var tb = document.getElementById('themeBtn');
+    tb.textContent = mode === 'day' ? '☀️' : '🌙';
+    tb.setAttribute('aria-label', mode === 'day' ? L('Switch to night shift demo', '切换到夜班演示') : L('Switch to day shift demo', '切换到白班演示'));
+    if (state.shift !== mode) state = loadState(mode);
+    renderAll();
+    var rr = RoundMateRoute.resolveRoute(location.hash, Object.keys(state.rooms), Object.keys(state.events));
+    if (rr.screen === 's7' && rr.roomId) renderRoom(rr.roomId);
   }
   function toggleMode(){
-    mode = mode === "day" ? "night" : "day";
-    localStorage.setItem("roundmate-mode", mode);
+    mode = mode === 'day' ? 'night' : 'day';
+    localStorage.setItem('roundmate-mode', mode);
     applyMode();
+    // an event id from the other shift must not survive the switch
+    var m = (location.hash || '').match(/^#\/(s[2-5])\?event=([^&]+)/);
+    if (m && !state.events[m[2]]){
+      currentEventId = state.shift + '-307';
+      location.replace('#/s2?event=' + currentEventId + (currentFrom ? '&from=' + currentFrom : ''));
+    }
   }
+  function renderAll(){ renderBeds(); renderS5(); renderS6(); if (currentRoom) renderRoom(currentRoom); }
   applyMode();
   route();
 
   // ---- toast ----
-  let toastTimer;
+  var toastTimer;
   function showToast(msg){
-    const t = document.getElementById("toast");
+    var t = document.getElementById('toast');
     t.textContent = msg;
-    t.style.display = "block";
+    t.style.display = 'block';
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { t.style.display = "none"; }, 2200);
+    toastTimer = setTimeout(function(){ t.style.display = 'none'; }, 2200);
   }
 
-  // ---- S4 decisions ----
-  function decide(text){
-    document.getElementById("decisionText").textContent = text;
-    location.hash = "#/s5";
-  }
-  function openSheet(){ document.getElementById("sheetMask").style.display="block";
-                        document.getElementById("sheet").style.display="block"; }
-  function closeSheet(){ document.getElementById("sheetMask").style.display="none";
-                         document.getElementById("sheet").style.display="none"; }
-  function submitOverride(){
-    const note = document.getElementById("overrideNote").value.trim();
-    decide("Override" + (note ? " · " + note : " · fall ruled out on site"));
-    closeSheet();
-  }
+  // ---- S4 override sheet ----
+  function openSheet(){ document.getElementById('sheetMask').style.display='block';
+                        document.getElementById('sheet').style.display='block'; }
+  function closeSheet(){ document.getElementById('sheetMask').style.display='none';
+                         document.getElementById('sheet').style.display='none'; }
 </script>
 </body>
 </html>
