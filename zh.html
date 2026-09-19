@@ -278,7 +278,7 @@
 <!-- ================= S2 告警触发 ================= -->
 <section class="screen" id="s2">
   <div class="topbar">
-    <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>总览</a><span class="t1">新告警</span></span>
+    <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1">新告警</span></span>
     <span class="clock"><span data-night="02:47" data-day="10:31">02:47</span></span>
   </div>
   <div class="alert-wrap">
@@ -300,7 +300,7 @@
 <!-- ================= S3 AI 建议与双层解释 ================= -->
 <section class="screen" id="s3">
   <div class="topbar">
-    <span class="s-head"><a class="back-link" href="#/s2"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>告警</a><span class="t1">307 房 · 安德森太太</span></span>
+    <span class="s-head"><a class="back-link" href="#/s2"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1">307 房 · 安德森太太</span></span>
     <span class="clock"><span data-night="02:48" data-day="10:32">02:48</span></span>
   </div>
   <div class="s3-scroll">
@@ -329,7 +329,7 @@
 <!-- ================= S4 人工控制 ================= -->
 <section class="screen" id="s4">
   <div class="topbar">
-    <span class="s-head"><a class="back-link" href="#/s3"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>详情</a><span class="t1">现场判断</span></span>
+    <span class="s-head"><a class="back-link" href="#/s3"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1">现场判断</span></span>
     <span class="clock"><span data-night="02:51" data-day="10:35">02:51</span></span>
   </div>
   <div class="s4-wrap">
@@ -357,7 +357,7 @@
 
 <!-- ================= S5 事后记录 ================= -->
 <section class="screen" id="s5">
-  <div class="topbar"><span class="s-head"><a class="back-link" href="#/s4"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>现场判断</a><span class="t1">事件记录</span></span><span class="clock" id="s5Clock">02:47</span></div>
+  <div class="topbar"><span class="s-head"><a class="back-link" href="#/s4"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1">事件记录</span></span><span class="clock" id="s5Clock">02:47</span></div>
   <div class="s5-scroll">
     <div class="record-head card" id="s5Head">
       <div class="title" id="s5Title">307 房告警 · 新告警</div>
@@ -420,7 +420,7 @@
 <!-- ================= S7 房间详情 ================= -->
 <section class="screen" id="s7">
   <div class="topbar">
-    <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>总览</a><span class="t1" id="roomTitle">301 房</span></span>
+    <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1" id="roomTitle">301 房</span></span>
     <span class="clock"><span data-night="02:41" data-day="10:23">02:41</span></span>
   </div>
   <div class="s7-scroll">
@@ -758,7 +758,7 @@
     var el = document.querySelector('#' + screenId + ' .back-link');
     if (!el) return;
     el.setAttribute('href', hash);
-    el.childNodes[el.childNodes.length - 1].nodeValue = label;
+    el.setAttribute('aria-label', label);
   }
   function route(){
     var r = RoundMateRoute.resolveRoute(location.hash, Object.keys(state.rooms), Object.keys(state.events));
