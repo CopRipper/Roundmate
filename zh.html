@@ -78,7 +78,9 @@
                padding:8px 12px 8px 0; margin:-4px 0 0 -4px; }
   .back-link svg { flex-shrink:0; }
   .clock { font-size:13px; color:var(--text2); font-variant-numeric:tabular-nums; }
-  .theme-toggle { cursor:pointer; font-size:14px; margin-right:8px; opacity:.85; }
+  .theme-toggle { cursor:pointer; margin-right:8px; width:36px; height:36px; border-radius:50%;
+                  background:var(--ai-soft); color:var(--ai); display:inline-flex; align-items:center; justify-content:center; }
+  .theme-toggle svg { width:20px; height:20px; }
   .tabbar { margin-top:auto; height:calc(64px + env(safe-area-inset-bottom,0px));
             padding-bottom:env(safe-area-inset-bottom,0px);
             background:var(--tabbar); display:flex; border-top:1px solid var(--line); }
@@ -101,7 +103,9 @@
   /* ===== S1 总览 ===== */
   .shift-card { margin:8px 16px 12px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; height:64px; gap:12px; }
   .shift-card .t3, .shift-card .t4, .ai-status .l1, .ai-status .l2 { white-space:nowrap; }
-  .ai-status { text-align:right; }
+  .ai-status { text-align:right; flex:none; }
+  .shift-card > div:first-child { min-width:0; }
+  .shift-card .t3, .shift-card .t4 { overflow:hidden; text-overflow:ellipsis; }
   .ai-status .l1 { font-size:13px; color:var(--ai-text); display:flex; align-items:center; gap:4px; justify-content:flex-end; }
   .ai-status .l2 { font-size:11px; color:var(--text2); margin-top:4px; font-variant-numeric:tabular-nums; }
   .grid-area { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
@@ -111,9 +115,8 @@
   .sort-toggle { cursor:pointer; font-size:11px; color:var(--ai-text); user-select:none;
                  border:1px solid var(--line-strong); border-radius:14px; padding:4px 12px;
                  background:var(--card); display:inline-flex; align-items:center; gap:4px; }
-  .sort-toggle .dot { width:6px; height:6px; border-radius:50%; background:var(--track); flex:none; }
-  .sort-toggle.on { border-color:var(--ai); background:var(--ai-soft); }
-  .sort-toggle.on .dot { background:var(--ai); }
+  .sort-toggle svg { width:14px; height:14px; }
+  .sort-toggle.on { border-color:var(--ai); background:var(--ai); color:#fff; }
   .sort-toggle:focus-visible { outline:2px solid var(--ai); outline-offset:2px; }
   .bed-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
   .bed { background:var(--card); border-radius:10px; padding:8px 4px;
@@ -259,7 +262,7 @@
 <section class="screen" id="s1">
   <div class="topbar">
     <div class="brand-heading"><img class="brand-logo" src="assets/roundmate-logo-a.png" width="36" height="36" alt=""><div class="brand-copy"><span class="brand-name">RoundMate</span><span class="brand-context" data-night="夜间总览" data-day="白班总览">夜间总览</span></div></div>
-    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()" role="button" tabindex="0" aria-label="切换到白班演示" onkeydown="if(event.key==='Enter')toggleMode()">🌙</span><span data-night="02:41" data-day="10:23">02:41</span></span>
+    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()" role="button" tabindex="0" aria-label="切换到白班演示" onkeydown="if(event.key==='Enter')toggleMode()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span><span data-night="02:41" data-day="10:23">02:41</span></span>
   </div>
   <div class="shift-card card">
     <div><div class="t3" style="font-weight:500" data-night="夜班 · 23:00–07:00" data-day="白班 · 07:00–15:00">夜班 · 23:00–07:00</div>
@@ -271,7 +274,7 @@
   </div>
   <div class="foot-note" style="padding:0 24px 8px; text-align:left">研究原型 · 所有居民、传感器与事件均为模拟。</div>
   <div class="grid-area">
-    <div class="section-head"><div class="name">东区 · 12 床</div><div class="sort-toggle" id="sortToggle" role="button" tabindex="0" aria-pressed="false" onclick="toggleSort()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleSort();}"><span class="dot"></span>按关注分组</div></div>
+    <div class="section-head"><div class="name">东区 · 12 床</div><div class="sort-toggle" id="sortToggle" role="button" tabindex="0" aria-pressed="false" onclick="toggleSort()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleSort();}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>按关注分组</div></div>
     <div class="bed-grid" id="grid-east"></div>
     <div class="section-head"><div class="name">西区 · 16 床</div><div></div></div>
     <div class="bed-grid" id="grid-west"></div>
@@ -847,13 +850,15 @@
   window.addEventListener('hashchange', route);
 
   // ---- 日/夜模式 ----
+  var ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+  var ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
   function applyMode(){
     document.getElementById('app').classList.toggle('light', mode === 'day');
     document.querySelectorAll('[data-night]').forEach(function(el){
       el.textContent = mode === 'day' ? el.dataset.day : el.dataset.night;
     });
     var tb = document.getElementById('themeBtn');
-    tb.textContent = mode === 'day' ? '☀️' : '🌙';
+    tb.innerHTML = mode === 'day' ? ICON_SUN : ICON_MOON;
     tb.setAttribute('aria-label', mode === 'day' ? L('Switch to night shift demo', '切换到夜班演示') : L('Switch to day shift demo', '切换到白班演示'));
     if (state.shift !== mode) state = loadState(mode);
     renderAll();
