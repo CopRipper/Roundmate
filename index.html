@@ -52,7 +52,7 @@
   }
 
   .screen { display:none; height:100%; flex-direction:column;
-            padding-top:calc(env(safe-area-inset-top, 0px) + 14px); }
+            padding-top:calc(env(safe-area-inset-top, 0px) + 16px); }
   .screen.active { display:flex; }
 
   /* ===== shared ===== */
@@ -71,21 +71,22 @@
   .ai-dot { width:8px; height:8px; border-radius:50%; background:var(--ai); display:inline-block;
             animation:breathe 2.6s ease-in-out infinite; }
   @keyframes breathe { 0%,100%{opacity:.45} 50%{opacity:1} }
-  .topbar { padding:8px 20px 10px; display:flex; justify-content:space-between; align-items:baseline; }
-  .s-head { display:flex; flex-direction:column; gap:2px; }
+  .topbar { padding:8px 20px; display:flex; justify-content:space-between; align-items:baseline; }
+  .s-head { display:flex; flex-direction:column; gap:4px; }
   .back-link { font-size:12px; color:var(--ai-text); text-decoration:none;
-               display:inline-flex; align-items:center; gap:5px;
-               padding:8px 14px 8px 0; margin:-4px 0 0 -4px; }
+               display:inline-flex; align-items:center; gap:4px;
+               padding:8px 12px 8px 0; margin:-4px 0 0 -4px; }
   .back-link svg { flex-shrink:0; }
   .clock { font-size:13px; color:var(--text2); font-variant-numeric:tabular-nums; }
-  .theme-toggle { cursor:pointer; font-size:14px; margin-right:10px; opacity:.85; }
+  .theme-toggle { cursor:pointer; font-size:14px; margin-right:8px; opacity:.85; }
   .tabbar { margin-top:auto; height:calc(64px + env(safe-area-inset-bottom,0px));
             padding-bottom:env(safe-area-inset-bottom,0px);
             background:var(--tabbar); display:flex; border-top:1px solid var(--line); }
   .tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
          font-size:11px; color:var(--text2); text-decoration:none; }
   .tab.active { color:var(--ai-text); }
-  .tab .ic { font-size:19px; line-height:1; }
+  .tab .ic { display:inline-flex; line-height:1; }
+  .tab .ic svg { width:22px; height:22px; }
   .demo-hint {
     position:absolute; bottom:calc(84px + env(safe-area-inset-bottom,0px)); left:50%; transform:translateX(-50%);
     background:var(--hint-bg); color:var(--ai-text); font-size:12px; padding:8px 16px; border-radius:20px;
@@ -98,24 +99,24 @@
   }
 
   /* ===== S1 overview ===== */
-  .shift-card { margin:6px 16px 14px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; height:64px; gap:12px; }
+  .shift-card { margin:8px 16px 12px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; height:64px; gap:12px; }
   .shift-card .t3, .shift-card .t4, .ai-status .l1, .ai-status .l2 { white-space:nowrap; }
   .ai-status { text-align:right; }
-  .ai-status .l1 { font-size:13px; color:var(--ai-text); display:flex; align-items:center; gap:6px; justify-content:flex-end; }
-  .ai-status .l2 { font-size:11px; color:var(--text2); margin-top:3px; font-variant-numeric:tabular-nums; }
+  .ai-status .l1 { font-size:13px; color:var(--ai-text); display:flex; align-items:center; gap:4px; justify-content:flex-end; }
+  .ai-status .l2 { font-size:11px; color:var(--text2); margin-top:4px; font-variant-numeric:tabular-nums; }
   .grid-area { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
   .grid-area::-webkit-scrollbar{ display:none; }
-  .section-head { display:flex; justify-content:space-between; align-items:center; margin:10px 2px 8px; }
+  .section-head { display:flex; justify-content:space-between; align-items:center; margin:12px 4px 8px; }
   .section-head .name { font-size:15px; font-weight:500; color:var(--text-strong); }
   .sort-toggle { cursor:pointer; font-size:11px; color:var(--ai-text); user-select:none;
-                 border:1px solid var(--line-strong); border-radius:14px; padding:4px 10px;
-                 background:var(--card); display:inline-flex; align-items:center; gap:6px; }
+                 border:1px solid var(--line-strong); border-radius:14px; padding:4px 12px;
+                 background:var(--card); display:inline-flex; align-items:center; gap:4px; }
   .sort-toggle .dot { width:6px; height:6px; border-radius:50%; background:var(--track); flex:none; }
   .sort-toggle.on { border-color:var(--ai); background:var(--ai-soft); }
   .sort-toggle.on .dot { background:var(--ai); }
   .sort-toggle:focus-visible { outline:2px solid var(--ai); outline-offset:2px; }
   .bed-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
-  .bed { background:var(--card); border-radius:10px; padding:9px 6px 8px;
+  .bed { background:var(--card); border-radius:10px; padding:8px 4px;
          display:flex; flex-direction:column; align-items:center; gap:4px;
          border:1px solid var(--line); }
   .bed .room { font-size:17px; font-weight:500; font-variant-numeric:tabular-nums; }
@@ -128,22 +129,22 @@
   a.bed:focus-visible, .theme-toggle:focus-visible { outline:2px solid var(--ai); outline-offset:2px; border-radius:10px; }
   a.tl-item { text-decoration:none; color:inherit; }
   a.tl-item:focus-visible { outline:2px solid var(--ai); outline-offset:-2px; }
-  .foot-note { font-size:11px; color:var(--text2); text-align:center; padding:16px 24px 10px; line-height:1.6; }
+  .foot-note { font-size:11px; color:var(--text2); text-align:center; padding:16px 24px 12px; line-height:1.6; }
 
   /* ===== S2 alert ===== */
   .alert-wrap { flex:1; display:flex; flex-direction:column; padding:0 16px; }
   .deliver-note { margin-top:4px; font-size:11px; color:var(--text2); text-align:center; }
   .alert-level {
-    margin:14px 0 12px; align-self:center; font-size:12px; color:var(--watch);
+    margin:16px 0 12px; align-self:center; font-size:12px; color:var(--watch);
     background:var(--watch-bg); border:1px solid var(--watch-border);
-    padding:5px 14px; border-radius:14px; letter-spacing:.5px;
+    padding:4px 16px; border-radius:14px; letter-spacing:.5px;
   }
-  .alert-card { padding:20px 18px; border-left:4px solid var(--watch); }
+  .alert-card { padding:20px; border-left:4px solid var(--watch); }
   .alert-card .who { font-size:22px; font-weight:600; }
-  .alert-card .what { font-size:15px; color:var(--text-strong); margin-top:6px; line-height:1.5; }
+  .alert-card .what { font-size:15px; color:var(--text-strong); margin-top:8px; line-height:1.5; }
   .conf-note { margin-top:8px; font-size:11px; color:var(--text2); }
-  .blind-note { margin-top:10px; font-size:12px; color:var(--watch); line-height:1.5; }
-  .alert-actions { margin-top:auto; padding-bottom:calc(24px + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column; gap:10px; }
+  .blind-note { margin-top:12px; font-size:12px; color:var(--watch); line-height:1.5; }
+  .alert-actions { margin-top:auto; padding-bottom:calc(24px + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column; gap:12px; }
   .btn-primary { background:var(--ai); color:#fff; font-weight:600; height:52px; }
   .btn-quiet { background:var(--btn-quiet-bg); height:44px; font-size:14px; color:var(--btn-quiet-text); }
 
@@ -159,7 +160,7 @@
   .fact-body { display:none; padding:0 16px 16px; }
   .fact-card.open .fact-body { display:block; }
   .fact-card.open .arrow { transform:rotate(90deg); }
-  .fact-item { display:flex; gap:10px; padding:9px 0; border-top:1px solid var(--line); font-size:13px; line-height:1.6; }
+  .fact-item { display:flex; gap:12px; padding:8px 0; border-top:1px solid var(--line); font-size:13px; line-height:1.6; }
   .fact-item .k { color:var(--text2); flex-shrink:0; width:88px; }
   .judge-first {
     margin-top:12px; padding:12px 16px; border:1px dashed var(--line-strong); border-radius:12px;
@@ -168,26 +169,26 @@
 
   /* ===== S4 human control ===== */
   .s4-wrap { flex:1; display:flex; flex-direction:column; padding:0 16px; }
-  .s4-summary { padding:14px 16px; margin-top:8px; font-size:13px; color:var(--text-strong); line-height:1.7; overflow-wrap:anywhere; }
+  .s4-summary { padding:16px; margin-top:8px; font-size:13px; color:var(--text-strong); line-height:1.7; overflow-wrap:anywhere; }
   .s4-summary b { color:var(--watch); font-weight:500; }
-  .s4-actions { margin-top:18px; display:flex; flex-direction:column; gap:12px; }
+  .s4-actions { margin-top:20px; display:flex; flex-direction:column; gap:12px; }
   .btn-confirm { background:var(--confirm); color:#fff; height:56px; }
   .btn-override { background:var(--card); border:1px solid var(--line-strong); height:56px; }
   .btn-escalate { background:var(--card); border:1px solid var(--line-strong); height:56px; color:var(--ai-text); }
-  .s4-note { margin-top:16px; font-size:12px; color:var(--text2); text-align:center; line-height:1.7; padding:0 10px; }
+  .s4-note { margin-top:16px; font-size:12px; color:var(--text2); text-align:center; line-height:1.7; padding:0 12px; }
   .sheet-mask { position:absolute; inset:0; background:rgba(0,0,0,.6); display:none; z-index:60; }
   .sheet {
     position:absolute; left:0; right:0; bottom:0; background:var(--card); border-radius:20px 20px 0 0;
-    padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px)); display:none; z-index:61;
+    padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px)); display:none; z-index:61;
   }
   .sheet .big { font-size:17px; font-weight:600; }
-  .sheet .msg { font-size:13px; color:var(--text2); margin-top:10px; line-height:1.7; }
+  .sheet .msg { font-size:13px; color:var(--text2); margin-top:12px; line-height:1.7; }
   .sheet textarea {
-    width:100%; margin-top:14px; background:var(--bg); border:1px solid var(--line); border-radius:10px;
-    color:var(--text); font-size:14px; padding:10px 12px; min-height:64px; resize:none; font-family:inherit;
+    width:100%; margin-top:16px; background:var(--bg); border:1px solid var(--line); border-radius:10px;
+    color:var(--text); font-size:14px; padding:12px; min-height:64px; resize:none; font-family:inherit;
   }
-  .sheet .row { display:flex; gap:10px; margin-top:14px; }
-  .sheet .row .btn { flex:1; height:46px; font-size:15px; }
+  .sheet .row { display:flex; gap:12px; margin-top:16px; }
+  .sheet .row .btn { flex:1; height:48px; font-size:15px; }
 
   /* ===== S5 record ===== */
   .s5-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
@@ -195,13 +196,13 @@
   .record-head { padding:16px; margin-top:8px; }
   .record-head .title { font-size:17px; font-weight:600; }
   .record-head .co { display:inline-block; margin-top:8px; font-size:11px; color:var(--ai);
-    background:var(--ai-soft); padding:4px 10px; border-radius:10px; }
+    background:var(--ai-soft); padding:4px 12px; border-radius:10px; }
   .timeline { margin-top:12px; padding:4px 16px 16px; }
   .tl-item { display:flex; gap:12px; padding:12px 0; border-top:1px solid var(--line); }
   .tl-item:first-child { border-top:none; }
   .tl-time { font-size:12px; color:var(--text2); width:44px; flex-shrink:0; font-variant-numeric:tabular-nums; padding-top:1px; }
   .tl-body { font-size:13px; line-height:1.6; }
-  .tl-body .tag { font-size:10px; color:var(--ai); border:1px solid var(--line-strong); border-radius:6px; padding:1px 6px; margin-right:6px; }
+  .tl-body .tag { font-size:10px; color:var(--ai); border:1px solid var(--line-strong); border-radius:6px; padding:4px 8px; margin-right:8px; }
   .tl-body .tag-human { color:var(--ok-border); border-color:var(--ok-border); }
   .s5-note { margin:12px 0; padding:12px 16px; background:var(--inset); border-radius:12px;
              font-size:12px; color:var(--text2); line-height:1.7; }
@@ -212,34 +213,43 @@
   .s6-scroll::-webkit-scrollbar{ display:none; }
   .summary-card { padding:16px; margin-top:8px; }
   .stat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px; }
-  .stat { background:var(--inset); border-radius:10px; padding:10px 12px; }
+  .stat { background:var(--inset); border-radius:10px; padding:12px; }
   .stat .v { font-size:18px; font-weight:600; font-variant-numeric:tabular-nums; }
-  .stat .k { font-size:11px; color:var(--text2); margin-top:2px; }
-  .export-note { font-size:11px; color:var(--text2); text-align:center; margin-top:10px; }
+  .stat .k { font-size:11px; color:var(--text2); margin-top:4px; }
+  .export-note { font-size:11px; color:var(--text2); text-align:center; margin-top:12px; }
   /* ===== S7 room detail ===== */
   .s7-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
   .s7-scroll::-webkit-scrollbar{ display:none; }
   .room-card { padding:16px; margin-top:8px; }
   .resident-name { font-size:18px; font-weight:600; }
-  .chip-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
   .chip { font-size:11px; color:var(--text2); background:var(--inset);
-          border:1px solid var(--line); border-radius:10px; padding:3px 9px; }
-  .room-status { margin-top:12px; padding:14px 16px; }
-  .room-status .head { font-size:14px; font-weight:600; display:flex; align-items:center; gap:7px; }
+          border:1px solid var(--line); border-radius:10px; padding:4px 8px; }
+  .room-status { margin-top:12px; padding:16px; }
+  .room-status .head { font-size:14px; font-weight:600; display:flex; align-items:center; gap:8px; }
   .room-status .detail { font-size:12px; color:var(--text2); margin-top:8px; line-height:1.7; }
-  .sensor-row { display:flex; gap:14px; margin-top:12px; padding-top:10px; border-top:1px solid var(--line);
+  .sensor-row { display:flex; gap:16px; margin-top:12px; padding-top:12px; border-top:1px solid var(--line);
                 font-size:11px; color:var(--text2); }
   .sensor-row .on { color:var(--ok-text); } .sensor-row .lost { color:var(--alert); }
   .sensor-row .lim { color:var(--watch); }
   .room-alert-btn { margin-top:12px; }
   /* Approved RoundMate A identity */
   #s1 > .topbar { align-items:center; gap:8px; }
-  .brand-heading { display:flex; align-items:center; gap:9px; min-width:0; }
+  .brand-heading { display:flex; align-items:center; gap:8px; min-width:0; }
   .brand-logo { width:36px; height:36px; border-radius:10px; flex-shrink:0; display:block; }
-  .brand-copy { display:flex; flex-direction:column; gap:2px; }
+  .brand-copy { display:flex; flex-direction:column; gap:4px; }
   .brand-name { font-size:16px; font-weight:600; letter-spacing:-.3px; line-height:1.2; }
   .brand-context { font-size:11px; color:var(--text2); line-height:1.25; }
   #s1 > .topbar > .clock { white-space:nowrap; flex-shrink:0; }
+
+  /* ===== S8 me ===== */
+  .me-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
+  .me-scroll::-webkit-scrollbar{ display:none; }
+  .me-profile { padding:16px; margin-top:8px; display:flex; align-items:center; gap:16px; }
+  .me-avatar { width:56px; height:56px; border-radius:50%; background:var(--ai-soft); color:var(--ai-text);
+               display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:600; flex:none; }
+  .me-card { padding:16px; margin-top:12px; }
+  .me-stats { grid-template-columns:repeat(3,1fr); }
 </style>
 </head>
 <body>
@@ -253,7 +263,7 @@
   </div>
   <div class="shift-card card">
     <div><div class="t3" style="font-weight:500" data-night="Night shift · 23:00–07:00" data-day="Day shift · 07:00–15:00">Night shift · 23:00–07:00</div>
-         <div class="t4" style="margin-top:3px" data-night="On duty: Wen · 28 residents" data-day="On duty: Wen + 2 · 28 residents">On duty: Wen · 28 residents</div></div>
+         <div class="t4" style="margin-top:4px" data-night="On duty: Wen · 28 residents" data-day="On duty: Wen + 2 · 28 residents">On duty: Wen · 28 residents</div></div>
     <div class="ai-status">
       <div class="l1"><span class="ai-dot"></span>AI monitoring</div>
       <div class="l2" data-night="Updated 02:40 · refreshes every 30 s" data-day="Updated 10:22 · refreshes every 30 s">Updated 02:40 · refreshes every 30 s</div>
@@ -268,9 +278,9 @@
     <div class="foot-note">Status from bed-exit and activity sensors — reference only, not a safety confirmation. Your rounds decide.</div>
   </div>
   <nav class="tabbar">
-    <a class="tab active" href="#/s1"><span class="ic">▦</span>Overview</a>
-    <a class="tab" href="#/s6"><span class="ic">☰</span>Events</a>
-    <a class="tab" href="javascript:void(0)" onclick="showToast('Profile &amp; notification settings — coming soon')"><span class="ic">◡</span>Me</a>
+    <a class="tab active" href="#/s1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Overview</a>
+    <a class="tab" href="#/s6"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><circle cx="4" cy="6" r="1.3"/><circle cx="4" cy="12" r="1.3"/><circle cx="4" cy="18" r="1.3"/></svg></span>Events</a>
+    <a class="tab" href="#/s8"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c1.3-3.6 4-5.4 7.2-5.4s5.9 1.8 7.2 5.4"/></svg></span>Me</a>
   </nav>
   <div class="demo-hint" data-night="▶ Demo: alert fires at 02:47" data-day="▶ Demo: alert fires at 10:31" onclick="goAlert('overview')">▶ Demo: alert fires at 02:47</div>
 </section>
@@ -372,9 +382,9 @@
     <div style="height:24px"></div>
   </div>
   <nav class="tabbar">
-    <a class="tab" href="#/s1"><span class="ic">▦</span>Overview</a>
-    <a class="tab active" href="#/s6"><span class="ic">☰</span>Events</a>
-    <a class="tab" href="javascript:void(0)" onclick="showToast('Profile &amp; notification settings — coming soon')"><span class="ic">◡</span>Me</a>
+    <a class="tab" href="#/s1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Overview</a>
+    <a class="tab active" href="#/s6"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><circle cx="4" cy="6" r="1.3"/><circle cx="4" cy="12" r="1.3"/><circle cx="4" cy="18" r="1.3"/></svg></span>Events</a>
+    <a class="tab" href="#/s8"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c1.3-3.6 4-5.4 7.2-5.4s5.9 1.8 7.2 5.4"/></svg></span>Me</a>
   </nav>
 </section>
 
@@ -402,7 +412,7 @@
         <div class="stat"><div class="v" id="statMean">–</div><div class="k">Avg response time</div></div>
         <div class="stat"><div class="v" id="statOpen" data-metric="open">–</div><div class="k">Open events</div></div>
       </div>
-      <button class="btn btn-primary" style="height:44px;font-size:14px;margin-top:14px" onclick="showToast('Prototype demo — export not enabled')">Export shift report (PDF)</button>
+      <button class="btn btn-primary" style="height:44px;font-size:14px;margin-top:16px" onclick="showToast('Prototype demo — export not enabled')">Export shift report (PDF)</button>
       <button class="btn btn-quiet" style="height:40px;font-size:13px;margin-top:8px" onclick="resetDemo()">Reset demo</button>
       <div class="export-note">Proposed rule, pending facility confirmation: records serve care quality and incident review only. Demo data.</div>
     </div>
@@ -411,9 +421,9 @@
     <div style="height:24px"></div>
   </div>
   <nav class="tabbar">
-    <a class="tab" href="#/s1"><span class="ic">▦</span>Overview</a>
-    <a class="tab active" href="#/s6"><span class="ic">☰</span>Events</a>
-    <a class="tab" href="javascript:void(0)" onclick="showToast('Profile &amp; notification settings — coming soon')"><span class="ic">◡</span>Me</a>
+    <a class="tab" href="#/s1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Overview</a>
+    <a class="tab active" href="#/s6"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><circle cx="4" cy="6" r="1.3"/><circle cx="4" cy="12" r="1.3"/><circle cx="4" cy="18" r="1.3"/></svg></span>Events</a>
+    <a class="tab" href="#/s8"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c1.3-3.6 4-5.4 7.2-5.4s5.9 1.8 7.2 5.4"/></svg></span>Me</a>
   </nav>
 </section>
 
@@ -433,6 +443,44 @@
     <button class="btn btn-primary room-alert-btn" id="roomAlertBtn" style="display:none" onclick="goAlert('room:' + currentRoom)">View active alert</button>
     <div style="height:24px"></div>
   </div>
+</section>
+
+<!-- ================= S8 Me ================= -->
+<section class="screen" id="s8">
+  <div class="topbar"><span class="t1">Me</span><span class="clock" id="s8Clock">02:41</span></div>
+  <div class="me-scroll">
+    <div class="card me-profile">
+      <div class="me-avatar">W</div>
+      <div>
+        <div class="t2" style="font-weight:600">Wen</div>
+        <div class="t4" style="margin-top:4px">Caregiver · Memory Care Unit</div>
+        <div class="t4" style="margin-top:4px">Simulated profile — demo data</div>
+      </div>
+    </div>
+    <div class="card me-card">
+      <div class="t2" style="font-weight:600" data-night="This shift · Night 23:00–07:00" data-day="This shift · Day 07:00–15:00">This shift · Night 23:00–07:00</div>
+      <div class="stat-grid me-stats">
+        <div class="stat"><div class="v" id="meOpen">–</div><div class="k">Open events</div></div>
+        <div class="stat"><div class="v" id="meResolved">–</div><div class="k">Resolved</div></div>
+        <div class="stat"><div class="v" id="meMean">–</div><div class="k">Avg response</div></div>
+      </div>
+    </div>
+    <div class="card me-card">
+      <div class="t2" style="font-weight:600">Demo tools</div>
+      <button class="btn btn-quiet" style="height:44px;font-size:14px;margin-top:12px" onclick="toggleMode()"><span data-night="Switch to day shift demo" data-day="Switch to night shift demo">Switch to day shift demo</span></button>
+      <button class="btn btn-quiet" style="height:44px;font-size:14px;margin-top:8px" onclick="resetDemo()">Reset demo data</button>
+    </div>
+    <div class="card me-card">
+      <div class="t2" style="font-weight:600">About</div>
+      <div class="t4" style="margin-top:8px;line-height:1.6">Research prototype · All residents, sensor readings and events are simulated. Rules referenced in this demo are proposed rules, pending facility confirmation.</div>
+    </div>
+    <div style="height:24px"></div>
+  </div>
+  <nav class="tabbar">
+    <a class="tab" href="#/s1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Overview</a>
+    <a class="tab" href="#/s6"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><circle cx="4" cy="6" r="1.3"/><circle cx="4" cy="12" r="1.3"/><circle cx="4" cy="18" r="1.3"/></svg></span>Events</a>
+    <a class="tab active" href="#/s8"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c1.3-3.6 4-5.4 7.2-5.4s5.9 1.8 7.2 5.4"/></svg></span>Me</a>
+  </nav>
 </section>
 
 <div class="toast" id="toast"></div>
@@ -633,26 +681,26 @@
     var html = '';
     if (ev.status === 'on_site' || ev.status === 'in_care'){
       if (!ev.observation){
-        html += '<div class="card" style="padding:14px 16px;margin:12px 0">'
+        html += '<div class="card" style="padding:16px;margin:12px 0">'
           + '<div class="t2">' + L('Record your on-site observation first', '请先记录现场观察') + '</div>'
-          + '<div class="t4" style="margin-top:6px;line-height:1.6">' + L('The event can only be completed after an on-site observation is recorded.', '记录现场观察之后，事件才能闭环。') + '</div>'
-          + '<textarea id="observeNote" placeholder="' + L('e.g., She is sitting on the floor, conscious, no visible injury', '例：老人坐在地上，意识清醒，未见外伤') + '" style="width:100%;margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:10px 12px;min-height:56px;resize:none;font-family:inherit"></textarea>'
-          + '<button class="btn btn-primary" style="height:48px;margin-top:10px" data-action="observe" onclick="doObserveNote()">' + L('Save observation', '保存现场观察') + '</button>'
+          + '<div class="t4" style="margin-top:8px;line-height:1.6">' + L('The event can only be completed after an on-site observation is recorded.', '记录现场观察之后，事件才能闭环。') + '</div>'
+          + '<textarea id="observeNote" placeholder="' + L('e.g., She is sitting on the floor, conscious, no visible injury', '例：老人坐在地上，意识清醒，未见外伤') + '" style="width:100%;margin-top:12px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:12px;min-height:56px;resize:none;font-family:inherit"></textarea>'
+          + '<button class="btn btn-primary" style="height:48px;margin-top:12px" data-action="observe" onclick="doObserveNote()">' + L('Save observation', '保存现场观察') + '</button>'
           + '</div>';
       } else {
-        html += '<div class="card" style="padding:14px 16px;margin:12px 0">'
+        html += '<div class="card" style="padding:16px;margin:12px 0">'
         + '<div class="t2">' + L('Next step', '下一步') + '</div>'
-        + '<div class="t4" style="margin-top:6px;line-height:1.6">' + L('Observation recorded. When care is done, add a completion note to close the event — or request support if needed.', '现场观察已记录。处理完成后填写完成说明以闭环事件；需要时可请求支持。') + '</div>'
-        + '<textarea id="completeNote" placeholder="' + L('e.g., Assisted her back to bed; settled', '例：已协助回床，平稳') + '" style="width:100%;margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:10px 12px;min-height:56px;resize:none;font-family:inherit"></textarea>'
-        + '<button class="btn btn-confirm" style="height:48px;margin-top:10px" data-action="complete" onclick="doComplete()">' + L('✓ Mark care complete', '✓ 处理完成并闭环') + '</button>'
+        + '<div class="t4" style="margin-top:8px;line-height:1.6">' + L('Observation recorded. When care is done, add a completion note to close the event — or request support if needed.', '现场观察已记录。处理完成后填写完成说明以闭环事件；需要时可请求支持。') + '</div>'
+        + '<textarea id="completeNote" placeholder="' + L('e.g., Assisted her back to bed; settled', '例：已协助回床，平稳') + '" style="width:100%;margin-top:12px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:12px;min-height:56px;resize:none;font-family:inherit"></textarea>'
+        + '<button class="btn btn-confirm" style="height:48px;margin-top:12px" data-action="complete" onclick="doComplete()">' + L('✓ Mark care complete', '✓ 处理完成并闭环') + '</button>'
         + (ev.status === 'on_site' ? '<button class="btn btn-escalate" style="height:44px;margin-top:8px;font-size:14px" data-action="request-support" onclick="doRequestSupport()">' + L('↑ Request support', '↑ 请求支持') + '</button>' : '')
         + '</div>';
       }
     } else if (ev.status === 'awaiting_support'){
-      html += '<div class="card" style="padding:14px 16px;margin:12px 0">'
+      html += '<div class="card" style="padding:16px;margin:12px 0">'
         + '<div class="t2" style="color:var(--watch)">' + L('⏳ Support requested — waiting to be accepted', '⏳ 已请求支持——等待接手') + '</div>'
-        + '<div class="t4" style="margin-top:6px;line-height:1.6">' + L('This event stays open until the charge nurse accepts and care is explicitly completed.', '事件保持未结，直到负责人接手并明确完成处理。') + '</div>'
-        + '<button class="btn btn-quiet" style="height:44px;margin-top:10px" data-action="accept-support" onclick="doAcceptSupport()">' + L('Demo: simulate charge nurse accepting (no real message sent)', '演示：模拟负责人接手（不会通知真人）') + '</button>'
+        + '<div class="t4" style="margin-top:8px;line-height:1.6">' + L('This event stays open until the charge nurse accepts and care is explicitly completed.', '事件保持未结，直到负责人接手并明确完成处理。') + '</div>'
+        + '<button class="btn btn-quiet" style="height:44px;margin-top:12px" data-action="accept-support" onclick="doAcceptSupport()">' + L('Demo: simulate charge nurse accepting (no real message sent)', '演示：模拟负责人接手（不会通知真人）') + '</button>'
         + '</div>';
     } else if (ev.status === 'resolved'){
       html += '<div class="s5-note">' + L('Event closed. The original record is kept; corrections are appended, never overwritten.', '事件已闭环。原记录保留；更正只追加，不覆盖。') + '</div>';
@@ -694,6 +742,15 @@
     document.getElementById('s6Clock').textContent = state.clock.slice(11, 16);
   }
 
+  // ---- S8 me: profile, shift stats from state, demo tools ----
+  function renderMe(){
+    var sum = RoundMateState.summarize(state);
+    document.getElementById('meOpen').textContent = sum.open;
+    document.getElementById('meResolved').textContent = sum.resolved;
+    document.getElementById('meMean').textContent = sum.meanResponseSeconds === null ? '–' : fmtMin(sum.meanResponseSeconds);
+    document.getElementById('s8Clock').textContent = state.clock.slice(11, 16);
+  }
+
   // ---- S7 room detail, rendered from state ----
   var currentRoom = null;
   function renderRoom(r){
@@ -718,9 +775,9 @@
       if (s.quality === 'limited') return '<span class="lim">' + nm + ' ● ' + L('limited', '受限') + '</span>';
       return '<span class="on">' + nm + ' ●</span>';
     }).join('') + '</div>'
-      + '<div class="t4" style="margin-top:6px">' + L('Sensor data as of ', '传感器数据时间 ') + room.sensors[0].lastSeenAt.slice(11, 16) + L(' · simulated', ' · 模拟') + '</div>';
+      + '<div class="t4" style="margin-top:8px">' + L('Sensor data as of ', '传感器数据时间 ') + room.sensors[0].lastSeenAt.slice(11, 16) + L(' · simulated', ' · 模拟') + '</div>';
     var notesHtml = room.notes.map(function(n){
-      return '<div class="detail" style="margin-top:6px">📝 ' + pick(n.text) + '<br><span style="color:var(--text3)">' + actorName(n.author) + ' · ' + n.at.slice(11, 16) + ' · ' + L('simulated note', '模拟备注') + '</span></div>';
+      return '<div class="detail" style="margin-top:8px">📝 ' + pick(n.text) + '<br><span style="color:var(--text3)">' + actorName(n.author) + ' · ' + n.at.slice(11, 16) + ' · ' + L('simulated note', '模拟备注') + '</span></div>';
     }).join('');
     var box = document.getElementById('roomStatus');
     if (allOff){
@@ -753,7 +810,7 @@
   }
 
   // ---- routing: screens follow the validated URL, back links follow the entry path ----
-  var screens = ['s1','s2','s3','s4','s5','s6','s7'];
+  var screens = ['s1','s2','s3','s4','s5','s6','s7','s8'];
   function setBack(screenId, hash, label){
     var el = document.querySelector('#' + screenId + ' .back-link');
     if (!el) return;
@@ -771,6 +828,7 @@
     if (r.screen === 's7') renderRoom(r.roomId);
     if (r.screen === 's5') renderS5();
     if (r.screen === 's6') renderS6();
+    if (r.screen === 's8') renderMe();
     if (r.screen === 's1') renderBeds();
     if (currentFrom && currentFrom.indexOf('room:') === 0){
       var rid = currentFrom.slice(5);
@@ -813,7 +871,7 @@
       location.replace('#/s2?event=' + currentEventId + (currentFrom ? '&from=' + currentFrom : ''));
     }
   }
-  function renderAll(){ renderBeds(); renderS5(); renderS6(); if (currentRoom) renderRoom(currentRoom); }
+  function renderAll(){ renderBeds(); renderS5(); renderS6(); renderMe(); if (currentRoom) renderRoom(currentRoom); }
   applyMode();
   route();
 

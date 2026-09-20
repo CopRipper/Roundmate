@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var SCREENS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7'];
+  var SCREENS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
   var EVENT_SCREENS = ['s2', 's3', 's4', 's5'];
 
   function invalid() {
