@@ -262,7 +262,7 @@
 <section class="screen" id="s1">
   <div class="topbar">
     <div class="brand-heading"><img class="brand-logo" src="assets/roundmate-logo-a.png" width="36" height="36" alt=""><div class="brand-copy"><span class="brand-name">RoundMate</span><span class="brand-context" data-night="夜间总览" data-day="白班总览">夜间总览</span></div></div>
-    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()" role="button" tabindex="0" aria-label="切换到白班演示" onkeydown="if(event.key==='Enter')toggleMode()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span><span data-night="02:41" data-day="10:23">02:41</span></span>
+    <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()" role="button" tabindex="0" aria-label="切换到白班演示" onkeydown="if(event.key==='Enter')toggleMode()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span><span id="s1Clock">02:41</span></span>
   </div>
   <div class="shift-card card">
     <div><div class="t3" style="font-weight:500" data-night="夜班 · 23:00–07:00" data-day="白班 · 07:00–15:00">夜班 · 23:00–07:00</div>
@@ -292,7 +292,7 @@
 <section class="screen" id="s2">
   <div class="topbar">
     <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1">新告警</span></span>
-    <span class="clock"><span data-night="02:47" data-day="10:31">02:47</span></span>
+    <span class="clock" id="s2Clock">02:47</span>
   </div>
   <div class="alert-wrap">
     <div class="deliver-note">🔔 演示：真实部署时将推送锁屏强提醒并持续震动</div>
@@ -314,7 +314,7 @@
 <section class="screen" id="s3">
   <div class="topbar">
     <span class="s-head"><a class="back-link" href="#/s2"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1">307 房 · 安德森太太</span></span>
-    <span class="clock"><span data-night="02:48" data-day="10:32">02:48</span></span>
+    <span class="clock" id="s3Clock">02:48</span>
   </div>
   <div class="s3-scroll">
     <div class="comfort-card card">
@@ -343,7 +343,7 @@
 <section class="screen" id="s4">
   <div class="topbar">
     <span class="s-head"><a class="back-link" href="#/s3"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1">现场判断</span></span>
-    <span class="clock"><span data-night="02:51" data-day="10:35">02:51</span></span>
+    <span class="clock" id="s4Clock">02:51</span>
   </div>
   <div class="s4-wrap">
     <div class="s4-summary card">AI 根据传感器模式提示<b>疑似跌倒</b>——尚未确认。请根据你的现场观察选择下一步；不确定时可请求支持。</div>
@@ -352,7 +352,7 @@
       <button class="btn btn-override" onclick="openSheet()">✋ 我在她身边——不是跌倒</button>
       <button class="btn btn-escalate" data-action="request-support" onclick="doEscalate()">↑ 升级给护士长</button>
     </div>
-    <div class="s4-note">驳回只需一次点击，可选留一句文字备注。<br>升级不是失职——往上永远有人。</div>
+    <div class="s4-note">驳回只需一次点击，可选留一句文字备注。<br>升级不是失职——请求支持永远是合理选择。</div>
   </div>
 </section>
 
@@ -434,7 +434,7 @@
 <section class="screen" id="s7">
   <div class="topbar">
     <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1" id="roomTitle">301 房</span></span>
-    <span class="clock"><span data-night="02:41" data-day="10:23">02:41</span></span>
+    <span class="clock" id="s7Clock">02:41</span>
   </div>
   <div class="s7-scroll">
     <div class="card room-card">
@@ -724,10 +724,12 @@
   function s6StatusText(ev){
     var t = { 'new':L('New — not yet acknowledged', '新告警——尚未确认'),
       acknowledged:L('Acknowledged', '已确认收到'),
-      on_site:L('On site, observation recorded', '已到场，已记录观察'),
       awaiting_support:L('Waiting for support', '等待支持接手'),
       in_care:L('In care', '处理中'),
       resolved:L('Resolved', '已闭环') }[ev.status];
+    if (ev.status === 'on_site') t = ev.observation
+      ? L('On site, observation recorded', '已到场，已记录观察')
+      : L('On site, no observation yet', '已到场，尚未记录观察');
     if (ev.status === 'resolved' && ev.observation) t += ' — ' + pick(ev.observation);
     return t;
   }
@@ -832,6 +834,7 @@
     if (r.screen === 's5') renderS5();
     if (r.screen === 's6') renderS6();
     if (r.screen === 's8') renderMe();
+    updateClocks();
     if (r.screen === 's1') renderBeds();
     if (currentFrom && currentFrom.indexOf('room:') === 0){
       var rid = currentFrom.slice(5);
@@ -876,7 +879,14 @@
       location.replace('#/s2?event=' + currentEventId + (currentFrom ? '&from=' + currentFrom : ''));
     }
   }
-  function renderAll(){ renderBeds(); renderS5(); renderS6(); renderMe(); if (currentRoom) renderRoom(currentRoom); }
+  function updateClocks(){
+    var t = state.clock.slice(11, 16);
+    ['s1Clock','s2Clock','s3Clock','s4Clock','s5Clock','s6Clock','s7Clock','s8Clock'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.textContent = t;
+    });
+  }
+  function renderAll(){ renderBeds(); renderS5(); renderS6(); renderMe(); if (currentRoom) renderRoom(currentRoom); updateClocks(); }
   applyMode();
   route();
 
