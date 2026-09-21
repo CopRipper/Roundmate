@@ -100,7 +100,7 @@
     },
     day: {
       '303': { en: 'Wandered toward the exit door twice this morning', cn: '今晨两次走向门口' },
-      '411': { en: 'Agitated during lunch · settled after one-on-one time', cn: '午餐时躁动 · 一对一陪伴后平稳' }
+      '411': { en: 'Agitated during morning activity · settled after one-on-one time', cn: '晨间活动时躁动 · 一对一陪伴后平稳' }
     }
   };
 
@@ -141,7 +141,7 @@
         occurredAt: '2026-09-18T02:47:00' + TZ,
         status: 'new', observation: null, support: null,
         history: [
-          histEntry('n307-t', 'TRIGGER', 'system', '2026-09-18T02:45:38' + TZ, { en: 'Bed-exit triggered, then no movement for 90 s', cn: '离床感应触发，90 秒无移动信号' }),
+          histEntry('n307-t', 'TRIGGER', 'system', '2026-09-18T02:45:30' + TZ, { en: 'Bed-exit triggered, then no movement for 90 s', cn: '离床感应触发，90 秒无移动信号' }),
           histEntry('n307-a', 'ALERT', 'ai', '2026-09-18T02:47:00' + TZ, { en: 'Medium-priority alert: possible fall (simulated inference)', cn: '中级告警：疑似跌倒（模拟推断）' })
         ]
       };

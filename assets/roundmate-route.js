@@ -59,6 +59,10 @@
       } else if (from && from.indexOf('room:') === 0) {
         var rid = from.slice(5);
         if (roomIds.indexOf(rid) >= 0) out.from = from;
+      } else if (from && from.indexOf('s9:') === 0) {
+        var fp = from.split(':');
+        if (fp.length === 3 && ['total', 'resolved', 'mean', 'open'].indexOf(fp[1]) >= 0 &&
+            (fp[2] === 'me' || fp[2] === 'summary')) out.from = from;
       }
       // unknown from values are dropped, never echoed back into the DOM
     }

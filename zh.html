@@ -285,7 +285,7 @@
          <div class="t4" style="margin-top:4px" data-night="当班：阿雯 · 负责 28 床" data-day="当班：阿雯 + 2 名同事 · 28 床">当班：阿雯 · 负责 28 床</div></div>
     <div class="ai-status">
       <div class="l1"><span class="ai-dot"></span>AI 监测中</div>
-      <div class="l2" data-night="更新于 02:40 · 每 30 秒刷新" data-day="更新于 10:22 · 每 30 秒刷新">更新于 02:40 · 每 30 秒刷新</div>
+      <div class="l2" data-night="模拟数据 · 演示时间随操作推进" data-day="模拟数据 · 演示时间随操作推进">模拟数据 · 演示时间随操作推进</div>
     </div>
   </div>
   <div class="foot-note" style="padding:0 24px 8px; text-align:left">研究原型 · 所有居民、传感器与事件均为模拟。</div>
@@ -307,7 +307,7 @@
 <!-- ================= S2 告警触发 ================= -->
 <section class="screen" id="s2">
   <div class="topbar">
-    <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1">新告警</span></span>
+    <span class="s-head"><a class="back-link" href="#/s1"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1">告警详情</span></span>
     <span class="clock" id="s2Clock">02:47</span>
   </div>
   <div class="alert-wrap">
@@ -342,13 +342,13 @@
         <span class="t2">触发依据（事实层）</span><span class="arrow">▸</span>
       </div>
       <div class="fact-body">
-        <div class="fact-item"><span class="k">直接触发</span><span data-night="离床感应 02:45:38 → 90 秒无移动信号" data-day="活动感应 10:29:12 → 异常静止">离床感应 02:45:38 → 90 秒无移动信号</span></div>
+        <div class="fact-item"><span class="k">直接触发</span><span data-night="离床感应 02:45:30 → 90 秒无移动信号" data-day="活动感应 10:29:12 → 异常静止">离床感应 02:45:30 → 90 秒无移动信号</span></div>
         <div class="fact-item"><span class="k">风险背景</span><span>近 7 天 1 次跌倒；服用抗凝药——致伤风险更高；认知症中期，夜间定向力差</span></div>
         <div class="fact-item"><span class="k">性质判断</span><span>由传感器模式推断——与跌倒特征相符，但不是确认</span></div>
         <div class="fact-item"><span class="k">数据缺失</span><span data-night="房内红外传感器今晚信号弱，可能存在盲区" data-day="房内传感器短暂被遮挡，可能存在盲区">房内红外传感器今晚信号弱，可能存在盲区</span></div>
       </div>
     </div>
-    <div class="judge-first">到现场后，先相信自己的眼睛。AI 的建议可以确认，也可以驳回——你的现场判断同样会被记录和尊重。</div>
+    <div class="judge-first">到现场后，先相信自己的眼睛。AI 的建议可以确认，也可以驳回——与 AI 建议不同的现场观察会保留在事件历史中。</div>
     <div style="height:12px"></div>
     <button class="btn btn-primary" data-action="arrive" onclick="doArrive()">我已到场，做出现场判断</button>
     <div style="height:24px"></div>
@@ -368,7 +368,7 @@
       <button class="btn btn-override" onclick="openSheet()">✋ 我在她身边——不是跌倒</button>
       <button class="btn btn-escalate" data-action="request-support" onclick="doEscalate()">↑ 升级给护士长</button>
     </div>
-    <div class="s4-note">驳回只需一次点击，可选留一句文字备注。<br>升级不是失职——请求支持永远是合理选择。</div>
+    <div class="s4-note">驳回只需一次点击，可选留一句文字备注。<br>不确定时可以请求支持；完成后续处理前，事件保持未结。</div>
   </div>
 </section>
 
@@ -428,7 +428,7 @@
       <div class="stat-grid">
         <a class="stat stat-link" href="#/s9?metric=total&from=summary"><div class="v" id="statTotal">–</div><div class="k">本班告警</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
         <a class="stat stat-link" href="#/s9?metric=resolved&from=summary"><div class="v" id="statResolved">–</div><div class="k">已闭环</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
-        <a class="stat stat-link" href="#/s9?metric=mean&from=summary"><div class="v" id="statMean">–</div><div class="k">平均响应时长</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s9?metric=mean&from=summary"><div class="v" id="statMean">–</div><div class="k">平均首次确认用时</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
         <a class="stat stat-link" href="#/s9?metric=open&from=summary"><div class="v" id="statOpen" data-metric="open">–</div><div class="k">未结事件</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
       </div>
       <button class="btn btn-primary" style="height:44px;font-size:14px;margin-top:16px" onclick="showToast('原型演示：导出功能未开放')">导出本班报告（PDF）</button>
@@ -481,8 +481,9 @@
       <div class="stat-grid me-stats">
         <a class="stat stat-link" href="#/s9?metric=open&from=me"><div class="v" id="meOpen">–</div><div class="k">未结事件</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
         <a class="stat stat-link" href="#/s9?metric=resolved&from=me"><div class="v" id="meResolved">–</div><div class="k">已闭环</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
-        <a class="stat stat-link" href="#/s9?metric=mean&from=me"><div class="v" id="meMean">–</div><div class="k">平均响应</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s9?metric=mean&from=me"><div class="v" id="meMean">–</div><div class="k">平均首次确认用时</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
       </div>
+      <div class="t4" style="margin-top:12px">本班演示记录——不构成个人绩效评价。</div>
     </div>
     <div class="card me-card">
       <div class="t2" style="font-weight:600">演示工具</div>
@@ -510,6 +511,7 @@
       <div class="mv" id="s9Value">–</div>
       <div class="mk" id="s9Label"></div>
       <div class="mn" id="s9Note"></div>
+      <div class="mn" style="margin-top:8px">模拟时长——演示时间随操作推进，并非真实计时。</div>
     </div>
     <div class="section-head"><div class="name" id="s9ListHead"></div><div></div></div>
     <div class="timeline card" id="s9List"></div>
@@ -555,6 +557,7 @@
   var currentEventId = null;
   var currentFrom = null;
   var s6Filter = null;
+  var s9From = null;
   function viewEvent(){ return state.events[currentEventId] || state.events[state.shift + '-307']; }
   function evQuery(){
     return '?event=' + viewEvent().id + (currentFrom ? '&from=' + currentFrom : '');
@@ -799,14 +802,15 @@
     var evs = Object.keys(state.events).map(function(k){ return state.events[k]; })
       .sort(function(a,b){ return a.occurredAt < b.occurredAt ? -1 : 1; });
     var sum = RoundMateState.summarize(state);
-    function ackSeconds(ev){
+    var origin = s9From === 'me' ? 'me' : 'summary';
+    function ackInfo(ev){
       for (var i = 0; i < ev.history.length; i++){
-        if (ev.history[i].type === 'ACK') return (Date.parse(ev.history[i].at) - Date.parse(ev.occurredAt)) / 1000;
+        if (ev.history[i].type === 'ACK') return { at: ev.history[i].at, sec: (Date.parse(ev.history[i].at) - Date.parse(ev.occurredAt)) / 1000 };
       }
       return null;
     }
     function row(ev, extra){
-      return '<a class="tl-item" data-event-id="' + ev.id + '" data-status="' + ev.status + '" href="#/s5?event=' + ev.id + '"><div class="tl-time">' + ev.occurredAt.slice(11, 16) + '</div><div class="tl-body">' + (LANG === 'cn' ? ev.roomId + ' 房 · ' : 'Room ' + ev.roomId + ' · ') + extra + '</div></a>';
+      return '<a class="tl-item" data-event-id="' + ev.id + '" data-status="' + ev.status + '" href="#/s5?event=' + ev.id + '&from=s9:' + metric + ':' + origin + '"><div class="tl-time">' + ev.occurredAt.slice(11, 16) + '</div><div class="tl-body">' + (LANG === 'cn' ? ev.roomId + ' 房 · ' : 'Room ' + ev.roomId + ' · ') + extra + '</div></a>';
     }
     var title, value, note, listHead, rows, more = '';
     if (metric === 'total'){
@@ -815,15 +819,15 @@
       note = L('AI-issued alerts this shift. Simulated data — not from real sensors or a real model.', '本班 AI 发布的告警总数。模拟数据——不来自真实传感器或模型。');
       listHead = L('All alerts', '全部告警');
       rows = evs.map(function(ev){ return row(ev, s6StatusText(ev)); }).join('');
-      if (!evs.length) rows = '<div class="empty-note">' + L('No alerts this shift yet.', '本班还没有告警。') + '</div>';
+      if (!evs.length) rows = '<div class="empty-note">' + L('No alerts this shift yet.', '本班暂无告警。') + '</div>';
     } else if (metric === 'resolved'){
       title = L('Resolved', '已闭环');
       value = String(sum.resolved);
-      note = L('Closed only after an on-site observation and a completion note.', '均已现场观察并填写处置说明后闭环。');
+      note = L('Closed means the demo workflow was completed — an on-site observation and a completion note exist. It does not mean a clinical issue is solved or the resident is safe.', '闭环仅表示演示流程完成——已有现场观察与完成说明；不代表临床问题已解决或老人已安全。');
       listHead = L('Resolved events', '已闭环事件');
       var res = evs.filter(function(ev){ return ev.status === 'resolved'; });
       rows = res.map(function(ev){ return row(ev, ev.observation ? pick(ev.observation) : s6StatusText(ev)); }).join('');
-      if (!res.length) rows = '<div class="empty-note">' + L('No resolved events yet this shift.', '本班还没有已闭环事件。') + '</div>';
+      if (!res.length) rows = '<div class="empty-note">' + L('No resolved events yet this shift.', '本班暂无已闭环事件。') + '</div>';
       more = '<a class="btn btn-quiet s9-more" style="height:40px;font-size:13px" href="#/s6?filter=resolved">' + L('Show in events list', '在事件列表中查看') + '</a>';
     } else if (metric === 'open'){
       title = L('Open events', '未结事件');
@@ -835,17 +839,29 @@
         var dur = Math.max(0, (Date.parse(state.clock) - Date.parse(ev.occurredAt)) / 1000);
         return row(ev, s6StatusText(ev) + L(' · open ', ' · 已持续 ') + fmtMin(dur));
       }).join('');
-      if (!open.length) rows = '<div class="empty-note">' + L('No open events — everything this shift is resolved.', '当前没有未结事件——本班全部已闭环。') + '</div>';
+      if (!open.length){
+        rows = evs.length
+          ? '<div class="empty-note">' + L('No open events — everything this shift is resolved.', '当前没有未结事件——本班全部已闭环。') + '</div>'
+          : '<div class="empty-note">' + L('No alerts this shift yet.', '本班暂无告警。') + '</div>';
+      }
       more = '<a class="btn btn-quiet s9-more" style="height:40px;font-size:13px" href="#/s6?filter=open">' + L('Show in events list', '在事件列表中查看') + '</a>';
     } else {
-      title = L('Avg response time', '平均响应时长');
+      title = L('Mean time to acknowledge', '平均首次确认用时');
       value = sum.meanResponseSeconds === null ? '–' : fmtMin(sum.meanResponseSeconds);
-      var acked = evs.filter(function(ev){ return ackSeconds(ev) !== null; });
-      note = L('Mean time from alert issued to first acknowledgment, over the ' + acked.length + ' acknowledged alert(s). Unacknowledged alerts are not counted.',
-        '从告警发出到首次确认的平均时长，仅统计已确认的 ' + acked.length + ' 起告警；未确认的不计入。');
-      listHead = L('Response per alert', '逐告警响应');
-      rows = acked.map(function(ev){ return row(ev, fmtMin(ackSeconds(ev))); }).join('');
-      if (!acked.length) rows = '<div class="empty-note">' + L('No acknowledged alerts yet this shift.', '本班还没有已确认的告警。') + '</div>';
+      var acked = evs.filter(function(ev){ return ackInfo(ev) !== null; });
+      var unacked = evs.filter(function(ev){ return ackInfo(ev) === null; });
+      note = L('Mean time from alert issued to first acknowledgment — covering ' + acked.length + ' of ' + evs.length + ' alert(s). First acknowledgment is not arrival or completion.',
+        '从告警发出到首次确认的平均用时——覆盖 ' + evs.length + ' 起告警中的 ' + acked.length + ' 起。首次确认不代表到场或处置完成。');
+      listHead = L('Time to acknowledge per alert', '逐告警确认用时');
+      rows = acked.map(function(ev){
+        var ai = ackInfo(ev);
+        return row(ev, ev.occurredAt.slice(11, 16) + ' → ' + ai.at.slice(11, 16) + ' · ' + fmtMin(ai.sec));
+      }).join('');
+      if (!acked.length) rows = '<div class="empty-note">' + L('No acknowledged alerts yet this shift — the mean is not computable.', '本班暂无已确认的告警——均值不可计算。') + '</div>';
+      if (unacked.length){
+        more = '<div class="section-head"><div class="name">' + L('Not yet acknowledged — not counted', '尚未确认——不计入均值') + '</div><div></div></div>'
+          + '<div class="timeline card">' + unacked.map(function(ev){ return row(ev, s6StatusText(ev)); }).join('') + '</div>';
+      }
     }
     document.getElementById('s9Title').textContent = title;
     document.getElementById('s9Value').textContent = value;
@@ -943,7 +959,7 @@
     if (r.screen === 's5') renderS5();
     if (r.screen === 's6'){ s6Filter = r.filter; renderS6(); }
     if (r.screen === 's8') renderMe();
-    if (r.screen === 's9') renderS9(r.metric);
+    if (r.screen === 's9'){ s9From = r.from; renderS9(r.metric); }
     updateClocks();
     if (r.screen === 's1') renderBeds();
     if (currentFrom && currentFrom.indexOf('room:') === 0){
@@ -956,7 +972,10 @@
     setBack('s3', '#/s2' + q, L('Alert', '告警'));
     setBack('s4', '#/s3' + q, L('Details', '详情'));
     var ev = currentEventId ? state.events[currentEventId] : null;
-    if (ev && ev.status === 'resolved') setBack('s5', '#/s6', L('Events', '事件'));
+    if (currentFrom && currentFrom.indexOf('s9:') === 0){
+      var fp9 = currentFrom.split(':');
+      setBack('s5', '#/s9?metric=' + fp9[1] + '&from=' + fp9[2], L('Metric detail', '指标详情'));
+    } else if (ev && ev.status === 'resolved') setBack('s5', '#/s6', L('Events', '事件'));
     else setBack('s5', '#/s4' + q, L('Your Call', '现场判断'));
     setBack('s9', r.from === 'me' ? '#/s8' : '#/s6', r.from === 'me' ? L('Me', '我的') : L('Summary', '汇总'));
     screens.forEach(function(s){ document.getElementById(s).classList.toggle('active', s === r.screen); });
