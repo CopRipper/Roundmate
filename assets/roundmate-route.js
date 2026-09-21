@@ -5,11 +5,11 @@
 (function () {
   'use strict';
 
-  var SCREENS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'];
+  var SCREENS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9'];
   var EVENT_SCREENS = ['s2', 's3', 's4', 's5'];
 
   function invalid() {
-    return { screen: 's1', roomId: null, eventId: null, from: null, filter: null, invalid: true };
+    return { screen: 's1', roomId: null, eventId: null, from: null, filter: null, metric: null, invalid: true };
   }
 
   // resolveRoute(hash, roomIds, eventIds)
@@ -26,7 +26,16 @@
     }
     if (SCREENS.indexOf(path) < 0) return invalid();
 
-    var out = { screen: path, roomId: null, eventId: null, from: null, filter: null, invalid: false };
+    var out = { screen: path, roomId: null, eventId: null, from: null, filter: null, metric: null, invalid: false };
+
+    if (path === 's9') {
+      var m = params.get('metric');
+      if (['total', 'resolved', 'mean', 'open'].indexOf(m) < 0) return invalid();
+      out.metric = m;
+      var f9 = params.get('from');
+      if (f9 === 'summary' || f9 === 'me') out.from = f9;
+      // unknown from values are dropped, never echoed back into the DOM
+    }
 
     if (path === 's7') {
       var room = params.get('room');

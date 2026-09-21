@@ -228,6 +228,13 @@
   .filter-chip svg { width:12px; height:12px; }
   .filter-chip:focus-visible { outline:2px solid var(--ai); outline-offset:2px; }
   .empty-note { padding:16px; font-size:13px; color:var(--text2); text-align:center; }
+  .s9-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
+  .s9-scroll::-webkit-scrollbar{ display:none; }
+  .metric-hero { padding:16px; margin-top:8px; }
+  .metric-hero .mv { font-size:28px; font-weight:600; font-variant-numeric:tabular-nums; color:var(--text-strong); }
+  .metric-hero .mk { font-size:12px; color:var(--text2); margin-top:4px; }
+  .metric-hero .mn { font-size:11px; color:var(--text2); margin-top:12px; line-height:1.6; }
+  a.s9-more { display:flex; align-items:center; justify-content:center; text-decoration:none; margin-top:12px; }
   .export-note { font-size:11px; color:var(--text2); text-align:center; margin-top:12px; }
   /* ===== S7 room detail ===== */
   .s7-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
@@ -419,10 +426,10 @@
     <div class="summary-card card">
       <div class="t2" style="font-weight:600" data-night="Night shift · 23:00–07:00" data-day="Day shift · 07:00–15:00">Night shift · 23:00–07:00</div>
       <div class="stat-grid">
-        <div class="stat"><div class="v" id="statTotal">–</div><div class="k">Alerts this shift</div></div>
-        <div class="stat"><div class="v" id="statResolved">–</div><div class="k">Resolved</div></div>
-        <div class="stat"><div class="v" id="statMean">–</div><div class="k">Avg response time</div></div>
-        <div class="stat"><div class="v" id="statOpen" data-metric="open">–</div><div class="k">Open events</div></div>
+        <a class="stat stat-link" href="#/s9?metric=total&from=summary"><div class="v" id="statTotal">–</div><div class="k">Alerts this shift</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s9?metric=resolved&from=summary"><div class="v" id="statResolved">–</div><div class="k">Resolved</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s9?metric=mean&from=summary"><div class="v" id="statMean">–</div><div class="k">Avg response time</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s9?metric=open&from=summary"><div class="v" id="statOpen" data-metric="open">–</div><div class="k">Open events</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
       </div>
       <button class="btn btn-primary" style="height:44px;font-size:14px;margin-top:16px" onclick="showToast('Prototype demo — export not enabled')">Export shift report (PDF)</button>
       <button class="btn btn-quiet" style="height:40px;font-size:13px;margin-top:8px" onclick="resetDemo()">Reset demo</button>
@@ -472,9 +479,9 @@
     <div class="card me-card">
       <div class="t2" style="font-weight:600" data-night="This shift · Night 23:00–07:00" data-day="This shift · Day 07:00–15:00">This shift · Night 23:00–07:00</div>
       <div class="stat-grid me-stats">
-        <a class="stat stat-link" href="#/s6?filter=open"><div class="v" id="meOpen">–</div><div class="k">Open events</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
-        <a class="stat stat-link" href="#/s6?filter=resolved"><div class="v" id="meResolved">–</div><div class="k">Resolved</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
-        <a class="stat stat-link" href="#/s6"><div class="v" id="meMean">–</div><div class="k">Avg response</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s9?metric=open&from=me"><div class="v" id="meOpen">–</div><div class="k">Open events</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s9?metric=resolved&from=me"><div class="v" id="meResolved">–</div><div class="k">Resolved</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s9?metric=mean&from=me"><div class="v" id="meMean">–</div><div class="k">Avg response</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
       </div>
     </div>
     <div class="card me-card">
@@ -493,6 +500,22 @@
     <a class="tab" href="#/s6"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><circle cx="4" cy="6" r="1.3"/><circle cx="4" cy="12" r="1.3"/><circle cx="4" cy="18" r="1.3"/></svg></span>Events</a>
     <a class="tab active" href="#/s8"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c1.3-3.6 4-5.4 7.2-5.4s5.9 1.8 7.2 5.4"/></svg></span>Me</a>
   </nav>
+</section>
+
+<!-- ================= S9 Metric detail ================= -->
+<section class="screen" id="s9">
+  <div class="topbar"><span class="s-head"><a class="back-link" href="#/s6" aria-label="Back"><svg width="8" height="14" viewBox="0 0 8 14"><path d="M7 1 L1 7 L7 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="t1" id="s9Title">Detail</span></span><span class="clock" id="s9Clock">02:41</span></div>
+  <div class="s9-scroll">
+    <div class="card metric-hero">
+      <div class="mv" id="s9Value">–</div>
+      <div class="mk" id="s9Label"></div>
+      <div class="mn" id="s9Note"></div>
+    </div>
+    <div class="section-head"><div class="name" id="s9ListHead"></div><div></div></div>
+    <div class="timeline card" id="s9List"></div>
+    <div id="s9More"></div>
+    <div style="height:24px"></div>
+  </div>
 </section>
 
 <div class="toast" id="toast"></div>
@@ -771,6 +794,69 @@
   }
 
   // ---- S8 me: profile, shift stats from state, demo tools ----
+  // ---- S9 metric detail: per-metric breakdown, all computed from state ----
+  function renderS9(metric){
+    var evs = Object.keys(state.events).map(function(k){ return state.events[k]; })
+      .sort(function(a,b){ return a.occurredAt < b.occurredAt ? -1 : 1; });
+    var sum = RoundMateState.summarize(state);
+    function ackSeconds(ev){
+      for (var i = 0; i < ev.history.length; i++){
+        if (ev.history[i].type === 'ACK') return (Date.parse(ev.history[i].at) - Date.parse(ev.occurredAt)) / 1000;
+      }
+      return null;
+    }
+    function row(ev, extra){
+      return '<a class="tl-item" data-event-id="' + ev.id + '" data-status="' + ev.status + '" href="#/s5?event=' + ev.id + '"><div class="tl-time">' + ev.occurredAt.slice(11, 16) + '</div><div class="tl-body">' + (LANG === 'cn' ? ev.roomId + ' 房 · ' : 'Room ' + ev.roomId + ' · ') + extra + '</div></a>';
+    }
+    var title, value, note, listHead, rows, more = '';
+    if (metric === 'total'){
+      title = L('Alerts this shift', '本班告警');
+      value = String(sum.total);
+      note = L('AI-issued alerts this shift. Simulated data — not from real sensors or a real model.', '本班 AI 发布的告警总数。模拟数据——不来自真实传感器或模型。');
+      listHead = L('All alerts', '全部告警');
+      rows = evs.map(function(ev){ return row(ev, s6StatusText(ev)); }).join('');
+      if (!evs.length) rows = '<div class="empty-note">' + L('No alerts this shift yet.', '本班还没有告警。') + '</div>';
+    } else if (metric === 'resolved'){
+      title = L('Resolved', '已闭环');
+      value = String(sum.resolved);
+      note = L('Closed only after an on-site observation and a completion note.', '均已现场观察并填写处置说明后闭环。');
+      listHead = L('Resolved events', '已闭环事件');
+      var res = evs.filter(function(ev){ return ev.status === 'resolved'; });
+      rows = res.map(function(ev){ return row(ev, ev.observation ? pick(ev.observation) : s6StatusText(ev)); }).join('');
+      if (!res.length) rows = '<div class="empty-note">' + L('No resolved events yet this shift.', '本班还没有已闭环事件。') + '</div>';
+      more = '<a class="btn btn-quiet s9-more" style="height:40px;font-size:13px" href="#/s6?filter=resolved">' + L('Show in events list', '在事件列表中查看') + '</a>';
+    } else if (metric === 'open'){
+      title = L('Open events', '未结事件');
+      value = String(sum.open);
+      note = L('Open means not yet resolved — includes acknowledged, on-site and support-waiting events.', '未结表示尚未闭环——包括已确认、已到场和等待支持的事件。');
+      listHead = L('Open now', '当前未结');
+      var open = evs.filter(function(ev){ return ev.status !== 'resolved'; });
+      rows = open.map(function(ev){
+        var dur = Math.max(0, (Date.parse(state.clock) - Date.parse(ev.occurredAt)) / 1000);
+        return row(ev, s6StatusText(ev) + L(' · open ', ' · 已持续 ') + fmtMin(dur));
+      }).join('');
+      if (!open.length) rows = '<div class="empty-note">' + L('No open events — everything this shift is resolved.', '当前没有未结事件——本班全部已闭环。') + '</div>';
+      more = '<a class="btn btn-quiet s9-more" style="height:40px;font-size:13px" href="#/s6?filter=open">' + L('Show in events list', '在事件列表中查看') + '</a>';
+    } else {
+      title = L('Avg response time', '平均响应时长');
+      value = sum.meanResponseSeconds === null ? '–' : fmtMin(sum.meanResponseSeconds);
+      var acked = evs.filter(function(ev){ return ackSeconds(ev) !== null; });
+      note = L('Mean time from alert issued to first acknowledgment, over the ' + acked.length + ' acknowledged alert(s). Unacknowledged alerts are not counted.',
+        '从告警发出到首次确认的平均时长，仅统计已确认的 ' + acked.length + ' 起告警；未确认的不计入。');
+      listHead = L('Response per alert', '逐告警响应');
+      rows = acked.map(function(ev){ return row(ev, fmtMin(ackSeconds(ev))); }).join('');
+      if (!acked.length) rows = '<div class="empty-note">' + L('No acknowledged alerts yet this shift.', '本班还没有已确认的告警。') + '</div>';
+    }
+    document.getElementById('s9Title').textContent = title;
+    document.getElementById('s9Value').textContent = value;
+    document.getElementById('s9Label').textContent = title;
+    document.getElementById('s9Note').textContent = note;
+    document.getElementById('s9ListHead').textContent = listHead;
+    document.getElementById('s9List').innerHTML = rows;
+    document.getElementById('s9More').innerHTML = more;
+    document.getElementById('s9Clock').textContent = state.clock.slice(11, 16);
+  }
+
   function renderMe(){
     var sum = RoundMateState.summarize(state);
     document.getElementById('meOpen').textContent = sum.open;
@@ -838,7 +924,7 @@
   }
 
   // ---- routing: screens follow the validated URL, back links follow the entry path ----
-  var screens = ['s1','s2','s3','s4','s5','s6','s7','s8'];
+  var screens = ['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
   function setBack(screenId, hash, label){
     var el = document.querySelector('#' + screenId + ' .back-link');
     if (!el) return;
@@ -857,6 +943,7 @@
     if (r.screen === 's5') renderS5();
     if (r.screen === 's6'){ s6Filter = r.filter; renderS6(); }
     if (r.screen === 's8') renderMe();
+    if (r.screen === 's9') renderS9(r.metric);
     updateClocks();
     if (r.screen === 's1') renderBeds();
     if (currentFrom && currentFrom.indexOf('room:') === 0){
@@ -871,6 +958,7 @@
     var ev = currentEventId ? state.events[currentEventId] : null;
     if (ev && ev.status === 'resolved') setBack('s5', '#/s6', L('Events', '事件'));
     else setBack('s5', '#/s4' + q, L('Your Call', '现场判断'));
+    setBack('s9', r.from === 'me' ? '#/s8' : '#/s6', r.from === 'me' ? L('Me', '我的') : L('Summary', '汇总'));
     screens.forEach(function(s){ document.getElementById(s).classList.toggle('active', s === r.screen); });
   }
   window.addEventListener('hashchange', route);
@@ -904,7 +992,7 @@
   }
   function updateClocks(){
     var t = state.clock.slice(11, 16);
-    ['s1Clock','s2Clock','s3Clock','s4Clock','s5Clock','s6Clock','s7Clock','s8Clock'].forEach(function(id){
+    ['s1Clock','s2Clock','s3Clock','s4Clock','s5Clock','s6Clock','s7Clock','s8Clock','s9Clock'].forEach(function(id){
       var el = document.getElementById(id);
       if (el) el.textContent = t;
     });
