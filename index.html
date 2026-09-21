@@ -219,6 +219,15 @@
   .stat { background:var(--inset); border-radius:10px; padding:12px; }
   .stat .v { font-size:18px; font-weight:600; font-variant-numeric:tabular-nums; }
   .stat .k { font-size:11px; color:var(--text2); margin-top:4px; }
+  a.stat { display:block; color:inherit; text-decoration:none; }
+  a.stat:focus-visible { outline:2px solid var(--ai); outline-offset:2px; }
+  .stat-link { position:relative; }
+  .stat-link:active { opacity:.72; }
+  .stat-link .stat-go { position:absolute; top:12px; right:12px; width:10px; height:10px; color:var(--text2); }
+  .filter-chip { display:inline-flex; align-items:center; gap:4px; font-size:12px; color:var(--ai-text); background:var(--ai-soft); border-radius:999px; padding:4px 8px 4px 12px; text-decoration:none; }
+  .filter-chip svg { width:12px; height:12px; }
+  .filter-chip:focus-visible { outline:2px solid var(--ai); outline-offset:2px; }
+  .empty-note { padding:16px; font-size:13px; color:var(--text2); text-align:center; }
   .export-note { font-size:11px; color:var(--text2); text-align:center; margin-top:12px; }
   /* ===== S7 room detail ===== */
   .s7-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
@@ -419,7 +428,7 @@
       <button class="btn btn-quiet" style="height:40px;font-size:13px;margin-top:8px" onclick="resetDemo()">Reset demo</button>
       <div class="export-note">Proposed rule, pending facility confirmation: records serve care quality and incident review only. Demo data.</div>
     </div>
-    <div class="section-head"><div class="name">Events this shift</div><div></div></div>
+    <div class="section-head"><div class="name">Events this shift</div><div id="s6FilterSlot"></div></div>
     <div class="timeline card" id="s6Events"></div>
     <div style="height:24px"></div>
   </div>
@@ -463,9 +472,9 @@
     <div class="card me-card">
       <div class="t2" style="font-weight:600" data-night="This shift · Night 23:00–07:00" data-day="This shift · Day 07:00–15:00">This shift · Night 23:00–07:00</div>
       <div class="stat-grid me-stats">
-        <div class="stat"><div class="v" id="meOpen">–</div><div class="k">Open events</div></div>
-        <div class="stat"><div class="v" id="meResolved">–</div><div class="k">Resolved</div></div>
-        <div class="stat"><div class="v" id="meMean">–</div><div class="k">Avg response</div></div>
+        <a class="stat stat-link" href="#/s6?filter=open"><div class="v" id="meOpen">–</div><div class="k">Open events</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s6?filter=resolved"><div class="v" id="meResolved">–</div><div class="k">Resolved</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <a class="stat stat-link" href="#/s6"><div class="v" id="meMean">–</div><div class="k">Avg response</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
       </div>
     </div>
     <div class="card me-card">
@@ -522,6 +531,7 @@
   }
   var currentEventId = null;
   var currentFrom = null;
+  var s6Filter = null;
   function viewEvent(){ return state.events[currentEventId] || state.events[state.shift + '-307']; }
   function evQuery(){
     return '?event=' + viewEvent().id + (currentFrom ? '&from=' + currentFrom : '');
@@ -741,9 +751,22 @@
     document.getElementById('statOpen').textContent = sum.open;
     var evs = Object.keys(state.events).map(function(k){ return state.events[k]; })
       .sort(function(a,b){ return a.occurredAt < b.occurredAt ? -1 : 1; });
-    document.getElementById('s6Events').innerHTML = evs.map(function(ev){
+    if (s6Filter === 'open') evs = evs.filter(function(ev){ return ev.status !== 'resolved'; });
+    if (s6Filter === 'resolved') evs = evs.filter(function(ev){ return ev.status === 'resolved'; });
+    var slot = document.getElementById('s6FilterSlot');
+    if (s6Filter){
+      var fLabel = s6Filter === 'open' ? L('Open only', '仅未结') : L('Resolved only', '仅已闭环');
+      slot.innerHTML = '<a class="filter-chip" href="#/s6">' + fLabel + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>';
+    } else {
+      slot.innerHTML = '';
+    }
+    document.getElementById('s6Events').innerHTML = evs.length ? evs.map(function(ev){
       return '<a class="tl-item" data-event-id="' + ev.id + '" data-status="' + ev.status + '" href="#/s5?event=' + ev.id + '"><div class="tl-time">' + ev.occurredAt.slice(11, 16) + '</div><div class="tl-body">' + (LANG === 'cn' ? ev.roomId + ' 房 · ' : 'Room ' + ev.roomId + ' · ') + s6StatusText(ev) + '</div></a>';
-    }).join('');
+    }).join('') : '<div class="empty-note">' + (s6Filter === 'open'
+      ? L('No open events — everything this shift is resolved.', '当前没有未结事件——本班全部已闭环。')
+      : s6Filter === 'resolved'
+        ? L('No resolved events yet this shift.', '本班还没有已闭环事件。')
+        : L('No events this shift yet.', '本班还没有事件。')) + '</div>';
     document.getElementById('s6Clock').textContent = state.clock.slice(11, 16);
   }
 
@@ -832,7 +855,7 @@
     if (r.screen === 's1'){ currentEventId = null; currentFrom = null; }
     if (r.screen === 's7') renderRoom(r.roomId);
     if (r.screen === 's5') renderS5();
-    if (r.screen === 's6') renderS6();
+    if (r.screen === 's6'){ s6Filter = r.filter; renderS6(); }
     if (r.screen === 's8') renderMe();
     updateClocks();
     if (r.screen === 's1') renderBeds();

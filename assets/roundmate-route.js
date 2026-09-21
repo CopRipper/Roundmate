@@ -9,7 +9,7 @@
   var EVENT_SCREENS = ['s2', 's3', 's4', 's5'];
 
   function invalid() {
-    return { screen: 's1', roomId: null, eventId: null, from: null, invalid: true };
+    return { screen: 's1', roomId: null, eventId: null, from: null, filter: null, invalid: true };
   }
 
   // resolveRoute(hash, roomIds, eventIds)
@@ -26,12 +26,18 @@
     }
     if (SCREENS.indexOf(path) < 0) return invalid();
 
-    var out = { screen: path, roomId: null, eventId: null, from: null, invalid: false };
+    var out = { screen: path, roomId: null, eventId: null, from: null, filter: null, invalid: false };
 
     if (path === 's7') {
       var room = params.get('room');
       if (!room || roomIds.indexOf(room) < 0) return invalid();
       out.roomId = room;
+    }
+
+    if (path === 's6') {
+      var f = params.get('filter');
+      if (f === 'open' || f === 'resolved') out.filter = f;
+      // unknown filter values are dropped, never echoed back into the DOM
     }
 
     if (EVENT_SCREENS.indexOf(path) >= 0) {
