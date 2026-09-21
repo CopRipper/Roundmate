@@ -268,24 +268,29 @@
   .me-avatar { width:56px; height:56px; border-radius:50%; background:var(--ai-soft); color:var(--ai-text);
                display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:600; flex:none; }
   .me-card { padding:16px; margin-top:12px; }
+  .me-shift-card { --shift-open:#D6AD63; --shift-resolved:#758397; --shift-label:#9AA1AD; }
+  #app.light .me-shift-card { --shift-open:#B7791F; --shift-resolved:#7C899B; --shift-label:#5D6573; }
+  .me-shift-card .t4 { color:var(--shift-label); }
   .me-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
   .me-total { display:flex; align-items:center; gap:8px; min-height:44px; margin-top:8px; color:var(--text); text-decoration:none; font-size:14px; }
-  .me-total .stat-go { margin-left:auto; width:10px; height:10px; color:var(--text2); flex:none; }
+  .me-total .stat-go { margin-left:auto; width:10px; height:10px; color:var(--shift-label); flex:none; }
   .me-total:focus-visible, .me-entry:focus-visible { outline:2px solid var(--ai); outline-offset:2px; border-radius:10px; }
-  .me-chart-label { font-size:12px; color:var(--text2); margin-top:4px; }
-  .me-chart { display:flex; height:12px; border-radius:6px; overflow:hidden; background:var(--inset); margin-top:8px; }
+  .me-chart-label { font-size:12px; color:var(--shift-label); margin-top:4px; }
+  .me-chart { display:flex; position:relative; height:12px; border-radius:6px; overflow:hidden; background:var(--inset); margin-top:8px; }
   .me-chart [hidden] { display:none; }
-  .me-seg-open { height:100%; background:var(--watch); }
-  .me-seg-resolved { height:100%; background:var(--text2); }
+  .me-seg-open { height:100%; background:var(--shift-open); }
+  .me-seg-resolved { height:100%; background:var(--shift-resolved); }
+  .me-chart-divider { position:absolute; top:0; bottom:0; width:1px; background:var(--card); }
   .me-entry { display:flex; flex-direction:column; justify-content:center; min-height:44px; padding:8px 12px; background:var(--inset); border-radius:10px; color:inherit; text-decoration:none; }
-  .me-entry .k { font-size:11px; color:var(--text2); display:flex; align-items:center; gap:4px; }
+  .me-entry .k { font-size:11px; color:var(--shift-label); display:flex; align-items:center; gap:4px; }
   .me-entry .v { font-size:18px; font-weight:600; font-variant-numeric:tabular-nums; margin-top:4px; display:flex; align-items:center; justify-content:space-between; }
-  .me-entry .stat-go { width:10px; height:10px; color:var(--text2); flex:none; }
-  .me-entry:active, .me-total:active { opacity:.72; }
+  .me-entry .stat-go { width:10px; height:10px; color:var(--shift-label); flex:none; }
+  .me-entry:active { background:var(--line); }
+  .me-total:active { background:var(--inset); border-radius:10px; }
   .me-mean { margin-top:8px; }
   .dot { width:8px; height:8px; border-radius:50%; flex:none; }
-  .dot-open { background:var(--watch); }
-  .dot-resolved { background:var(--text2); }
+  .dot-open { background:var(--shift-open); }
+  .dot-resolved { background:var(--shift-resolved); }
 </style>
 </head>
 <body>
@@ -493,11 +498,11 @@
         <div class="t4" style="margin-top:4px">模拟账号——演示数据</div>
       </div>
     </div>
-    <div class="card me-card">
+    <div class="card me-card me-shift-card">
       <div class="t2" style="font-weight:600" data-night="本班 · 夜班 23:00–07:00" data-day="本班 · 白班 07:00–15:00">本班 · 夜班 23:00–07:00</div>
       <a class="me-total" href="#/s9?metric=total&from=me"><span id="meTotalWrap">本班告警 <span id="meTotal">–</span> 起</span><span id="meTotalNone" hidden>本班暂无告警</span><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
       <div class="me-chart-label">告警状态分布</div>
-      <div class="me-chart" id="meStatusChart" data-total="0" aria-hidden="true"><div class="me-seg-open" id="meOpenSegment" hidden></div><div class="me-seg-resolved" id="meResolvedSegment" hidden></div></div>
+      <div class="me-chart" id="meStatusChart" data-total="0" aria-hidden="true"><div class="me-seg-open" id="meOpenSegment" hidden></div><div class="me-seg-resolved" id="meResolvedSegment" hidden></div><div class="me-chart-divider" id="meChartDivider" hidden></div></div>
       <div class="me-stats">
         <a class="me-entry" href="#/s9?metric=open&from=me"><span class="k"><span class="dot dot-open"></span>未结事件</span><span class="v"><span id="meOpen">–</span><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></a>
         <a class="me-entry" href="#/s9?metric=resolved&from=me"><span class="k"><span class="dot dot-resolved"></span>已闭环</span><span class="v"><span id="meResolved">–</span><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></a>
@@ -909,6 +914,10 @@
     rSeg.style.width = (total > 0 ? sum.resolved / total * 100 : 0) + '%';
     oSeg.hidden = sum.open === 0;
     rSeg.hidden = sum.resolved === 0;
+    var divider = document.getElementById('meChartDivider');
+    var bothSeg = sum.open > 0 && sum.resolved > 0;
+    divider.hidden = !bothSeg;
+    if (bothSeg) divider.style.left = 'calc(' + (sum.open / total * 100) + '% - 0.5px)';
     document.getElementById('meStatusChart').setAttribute('data-total', String(total));
     document.getElementById('meOpen').textContent = sum.open;
     document.getElementById('meResolved').textContent = sum.resolved;
