@@ -268,7 +268,24 @@
   .me-avatar { width:56px; height:56px; border-radius:50%; background:var(--ai-soft); color:var(--ai-text);
                display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:600; flex:none; }
   .me-card { padding:16px; margin-top:12px; }
-  .me-stats { grid-template-columns:repeat(3,1fr); }
+  .me-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+  .me-total { display:flex; align-items:center; gap:8px; min-height:44px; margin-top:8px; color:var(--text); text-decoration:none; font-size:14px; }
+  .me-total .stat-go { margin-left:auto; width:10px; height:10px; color:var(--text2); flex:none; }
+  .me-total:focus-visible, .me-entry:focus-visible { outline:2px solid var(--ai); outline-offset:2px; border-radius:10px; }
+  .me-chart-label { font-size:12px; color:var(--text2); margin-top:4px; }
+  .me-chart { display:flex; height:12px; border-radius:6px; overflow:hidden; background:var(--inset); margin-top:8px; }
+  .me-chart [hidden] { display:none; }
+  .me-seg-open { height:100%; background:var(--watch); }
+  .me-seg-resolved { height:100%; background:var(--text2); }
+  .me-entry { display:flex; flex-direction:column; justify-content:center; min-height:44px; padding:8px 12px; background:var(--inset); border-radius:10px; color:inherit; text-decoration:none; }
+  .me-entry .k { font-size:11px; color:var(--text2); display:flex; align-items:center; gap:4px; }
+  .me-entry .v { font-size:18px; font-weight:600; font-variant-numeric:tabular-nums; margin-top:4px; display:flex; align-items:center; justify-content:space-between; }
+  .me-entry .stat-go { width:10px; height:10px; color:var(--text2); flex:none; }
+  .me-entry:active, .me-total:active { opacity:.72; }
+  .me-mean { margin-top:8px; }
+  .dot { width:8px; height:8px; border-radius:50%; flex:none; }
+  .dot-open { background:var(--watch); }
+  .dot-resolved { background:var(--text2); }
 </style>
 </head>
 <body>
@@ -478,12 +495,17 @@
     </div>
     <div class="card me-card">
       <div class="t2" style="font-weight:600" data-night="This shift · Night 23:00–07:00" data-day="This shift · Day 07:00–15:00">This shift · Night 23:00–07:00</div>
-      <div class="stat-grid me-stats">
-        <a class="stat stat-link" href="#/s9?metric=open&from=me"><div class="v" id="meOpen">–</div><div class="k">Open events</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
-        <a class="stat stat-link" href="#/s9?metric=resolved&from=me"><div class="v" id="meResolved">–</div><div class="k">Resolved</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
-        <a class="stat stat-link" href="#/s9?metric=mean&from=me"><div class="v" id="meMean">–</div><div class="k">Mean time to acknowledge</div><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+      <a class="me-total" href="#/s9?metric=total&from=me"><span id="meTotalWrap"><span id="meTotal">–</span> <span id="meTotalTail">alerts this shift</span></span><span id="meTotalNone" hidden>No alerts this shift yet</span><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+      <div class="me-chart-label">Alert status</div>
+      <div class="me-chart" id="meStatusChart" data-total="0" aria-hidden="true"><div class="me-seg-open" id="meOpenSegment" hidden></div><div class="me-seg-resolved" id="meResolvedSegment" hidden></div></div>
+      <div class="me-stats">
+        <a class="me-entry" href="#/s9?metric=open&from=me"><span class="k"><span class="dot dot-open"></span>Open events</span><span class="v"><span id="meOpen">–</span><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></a>
+        <a class="me-entry" href="#/s9?metric=resolved&from=me"><span class="k"><span class="dot dot-resolved"></span>Resolved</span><span class="v"><span id="meResolved">–</span><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></a>
       </div>
-      <div class="t4" style="margin-top:12px">Demo shift record — not a personal performance measure.</div>
+      <a class="me-entry me-mean" href="#/s9?metric=mean&from=me"><span class="k">Mean time to acknowledge</span><span class="v"><span id="meMean">–</span><svg class="stat-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></a>
+      <div class="t4" id="meCoverage" style="margin-top:8px"></div>
+      <div class="t4" style="margin-top:12px">Demo shift records, not personal performance.</div>
+      <div class="t4" style="margin-top:4px">Simulated durations; time advances with demo actions.</div>
     </div>
     <div class="card me-card">
       <div class="t2" style="font-weight:600">Demo tools</div>
@@ -875,9 +897,33 @@
 
   function renderMe(){
     var sum = RoundMateState.summarize(state);
+    var total = sum.total;
+    document.getElementById('meTotal').textContent = String(total);
+    var tail = document.getElementById('meTotalTail');
+    if (tail) tail.textContent = total === 1 ? 'alert this shift' : 'alerts this shift';
+    document.getElementById('meTotalWrap').hidden = total === 0;
+    document.getElementById('meTotalNone').hidden = total !== 0;
+    var oSeg = document.getElementById('meOpenSegment');
+    var rSeg = document.getElementById('meResolvedSegment');
+    oSeg.style.width = (total > 0 ? sum.open / total * 100 : 0) + '%';
+    rSeg.style.width = (total > 0 ? sum.resolved / total * 100 : 0) + '%';
+    oSeg.hidden = sum.open === 0;
+    rSeg.hidden = sum.resolved === 0;
+    document.getElementById('meStatusChart').setAttribute('data-total', String(total));
     document.getElementById('meOpen').textContent = sum.open;
     document.getElementById('meResolved').textContent = sum.resolved;
     document.getElementById('meMean').textContent = sum.meanResponseSeconds === null ? '–' : fmtMin(sum.meanResponseSeconds);
+    var acked = Object.keys(state.events).filter(function(id){
+      return state.events[id].history.some(function(h){ return h.type === 'ACK'; });
+    }).length;
+    var cov = '';
+    if (total > 0){
+      cov = LANG === 'cn'
+        ? '纳入 ' + acked + ' / ' + total + ' 起告警 · ' + (total - acked) + ' 起尚未确认'
+        : acked + ' of ' + total + (total === 1 ? ' alert' : ' alerts') + ' included · ' + (total - acked) + ' not yet acknowledged';
+      if (acked === 0) cov += L(' · mean not computable', ' · 均值不可计算');
+    }
+    document.getElementById('meCoverage').textContent = cov;
     document.getElementById('s8Clock').textContent = state.clock.slice(11, 16);
   }
 
