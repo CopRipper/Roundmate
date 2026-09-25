@@ -88,9 +88,9 @@
   .tab .ic { display:inline-flex; line-height:1; }
   .tab .ic svg { width:22px; height:22px; }
   .demo-hint {
-    position:absolute; bottom:calc(84px + env(safe-area-inset-bottom,0px)); left:50%; transform:translateX(-50%);
+    margin:4px auto 16px; width:fit-content; max-width:calc(100% - 32px); flex:none;
     background:var(--hint-bg); color:var(--ai-text); font-size:12px; padding:8px 16px; border-radius:20px;
-    border:1px solid var(--line-strong); white-space:nowrap; z-index:50; cursor:pointer;
+    border:1px solid var(--line-strong); text-align:center; cursor:pointer;
   }
   .toast {
     position:absolute; bottom:calc(84px + env(safe-area-inset-bottom,0px)); left:50%; transform:translateX(-50%);
@@ -104,8 +104,9 @@
   .ai-status { text-align:right; flex:none; margin-left:auto; }
   .ai-status .l1 { font-size:13px; color:var(--ai-text); display:flex; align-items:center; gap:4px; justify-content:flex-end; }
   .ai-status .l2 { font-size:11px; color:var(--text2); margin-top:4px; }
-  .grid-area { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
-  .grid-area::-webkit-scrollbar{ display:none; }
+  .s1-scroll { flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; display:flex; flex-direction:column; }
+  .s1-scroll::-webkit-scrollbar{ display:none; }
+  .grid-area { padding:0 16px; }
   .section-head { display:flex; justify-content:space-between; align-items:center; margin:12px 4px 8px; }
   .section-head .name { font-size:15px; font-weight:500; color:var(--text-strong); }
   .sort-toggle { cursor:pointer; font-size:11px; color:var(--ai-text); user-select:none;
@@ -114,12 +115,13 @@
   .sort-toggle svg { width:14px; height:14px; }
   .sort-toggle.on { border-color:var(--ai); background:var(--ai); color:#fff; }
   .sort-toggle:focus-visible { outline:2px solid var(--ai); outline-offset:2px; }
-  .bed-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .bed-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
   .bed { background:var(--card); border-radius:10px; padding:8px 4px;
          display:flex; flex-direction:column; align-items:center; gap:4px;
          border:1px solid var(--line); }
-  .bed .room { font-size:17px; font-weight:500; font-variant-numeric:tabular-nums; }
-  .bed .st { font-size:12px; display:flex; align-items:center; gap:4px; }
+  .bed .room { font-size:17px; font-weight:500; font-variant-numeric:tabular-nums; max-width:100%; }
+  .bed .st { font-size:12px; display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+             gap:4px; max-width:100%; min-width:0; overflow-wrap:anywhere; text-align:center; }
   .ok    { border-color:var(--ok-border); } .ok .st    { color:var(--ok-text); }
   .watch { border-color:var(--watch); background:var(--watch-fill); } .watch .st { color:var(--watch); }
   .off   { border-color:var(--alert); background:var(--alert-bg); }
@@ -249,13 +251,13 @@
   .sensor-row .lim { color:var(--watch); }
   .room-alert-btn { margin-top:12px; }
   /* Approved RoundMate A identity */
-  #s1 > .topbar { align-items:center; gap:8px; }
+  #s1 .topbar { align-items:center; gap:4px 8px; flex-wrap:wrap; }
   .brand-heading { display:flex; align-items:center; gap:8px; min-width:0; }
   .brand-logo { width:36px; height:36px; border-radius:10px; flex-shrink:0; display:block; }
   .brand-copy { display:flex; flex-direction:column; gap:4px; }
   .brand-name { font-size:16px; font-weight:600; letter-spacing:-.3px; line-height:1.2; }
   .brand-context { font-size:11px; color:var(--text2); line-height:1.25; }
-  #s1 > .topbar > .clock { white-space:nowrap; flex-shrink:0; }
+  #s1 .topbar > .clock { white-space:nowrap; flex-shrink:0; margin-left:auto; }
 
   /* ===== S8 me ===== */
   .me-scroll { flex:1; overflow-y:auto; padding:0 16px; scrollbar-width:none; }
@@ -294,6 +296,7 @@
 
 <!-- ================= S1 Overview ================= -->
 <section class="screen" id="s1">
+  <div class="s1-scroll">
   <div class="topbar">
     <div class="brand-heading"><img class="brand-logo" src="assets/roundmate-logo-a.png" width="36" height="36" alt=""><div class="brand-copy"><span class="brand-name">RoundMate</span><span class="brand-context" data-night="Night Overview" data-day="Day Overview">Night Overview</span></div></div>
     <span class="clock"><span class="theme-toggle" id="themeBtn" onclick="toggleMode()" role="button" tabindex="0" aria-label="Switch to day shift demo" onkeydown="if(event.key==='Enter')toggleMode()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span><span id="s1Clock">02:41</span></span>
@@ -318,12 +321,13 @@
     <div class="bed-grid" id="grid-west"></div>
     <div class="foot-note">Status from bed-exit and activity sensors — reference only, not a safety confirmation. Your rounds decide.</div>
   </div>
+  <div class="demo-hint" data-night="▶ Demo: alert fires at 02:47" data-day="▶ Demo: alert fires at 10:31" onclick="goAlert('overview')">▶ Demo: alert fires at 02:47</div>
+  </div>
   <nav class="tabbar">
     <a class="tab active" href="#/s1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Overview</a>
     <a class="tab" href="#/s6"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><circle cx="4" cy="6" r="1.3"/><circle cx="4" cy="12" r="1.3"/><circle cx="4" cy="18" r="1.3"/></svg></span>Events</a>
     <a class="tab" href="#/s8"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c1.3-3.6 4-5.4 7.2-5.4s5.9 1.8 7.2 5.4"/></svg></span>Me</a>
   </nav>
-  <div class="demo-hint" data-night="▶ Demo: alert fires at 02:47" data-day="▶ Demo: alert fires at 10:31" onclick="goAlert('overview')">▶ Demo: alert fires at 02:47</div>
 </section>
 
 <!-- ================= S2 Alert ================= -->
